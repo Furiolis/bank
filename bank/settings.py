@@ -1,3 +1,5 @@
+#admin 
+#kasZ123a
 """
 Django settings for bank project.
 
@@ -37,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "bankowanie"
 ]
 
 MIDDLEWARE = [
