@@ -41,15 +41,13 @@ class ClientManager(BaseUserManager):
         return self.create_user(email, phone_number, first_name, last_name, password, **extra_fields)
 
 class Client(AbstractUser, PermissionsMixin):
-    username = models.CharField(_("username"),
+    username = models.CharField(_("username"),  # username created automatically from first_name and last_name
                                 max_length=30,
                                 unique=True,
                                 validators=[UnicodeUsernameValidator()],
                                 help_text=_("Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."),
                                 error_messages={"unique": _("A user with that username already exists.")}
                                 )
-
-    # username created automatically from first_name and last_name, inherited from AbstractUser
     # first_name inherited from AbstractUser
     # last_name inherited from AbstractUser
     # email inherited from AbstractUser
