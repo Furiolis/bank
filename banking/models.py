@@ -44,7 +44,7 @@ class Client(AbstractUser, PermissionsMixin):
     username = models.CharField(_("username"),
                                 max_length=30,
                                 unique=True,
-                                # validators=UnicodeUsernameValidator(),
+                                validators=[UnicodeUsernameValidator()],
                                 help_text=_("Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."),
                                 error_messages={"unique": _("A user with that username already exists.")}
                                 )
