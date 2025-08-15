@@ -10,8 +10,8 @@ class NewClientForm(UserCreationForm):
             "date_birth": forms.DateInput(attrs={'type': 'date'})
         }
     
+
     def save(self, commit=True):
-        print("TO SIE DZIEJE")
         user = Client.objects.create_user(
             first_name=self.cleaned_data["first_name"],
             last_name=self.cleaned_data["last_name"],

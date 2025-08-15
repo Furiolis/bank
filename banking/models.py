@@ -2,8 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, PermissionsMixin, BaseUserManager
 from django.core.validators import RegexValidator
 from django.contrib.auth.validators import UnicodeUsernameValidator
-from random import randint
 from django.utils.translation import gettext_lazy as _
+from random import randint
 
 class ClientManager(BaseUserManager):
 
@@ -42,20 +42,22 @@ class ClientManager(BaseUserManager):
 
 class Client(AbstractUser, PermissionsMixin):
     username = models.CharField(_("username"),  # username created automatically from first_name and last_name
-                                max_length=30,
+                                max_length=150,
                                 unique=True,
                                 validators=[UnicodeUsernameValidator()],
                                 help_text=_("Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."),
                                 error_messages={"unique": _("A user with that username already exists.")}
                                 )
-    # first_name inherited from AbstractUser
-    # last_name inherited from AbstractUser
-    # email inherited from AbstractUser
-    # password inherited from AbstractUser
-    # account declared on Account model
-    pesel = models.CharField(max_length=11,)
-    date_birth = models.DateField(null=True)
-    phone_number = models.CharField(max_length=9)
+    first_name = models.CharField(max_length=150, validators=[RegexValidator(r"[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż' -]+")])
+    last_name = models.CharField(max_length=150, validators=[RegexValidator(r"[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż' -]+")])
+    email = models.EmailField()
+    password = models.CharField(max_length=128)
+    pesel = models.CharField(validators=[RegexValidator(r'\d{11}')], unique=True)
+    date_birth = models.DateField()
+    phone_number = models.CharField(validators=[RegexValidator(r'\d{9}')],)
+    # Client.account_set.all()
+    # Client.card_set.all()
+    
 
     objects = ClientManager()
 
@@ -63,9 +65,10 @@ class Client(AbstractUser, PermissionsMixin):
     REQUIRED_FIELDS = ["email", "phone_number", "first_name", "last_name", "date_birth"]
 
 class Account(models.Model):
-    number = models.IntegerField(unique=True)
+    number = models.IntegerField(unique=True,)
     owner = models.ForeignKey(Client, on_delete=models.CASCADE)
     money = models.BigIntegerField(default = 0)
+    # Account.card_set.all()
 
 class Card(models.Model):
     number = models.IntegerField(unique=True)
