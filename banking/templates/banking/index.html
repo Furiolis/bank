@@ -2,5 +2,14 @@
 
 
 {% block content %}
-    
+    {% if is_logged %}
+        tutaj będą produkty
+        <a href= {% url "logout" %}><button>Wyloguj</button></a>
+    {% else %}
+        Jesteś niezalogowany
+        <a href= {% url "login" %}><button type="button">Zaloguj</button></a>
+        <a href= {% url "new_client" %}><button type="button">Zajestruj</button></a>
+    {% endif %}
+
 {% endblock content %}
+
