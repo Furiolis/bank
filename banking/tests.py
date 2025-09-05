@@ -8,7 +8,7 @@ class ClientTest(TestCase):
     def setUp(self):
         self.client = Client.objects.create_user(first_name="Tom",
                                                  last_name="Furiolis",
-                                                 email="somemail@gmail.com",
+                                                 email="test@gmail.com",
                                                  phone_number= "123456789",
                                                  pesel=89010100003,
                                                  date_birth=date(year=1989, month=1, day=1))

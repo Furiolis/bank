@@ -49,8 +49,8 @@ class Client(AbstractUser, PermissionsMixin):
                                 help_text=_("Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."),
                                 error_messages={"unique": _("A user with that username already exists.")}
                                 )
-    first_name = models.CharField(max_length=150, validators=[RegexValidator(r"[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż' -]+")])
-    last_name = models.CharField(max_length=150, validators=[RegexValidator(r"[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż' -]+")])
+    first_name = models.CharField(max_length=150, validators=[UnicodeUsernameValidator()]),   # [RegexValidator(r"[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż' -]+")])
+    last_name = models.CharField(max_length=150, validators=[UnicodeUsernameValidator()]), # [RegexValidator(r"[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż' -]+")])
     email = models.EmailField()
     password = models.CharField(max_length=128)
     pesel = models.CharField(validators=[RegexValidator(r'\d{11}')], unique=True)
@@ -63,9 +63,6 @@ class Client(AbstractUser, PermissionsMixin):
 
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["email", "phone_number", "first_name", "last_name", "date_birth"]
-
-    def clean(self):
-        super().clean()
 
 
 class Account(models.Model):
