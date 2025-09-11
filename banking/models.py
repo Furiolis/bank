@@ -4,6 +4,8 @@ from django.core.validators import RegexValidator
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.utils.translation import gettext_lazy as _
 from random import randint
+from django.contrib.auth.hashers import make_password, check_password
+from unidecode import unidecode
 
 class ClientManager(BaseUserManager):
 
@@ -21,7 +23,7 @@ class ClientManager(BaseUserManager):
             username = "username"
             while True:
                 random_number = randint(1000, 9999)
-                username = first_name.lower()[:6] + str(random_number) + last_name.lower()[:6]
+                username = unidecode(first_name.lower()[:6]) + str(random_number) + unidecode(last_name.lower()[:6])
                 if username not in usernames:
                     break
 
@@ -49,8 +51,8 @@ class Client(AbstractUser, PermissionsMixin):
                                 help_text=_("Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."),
                                 error_messages={"unique": _("A user with that username already exists.")}
                                 )
-    first_name = models.CharField(max_length=150, validators=[UnicodeUsernameValidator()]),   # [RegexValidator(r"[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż' -]+")])
-    last_name = models.CharField(max_length=150, validators=[UnicodeUsernameValidator()]), # [RegexValidator(r"[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż' -]+")])
+    first_name = models.CharField(max_length=150, validators=[UnicodeUsernameValidator()])   # [RegexValidator(r"[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż' -]+")])
+    last_name = models.CharField(max_length=150, validators=[UnicodeUsernameValidator()]) # [RegexValidator(r"[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż' -]+")])
     email = models.EmailField()
     password = models.CharField(max_length=128)
     pesel = models.CharField(validators=[RegexValidator(r'\d{11}')], unique=True)
@@ -66,16 +68,29 @@ class Client(AbstractUser, PermissionsMixin):
 
 
 class Account(models.Model):
+    TYPE_CHOICES = (
+        ("REGULAR","Regular"),
+        ("SAVING","Saving"),
+        ("CREDIT","Credit")
+    )
     number = models.IntegerField(unique=True,)
     owner = models.ForeignKey(Client, on_delete=models.CASCADE)
     money = models.BigIntegerField(default = 0)
-    # Account.card_set.all()
+    type_account = models.CharField(choices=TYPE_CHOICES, default="REGULAR")
+    # Account.card
 
 
 class Card(models.Model):
     number = models.IntegerField(unique=True)
     owner = models.ForeignKey(Client, on_delete=models.CASCADE)
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    account = models.OneToOneField(Account, on_delete=models.CASCADE)
+    pin = models.CharField(max_length=4, default="0000")
+
+    def set_pin(self, raw_pin):
+        self.pin = make_password(raw_pin)
+
+    def chech_pin(self, raw_pin):
+        return check_password(raw_pin, self.pin)
 
 
 def validate_pesel(pesel):

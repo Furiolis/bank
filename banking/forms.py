@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from .models import Client, validate_pesel, validate_pesel_match_date_birth
 from django.core.exceptions import ValidationError
@@ -35,5 +35,7 @@ class NewClientForm(UserCreationForm):
             password=self.cleaned_data["password1"])
         return user
 
-class LoginClientForm(AuthenticationForm):
+
+class NewAccountForm(forms.ModelForm):
     pass
+
