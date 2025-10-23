@@ -2,12 +2,10 @@
 
 
 {% block content %}
-        tutaj będą produkty
-        <a href = {% url "logout" %}><button type="button">Wyloguj</button></a>
-        <a href = {% url "new_account" %}><button type = "button">Załóż nowy rachunek</button></a>
-        <a href = {% url "new_loan" %}><button type = "button">Weź pożyczke</button></a>
-        <a href = {% url "new_credit_card" %}><button type = "button">Nowa karta kredytowa</button></a>
-
-
+    tutaj będą produkty
+    <a href = {% url "logout" %}><button type="button">Wyloguj</button></a>
+    <a href = {% url "new_account" %}><button type = "button">Załóż nowy rachunek</button></a>
+    <a href = {% url "new_loan" %}><button type = "button">Weź pożyczke</button></a>
+    <a href = {% url "new_credit_card" %}><button type = "button">Nowa karta kredytowa</button></a>
 {% endblock content %}
 

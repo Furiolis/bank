@@ -1,13 +1,58 @@
+<!-- base.html -->
+ {% load static %}
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+  <link rel="stylesheet" href="{% static "base.css" %}">
+  {% block styles %}
+  
+  {% endblock styles %}
   <title>{% block title %}Bank Bankowaty{% endblock title %}</title>
 </head>
 <body>
-  <div>{% block menu %}Menu{% endblock menu %}</div>
-  <div>{% block content %}Glowne pole oraz szczegoly{% endblock content %}</div>
+
+  <header class="header-main">
+    <nav class="nav-first">
+      <div class="nav-first-items">
+        {% if logged %}
+          <a href="#">Account</a>
+          <a href="{% url "logout" %}">Wyloguj</a>
+        {% else %}
+          <a href="{% url "login" %}">Zaloguj</a>
+          <a href="{% url "new_client" %}">Zaloz konto</a>
+        {% endif %}
+      </div>
+    </nav>
+
+    <div class= "nav-second__background">
+      <nav class= "nav-second">
+        <img src="{% static "logo3.png" %}" height="100" width="100">
+        <div class="nav-second__items">
+          <a href="">link</a>
+          <a href="">link</a>
+        </div>
+      </nav>
+
+    </div>
+
+
+  </header>
+  <div class = "messages">
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+
+  <div class = "content" >
+    {% block content %}
+    {% endblock content %}
+  </div>
 </body>
 </html>

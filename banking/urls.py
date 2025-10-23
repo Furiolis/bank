@@ -8,5 +8,7 @@ urlpatterns = [
     path("confirmation", views.confirmation, name="confirmation"),
     path("new-loan", views.new_loan, name="new_loan"),
     path("new-account", views.new_account, name="new_account"),
-    path("new-credit-card", views.new_credit_card, name="new_credit_card")
+    path("new-credit-card", views.new_credit_card, name="new_credit_card"),
+    path("base", views.base)
+
     ]

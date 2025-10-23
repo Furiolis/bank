@@ -8,16 +8,17 @@ from random import randint
 from django.contrib import messages
 
 
+def base(request):
+    return render(request,"base.html")
+
 def index(request):
     if request.user.is_authenticated:
-        
-        return render(request, "banking/index.html",{})
+        return render(request, "banking/index.html",{"logged": request.user.is_authenticated})
         """ wyswietlanie produktow """
     else:
         """ logowanie """
         """ lub rejestracja """
-
-        return render(request, "banking/logout.html",{})
+        return render(request, "banking/logout.html")
 
     
 def login(request):
@@ -29,7 +30,8 @@ def login(request):
             return redirect("main_panel")
     else: # request.method == "GET"
         form = AuthenticationForm()
-    return render(request, "banking/login.html", {"form":form})
+    return render(request, "banking/login.html", {
+        "form":form})
 
 
 def logout(request):
@@ -46,7 +48,8 @@ def new_client(request):
             return redirect("confirmation") 
     else: # request.method == "GET"
         form = NewClientForm()
-    return render(request, "banking/new_client.html",{"form": form})
+    return render(request, "banking/new_client.html",{
+        "form": form,})
 
 
 def confirmation(request):
@@ -65,12 +68,17 @@ def new_account(request):
             if form.is_valid():
                 user = request.user
                 account = form.save(owner=user)
-                if form.data["add_card"] == "on":
+                if form.data.get("add_card") == "on":
                     card = Card(owner=user, account=account)
                     card.save()
-                messages.success(request, f"Account {account.number} {"and card" if form.data["add_card"] == "on" else ""} was created succesfully")
+                    messages.success(request, f"Account {account.number}, with a card was created succesfully")
+                else:
 
-        else: # request.method == "GET"
+                    messages.success(request, f"Account {account.number} was created succesfully")
+                return redirect("main_panel")
+
+
+        else: # request.method == "GET" 
             form = NewAccountForm()
 
         return render(request, "banking/new_account.html", {"form": form})
