@@ -49,13 +49,10 @@ class Client(AbstractUser, PermissionsMixin):
     username = models.CharField(_("username"),  # username created automatically from first_name and last_name
                                 max_length=150,
                                 unique=True,
-                                validators=[UnicodeUsernameValidator()],
-                                help_text=_("Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."),
-                                error_messages={"unique": _("A user with that username already exists.")}
-                                )
-    first_name = models.CharField(max_length=150, validators=[UnicodeUsernameValidator()])   # [RegexValidator(r"[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż' -]+")])
-    last_name = models.CharField(max_length=150, validators=[UnicodeUsernameValidator()]) # [RegexValidator(r"[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż' -]+")])
-    email = models.EmailField()
+                                validators=[UnicodeUsernameValidator()])
+    first_name = models.CharField(_("first name"), max_length=150, validators=[UnicodeUsernameValidator()]) # [RegexValidator(r"[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż' -]+")])
+    last_name = models.CharField(_("last name"), max_length=150, validators=[UnicodeUsernameValidator()]) # [RegexValidator(r"[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż' -]+")])
+    email = models.EmailField(_("email address"))
     password = models.CharField(max_length=128)
     pesel = models.CharField(validators=[RegexValidator(r'\d{11}')], unique=True)
     date_birth = models.DateField()
@@ -71,17 +68,17 @@ class Client(AbstractUser, PermissionsMixin):
     def clean(self):
         super().clean()
         if not validate_pesel(self.pesel):
-            raise ValidationError("Incorrect pesel")
+            raise ValidationError(_("Incorrect pesel"))
         if not validate_pesel_match_date_birth(self.pesel, self.date_birth): 
-            raise ValidationError("PESEL does not match birth date")
+            raise ValidationError(_("PESEL does not match birth date"))
         if not validate_date_birth_above_18_today(self.date_birth):
-            raise ValidationError("Required age above 18")
+            raise ValidationError(_("Required age above 18"))
 
 class Account(models.Model):
     TYPE_CHOICES = (
-        ("REGULAR","Regular"),
-        ("SAVING","Saving"),
-        ("CREDIT","Credit")
+        ("REGULAR",_("Regular")),
+        ("SAVING",_("Saving")),
+        ("CREDIT",_("Credit"))
     )
     number = models.IntegerField(unique=True, null=True)
     owner = models.ForeignKey(Client, on_delete=models.CASCADE)

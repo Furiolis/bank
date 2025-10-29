@@ -1,5 +1,6 @@
 <!-- base.html -->
  {% load static %}
+ {% load i18n %}
 
 <!DOCTYPE html>
 <html lang="pl">
@@ -7,32 +8,48 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{% static "base.css" %}">
-  {% block styles %}
-  
-  {% endblock styles %}
-  <title>{% block title %}Bank Bankowaty{% endblock title %}</title>
+  {% block styles %}{% endblock styles %}
+  <title>{% block title %}Fake Bank{% endblock title %}</title>
 </head>
 <body>
 
   <header class="header-main">
     <nav class="nav-first">
       <div class="nav-first-items">
+          <form class="flag" action="{% url 'set_language' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.path }}">
+            <button type="submit" name="language" value="pl">
+              <img src="{% static "pl.png" %}" alt="Polski" height="20" width="40">
+            </button>
+          </form>
+          <form class="flag" action="{% url 'set_language' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.path }}">
+            <button type="submit" name="language" value="en">
+              <img src="{% static "en.png" %}" alt="English" height="20" width="40">
+            </button>
+          </form>
         {% if logged %}
-          <a href="#">Account</a>
-          <a href="{% url "logout" %}">Wyloguj</a>
+          <a href="#">{% trans "Settings" %}</a>
+          <a href="{% url "logout" %}">{% trans "Log out" %}</a>
         {% else %}
-          <a href="{% url "login" %}">Zaloguj</a>
-          <a href="{% url "new_client" %}">Zaloz konto</a>
+          <a href="{% url "login" %}">{% trans "Log in" %}</a>
+          <a href="{% url "new_client" %}">{% trans "Register account" %}</a>
         {% endif %}
       </div>
     </nav>
 
     <div class= "nav-second__background">
       <nav class= "nav-second">
-        <img src="{% static "logo3.png" %}" height="100" width="100">
+        <img src="{% static "logo.png" %}" alt="Fake Bank" height="100" width="100">
         <div class="nav-second__items">
-          <a href="">link</a>
-          <a href="">link</a>
+          {% if logged %}
+            <a href="">link</a>
+            <a href="">link</a>
+          {% else %}
+            
+          {% endif %}
         </div>
       </nav>
 

@@ -2,6 +2,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from .models import Client, Account, Card
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+
 
 class NewClientForm(UserCreationForm):
     class Meta:
@@ -38,8 +40,8 @@ class NewClientForm(UserCreationForm):
 
 class NewAccountForm(forms.Form):
     TYPE_CHOICES = (
-        ("REGULAR","Regular"),
-        ("SAVING","Saving"),
+        ("REGULAR",_("Regular")),
+        ("SAVING",_("Saving")),
     )
     type_account = forms.ChoiceField(choices=TYPE_CHOICES)
     add_card = forms.BooleanField(required=False)
