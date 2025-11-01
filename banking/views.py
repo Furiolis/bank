@@ -3,8 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as login_user
 from django.contrib.auth import logout as logout_user
 from .forms import NewClientForm, NewAccountForm
-from .models import Client, Account, Card
-from random import randint
+from .models import Client, Account, Card, provide_pesel_birthdate
 from django.contrib import messages
 
 
@@ -48,8 +47,11 @@ def new_client(request):
             return redirect("confirmation") 
     else: # request.method == "GET"
         form = NewClientForm()
+    pesel, birth_date = provide_pesel_birthdate()
     return render(request, "banking/new_client.html",{
-        "form": form,})
+        "form": form,
+        "pesel": pesel,
+        "birth_date": birth_date})
 
 
 def confirmation(request):
@@ -97,3 +99,4 @@ def new_credit_card(request):
         return render(request, "banking/new_credit_card.html")
     else:
         return render(request, "banking/logout.html")
+    

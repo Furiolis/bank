@@ -1,5 +1,5 @@
 from django.test import TestCase
-from . models import Client, validate_pesel, validate_pesel_match_date_birth, validate_date_birth_above_18_today
+from . models import Client, validate_pesel, validate_pesel_match_date_birth, validate_date_birth_above_18_today, provide_pesel_birthdate
 from datetime import date
 from django.core.exceptions import ValidationError
 
@@ -91,4 +91,20 @@ class ClientTest(TestCase):
         self.assertFalse(validate_date_birth_above_18_today(self.client.date_birth))
         # with self.assertRaises(ValidationError):
         #     self.client.clean()
+
+class PeselProviderTest(TestCase):
+    @classmethod
+    def setUp(cls):
+        cls.pesel, cls.birth_date = provide_pesel_birthdate()
+        print(cls.pesel)
+        print(cls.birth_date)
+
+    def test_provide_pesel(self):
+        self.assertTrue(validate_pesel(self.pesel))
+
+    def test_provide_birhtdate_match_pesel(self):
+        self.assertTrue(validate_pesel_match_date_birth(self.pesel, self.birth_date))
+
+    def test_date_birth_above_18(self):
+        self.assertTrue(validate_date_birth_above_18_today(self.birth_date))
 

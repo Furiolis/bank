@@ -1,0 +1,14 @@
+ {% load i18n %}
+<div class="cheat_pesel">
+  {% blocktrans %}
+    <h1>!!! WARNING !!!</h1>
+    This is NOT real bank <br>
+    Do NOT give your real name, PESEL, <br>
+    or any other confidential data. <br>
+    However, you need to put some PESEL, <br> 
+    and matching to birth date. <br>
+    Here is some example:
+    <p class="pesel"> {{ pesel }}</p>
+    <p class="birth_date"> {{ birth_date }}</p>
+  {% endblocktrans %}
+</div>
