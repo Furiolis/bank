@@ -124,6 +124,8 @@ class Card(models.Model):
         return self
 
 def validate_pesel(pesel : str) -> bool:
+    if not pesel.isdigit() or len(pesel) != 11:
+        return False
     wage_factors = (1, 3, 7, 9, 1, 3, 7, 9, 1, 3)
     digit = int(str(sum(int(i) * j for i, j in zip(pesel, wage_factors)))[-1]) # last_digit_of_control_sum
     control_digit = (10 - digit) if digit != 0 else 0

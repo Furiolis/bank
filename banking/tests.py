@@ -96,8 +96,6 @@ class PeselProviderTest(TestCase):
     @classmethod
     def setUp(cls):
         cls.pesel, cls.birth_date = provide_pesel_birthdate()
-        print(cls.pesel)
-        print(cls.birth_date)
 
     def test_provide_pesel(self):
         self.assertTrue(validate_pesel(self.pesel))

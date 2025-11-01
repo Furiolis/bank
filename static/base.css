@@ -4,11 +4,10 @@
 
 body{margin:0;
     font-family:sans-serif;
-    /* background-color: #e6effc; */
     background-color: #e6effc;
 }
 
-.nav-first, .nav-second, .messages, .content {
+.nav-first, .nav-second, .messages, .content, div.messages{
     width: 90%;
     max-width: 1000px;
     margin: auto;
@@ -37,8 +36,6 @@ body{margin:0;
     padding: 0;
     background-color: transparent;
 }
-
-
 
 .nav-first-items {
     width:fit-content;
@@ -80,5 +77,37 @@ body{margin:0;
     width: calc(100% - 105px);    
 }
 
+.content {
+    margin-top: 10px;
+}
 
-  
+div.messages li{
+    list-style: none;
+    padding: 5px;
+}
+
+li.success {
+    border:green solid 2px;
+    border-radius: 5px;
+    background-color: lightgreen;
+}
+
+li.warning{
+    border: orangered solid 2px;
+    border-radius: 5px;
+    background-color: lightsalmon;
+}
+
+li.error{
+    border: red solid 2px;
+    border-radius: 5px;
+    background-color: lightsalmon;
+}
+
+li.info, li.debug{
+    border: r#132335 solid 2px;
+    border-radius: 5px;
+}
+form div{
+    margin: 5px;
+}
