@@ -29,7 +29,7 @@ msgstr "Oszczędnościowe"
 
 #: banking/models.py:49
 msgid "username"
-msgstr "Nazwa użytkownika"
+msgstr "nazwa użytkownika"
 
 #: banking/models.py:71
 msgid "Incorrect pesel"

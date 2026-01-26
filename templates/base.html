@@ -1,6 +1,6 @@
-<!-- base.html -->
- {% load static %}
- {% load i18n %}
+{# base.html #}
+{% load static %}
+{% load i18n %}
 
 <!DOCTYPE html>
 <html lang="pl">
@@ -16,58 +16,54 @@
   <header class="header-main">
     <nav class="nav-first">
       <div class="nav-first-items">
+          {# language shift #}
           <form class="flag" action="{% url 'set_language' %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ request.path }}">
             <button type="submit" name="language" value="pl">
-              <img src="{% static "pl.png" %}" alt="Polski" height="20" width="40">
+              <img class= "flag" src="{% static "pl.png" %}" alt="Polski" widht="40" height="20">
             </button>
           </form>
           <form class="flag" action="{% url 'set_language' %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ request.path }}">
             <button type="submit" name="language" value="en">
-              <img src="{% static "en.png" %}" alt="English" height="20" width="40">
+              <img class= "flag" src="{% static "en.png" %}" alt="English" widht="40" height="20">
             </button>
           </form>
-        {% if logged %}
-          <a href="#">{% trans "Settings" %}</a>
-          <a href="{% url "logout" %}">{% trans "Log out" %}</a>
-        {% else %}
-          <a href="{% url "login" %}">{% trans "Log in" %}</a>
-          <a href="{% url "new_client" %}">{% trans "Register account" %}</a>
-        {% endif %}
+          
+          {% if logged %}
+            <a href="{% url "dashboard" %}">{% trans "Review" %}</a>
+            <a href="#">{% trans "Settings" %}</a>
+            <a href="{% url "logout" %}">{% trans "Log out" %}</a>
+          {% else %}
+            <a href="{% url "login" %}">{% trans "Log in" %}</a>
+            <a href="{% url "new_client" %}">{% trans "Register" %}</a>
+          {% endif %}
+
       </div>
     </nav>
 
     <div class= "nav-second__background">
       <nav class= "nav-second">
-        <img src="{% static "logo.png" %}" alt="Fake Bank" height="100" width="100">
+        <a href={% url "front_page" %}><img src="{% static "logo.png" %}" alt="Fake Bank" height="100" width="100"></a>
         <div class="nav-second__items">
           {% if logged %}
             <a href="">link</a>
             <a href="">link</a>
           {% else %}
-            
+            <p class="welcome">Welcome</p>
           {% endif %}
         </div>
       </nav>
 
     </div>
   </header>
-  <div class = "messages">
-    {% if messages %}
-      <ul class="messages">
-        {% for message in messages %}
-          <li class="{{ message.tags }}">{{ message }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-  </div>
+  {% include "banking/includes/messages.html" %}
 
   <div class = "content" >
-    {% block content %}
-    {% endblock content %}
+    {% block content %}{% endblock content %}
   </div>
+  
 </body>
 </html>

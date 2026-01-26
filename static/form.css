@@ -1,0 +1,49 @@
+
+form label{
+    font-weight: bold;
+    font-size: 1.25em;
+}
+
+form input{
+    margin: 10px;
+    position: relative;
+    border-radius: 6px;
+    background-color: white;
+    font-size: 1.5rem;
+}
+
+.form_field_error input{
+    background-color: red;
+    color: white;
+}
+
+.form_field_error input{
+    background-color: red;
+    color: white;
+}
+
+form input:hover,
+form input:active{
+    border-color: gold;
+}
+
+form input:focus{
+    background-color: gold;
+}
+
+button {
+    height: 40px;
+    padding: 0px 20px;
+    font-size: 1.5rem;
+    border-radius: 10px;
+}
+
+form button.submit{
+    background-color: lightgreen;
+    border-color: green;
+}
+
+form button.reset{
+    background-color: lightcoral;
+    border-color: red;
+}

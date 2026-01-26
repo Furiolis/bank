@@ -1,11 +1,43 @@
 {% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static "form.css" %}">
+    <link rel="stylesheet" href="{% static "banking/collective.css" %}">
+{% endblock styles %}
+
 
 {% block content %}
-  <h2>Rejestracja</h2>
+  <div class="warning_new_client">  
+    {% blocktrans %}
+      <h1>!!! WARNING !!!</h1>
+      This is NOT real bank <br>
+      Do NOT give your real name, PESEL, <br>
+      or any other confidential data. <br>
+      However, you need to put some PESEL, <br> 
+      and matching to birth date. <br>
+      Here is an example: <br>
+      <p class="pesel"> PESEL: {{ pesel }}</p>
+      <p class="birth_date">Birth date: {{ birth_date }}</p>
+      <br>
+      Although, it is recommended to provide real phone number, <br>
+      and email, ther are recuired to log in.
+    {% endblocktrans %}
+  </div>
   <form method="post" class="register_form">
       {% csrf_token %}
-      {{ form }}
-      <button type="submit">Zarejestruj</button>
+      {% for field in form %}
+        <div class=" {% if field.errors %}form_field_error {% endif%}">
+          {{ field.label_tag}}
+          {{ field }}
+          {{ field.errors }}
+          <br>
+        </div>
+      {% endfor%}
+      <hr>
+      <button class="submit" type="submit">{% trans "Register" %}</button>
+      <button class="reset" type="reset">{% trans "Clear" %}</button>
   </form>
-  {% include "banking/includes/pesel_birthdate_cheat.html" %}
+
 {% endblock content %}

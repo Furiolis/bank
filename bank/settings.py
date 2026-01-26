@@ -138,7 +138,11 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Others
+
 SESSION_COOKIE_AGE = 600
 SESSION_SAVE_EVERY_REQUEST = True
 
 AUTH_USER_MODEL = "banking.Client"
+
+LOGIN_URL = '/'

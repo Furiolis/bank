@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static "banking/front_page.css"%}">
+{% endblock styles %}
+
+
+{% block content %}
+  <div class="front_page_items">
+
+    <div class="front_page_item">
+      <p>
+        {% blocktrans %}
+          to Fake Bank, the most prestigious institution that never really existed.
+        {% endblocktrans %}
+          {# — and yet feels richer than reality itself.#}
+          {#Here, every pixel shines like pure gold, every account number whispers success, and even your login page smells faintly of prosperity. #}
+      </p>
+      <img src="{% static "lobby.png" %}" alt="Fake Bank Lobby">
+    </div>
+
+    <div class="front_page_item">
+      <img src="{% static "security.png" %}" alt="Fake Bank Security">
+      <p>
+        {% blocktrans %}
+          Security? <br>Our imaginary vaults are guarded by the finest digital minds. <br> Watching over your fictional fortune with legendary vigilance.
+        {% endblocktrans %}
+      </p>
+    </div>
+
+    <div class="front_page_item">
+      <p>
+        {% blocktrans %}
+          Trust? <br> Forget paperwork, all you need is faith in the magic of impeccable design.
+        {% endblocktrans %}
+      </p>
+      <img src="{% static "vault.png" %}" alt="Fake Bank Vault">
+    </div>
+
+    <div class="front_page_item" >
+      <img  src="{% static "wealth.png" %}" alt="Fake Bank Wealth">
+      <p>
+        {% blocktrans %}
+          Wealth? <br> We don’t promise millions, we promise the feeling of having those.
+        {% endblocktrans %}
+      </p>
+
+    </div>
+    <p class="bottom">
+      {% blocktrans %}
+        At Fake Bank, we don’t just protect your assets,<br>
+        we protect your aura of affluence. <br>
+        So log in, lean back, and let the illusion of success work for you. <br>
+        “I bank with Fake Bank.” <br>
+        Sounds good, doesn’t it? <br>
+      {% endblocktrans %}
+      <a href="{% url "new_client" %}">{% trans "Join us" %}</a>
+    </p>
+    
+  </div>
+{% endblock content %}

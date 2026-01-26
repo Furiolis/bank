@@ -2,40 +2,47 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as login_user
 from django.contrib.auth import logout as logout_user
-from .forms import NewClientForm, NewAccountForm
-from .models import Client, Account, Card, provide_pesel_birthdate
 from django.contrib import messages
+from django.utils.translation import gettext_lazy as _
+from django.utils.safestring import mark_safe
+from django.contrib.auth.decorators import login_required
+
+from .forms import NewClientForm, NewAccountForm
+from .models import Client, Account, Card
+from .some_utility import provide_pesel_birthdate
 
 
-def base(request):
-    return render(request,"base.html")
+def front_page(request): # front page
+    return render(request, "banking/front_page.html",{"logged": request.user.is_authenticated})
 
-def index(request):
-    if request.user.is_authenticated:
-        return render(request, "banking/index.html",{"logged": request.user.is_authenticated})
-        """ wyswietlanie produktow """
-    else:
-        """ logowanie """
-        """ lub rejestracja """
-        return render(request, "banking/logout.html")
+@login_required
+def dashboard(request): #dashboard
+    return render(request, "banking/dashboard.html",{"logged": request.user.is_authenticated})
 
-    
 def login(request):
-    if request.method == "POST":
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login_user(request, user)
-            return redirect("main_panel")
-    else: # request.method == "GET"
-        form = AuthenticationForm()
-    return render(request, "banking/login.html", {
-        "form":form})
-
+    if request.user.is_authenticated:
+        messages.warning(request, _("You are already logged in"))
+        return redirect("dashboard")
+    else:
+        if request.method == "POST":
+            form = AuthenticationForm(request, data=request.POST)
+            if form.is_valid():
+                user = form.get_user()
+                login_user(request, user)
+                messages.success(request, mark_safe(_(f"Welcome {user.get_short_name()}, you have logged in succesfully. What We are gonna do today?")))
+                return redirect("dashboard")
+            else:
+                messages.warning(request, mark_safe(_("Please enter a correct %(username)s and password. Note that both fields may be case-sensitive.") % {"username": form.username_field.verbose_name}))
+        else: # request.method == "GET"
+            form = AuthenticationForm()
+        return render(request, "banking/login.html", {
+            "form":form})
 
 def logout(request):
-    logout_user(request)
-    return render(request, "banking/logout.html",{})
+    if request.user.is_authenticated:
+        logout_user(request)
+        messages.success(request, _("You where log out succesfully"))
+    return render(request, "banking/logout.html")
 
 
 def new_client(request):
@@ -51,7 +58,7 @@ def new_client(request):
     return render(request, "banking/new_client.html",{
         "form": form,
         "pesel": pesel,
-        "birth_date": birth_date})
+        "birth_date": birth_date.strftime('%d-%m-%Y')})
 
 
 def confirmation(request):
