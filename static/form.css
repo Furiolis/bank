@@ -14,17 +14,13 @@ form input{
 
 .form_field_error input{
     background-color: red;
-    color: white;
-}
-
-.form_field_error input{
-    background-color: red;
-    color: white;
+    color: black;
 }
 
 form input:hover,
 form input:active{
     border-color: gold;
+    color: black;
 }
 
 form input:focus{

@@ -1,11 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, PermissionsMixin, BaseUserManager
 from django.core.validators import RegexValidator
-from django.core.exceptions import ValidationError
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.hashers import make_password, check_password
-from datetime import date
 from random import randint
 from unidecode import unidecode
 from .validators import validate_pesel, validate_date_birth_above_18_today
@@ -46,21 +44,32 @@ class Client(AbstractUser, PermissionsMixin):
                                 validators=[UnicodeUsernameValidator()])
     first_name = models.CharField(_("first name"), 
                                 max_length=150, 
-                                validators=[UnicodeUsernameValidator()], # [RegexValidator(r"[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż' -]+")])
+                                validators=[RegexValidator(r"^[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż' -]+$")],
                                 error_messages={    
-                                    "required" : "First name is required",
-                                    "max_length": "First name must be shorter than 150 characters"})
+                                    "required" : _("First name is required"),
+                                    "invalid" : _("First name is invalid, use letters, spaces, apostrophes, hyphen"),
+                                    "max_length": _("First name must be shorter than 150 characters")})
     last_name = models.CharField(_("last name"), 
                                 max_length=150, 
-                                validators=[UnicodeUsernameValidator()], # [RegexValidator(r"[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż' -]+")])
+                                validators=[RegexValidator(r"^[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż' -]+$")],
                                 error_messages={
-                                    "required" : "Last name is required",
-                                    "max_length": "Last name must be shorter than 150 characters"})
+                                    "required" : _("Last name is required"),
+                                    "invalid" : _("Last name is invalid, use letters, spaces, apostrophes, hyphen"),
+                                    "max_length": _("Last name must be shorter than 150 characters")})
     email = models.EmailField(_("email address"))
-    password = models.CharField(max_length=128)
-    pesel = models.CharField("PESEL", validators=[validate_pesel], unique=True)
-    date_birth = models.DateField(_("birth date"), validators=[validate_date_birth_above_18_today])
-    phone_number = models.CharField(_("phone number"),validators=[RegexValidator(r'\d{9}')],)
+    # password = models.CharField(max_length=128)
+    pesel = models.CharField("PESEL", validators=[validate_pesel], unique=True, 
+                                error_messages={
+                                    "required" : _("PESEL is required" ),
+                                    "consist" : _("PESEL must consist of 11 digits"),
+                                    "incorrect" : _("Incorrect PESEL")})
+    date_birth = models.DateField(_("birth date"), validators=[validate_date_birth_above_18_today],
+                                error_messages={
+                                    "required" :_("Date of birth is required"),
+                                    "required_age" : _("Required age above 18")})
+    phone_number = models.CharField(_("phone number"),validators=[RegexValidator(r'\d{9}')],
+                                error_messages={
+                                    "required" : _("Phone number is required")})
     # Client.account_set.all()
     # Client.card_set.all()
 
@@ -69,13 +78,6 @@ class Client(AbstractUser, PermissionsMixin):
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["email", "phone_number", "first_name", "last_name", "date_birth"]
     
-    def clean(self):
-        month_to_year = {"0":"19","1":"19","2":"20","3":"20","4":"21","5":"21","6":"22","7":"22","8":"18","9":"18"}
-        month = self.pesel[2:4]
-        day = self.pesel[4:6]
-        year = month_to_year[month[0]] + self.pesel[:2]
-        if year != str(self.date_birth.year) or int(day) != self.date_birth.day or int(month) % 20 != self.date_birth.month:
-            raise ValidationError(_("PESEL does not match birth date"))
 
 class Account(models.Model):
     TYPE_CHOICES = (

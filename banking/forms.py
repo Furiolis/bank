@@ -13,18 +13,23 @@ class NewClientForm(UserCreationForm):
             "date_birth": forms.DateInput(attrs={'type': 'date'})
         }
 
-    # def clean(self):
-    #     cleaned_data = super().clean()
-    #     print("tooo")
-    #     # date_birth = cleaned_data.get("date_birth")
-    #     # pesel = cleaned_data.get("pesel")
-    #     # print(cleaned_data.get("pesel"))
-    #     # print(pesel, date_birth)
-    #     # if not validate_pesel_match_date_birth(pesel, date_birth):
-    #     #     raise ValidationError("PESEL does not match birth date")
-    #     # if not validate_pesel(pesel):
-    #     #     raise ValidationError("Incorrect pesel")
-    #     return cleaned_data
+    def clean(self):
+        cleaned_data = super().clean()
+        date_birth = cleaned_data.get("date_birth")
+        pesel = cleaned_data.get("pesel")
+
+        if not pesel or not date_birth:
+            return
+        
+        month_to_year = {"0":"19","1":"19","2":"20","3":"20","4":"21","5":"21","6":"22","7":"22","8":"18","9":"18"}
+        month = pesel[2:4]
+        day = pesel[4:6]
+        year = month_to_year[month[0]] + pesel[:2]
+        if year != str(date_birth.year) or int(day) != date_birth.day or int(month) % 20 != date_birth.month:
+            self.add_error("pesel",_("PESEL does not match birth date"))
+            self.add_error("date_birth",_("PESEL does not match birth date"))
+            
+        return cleaned_data
 
 
     def save(self):
@@ -37,6 +42,16 @@ class NewClientForm(UserCreationForm):
             phone_number=self.cleaned_data["phone_number"],
             password=self.cleaned_data["password1"])
         return user
+
+    def model_error_messages_callback(model_field, **kwargs):
+        form_field = model_field.formfield(**kwargs)
+
+        if model_field.error_messages:
+            form_field.error_messages.update(model_field.error_messages)
+
+        return form_field
+    
+    formfield_callback = model_error_messages_callback
 
 
 class NewAccountForm(forms.Form):

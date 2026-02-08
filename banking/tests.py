@@ -4,14 +4,15 @@ from django.core.exceptions import ValidationError
 from datetime import date
 
 from . models import Client, validate_pesel, validate_date_birth_above_18_today
+from . forms import NewClientForm
 from .some_utility import provide_pesel_birthdate
 
 
 
 class ClientTest(TestCase):
     @classmethod
-    def setUp(cls):
-        cls.client = Client.objects.create_user(first_name="Tom",
+    def setUp(self):
+        self.client = Client.objects.create_user(first_name="Tom",
                                                  last_name="Furiolis",
                                                  email="test@gmail.com",
                                                  phone_number= "123456789",
@@ -49,35 +50,6 @@ class ClientTest(TestCase):
         with self.assertRaises(ValidationError):
             validate_pesel(self.client.pesel)
 
-
-    def test_validation_pesel_match_date_birth(self):
-        self.client.clean()
-
-        # testing different year but same century
-        self.client.pesel = "79010100004"
-        with self.assertRaises(ValidationError):
-            self.client.clean()
-
-        # testing different century only
-        self.client.pesel = "89310100002"
-        with self.assertRaises(ValidationError):
-            self.client.clean()
-
-        # testing both above
-        self.client.pesel = "66410100006"
-        with self.assertRaises(ValidationError):
-            self.client.clean()
-
-        # testing different month
-        self.client.pesel = "89110100006"
-        with self.assertRaises(ValidationError):
-            self.client.clean()
-
-        # testing different day
-        self.client.pesel = "89010400004"
-        with self.assertRaises(ValidationError):
-            self.client.clean()
-
     def test_validation_user_has_proper_age(self):
         validate_date_birth_above_18_today(self.client.date_birth)
 
@@ -86,10 +58,53 @@ class ClientTest(TestCase):
             validate_date_birth_above_18_today(self.client.date_birth)
 
 
+class FormTest(TestCase):
+    def setUp(self):
+        self.data = {
+            "first_name": "Tom",
+            "last_name": "Furiolis",
+            "email": "test@gmail.com",
+            "phone_number":  "123456789",
+            "pesel": "89010100003",
+            "date_birth": "1989-01-01",
+            "password1":"pass123word",
+            "password2":"pass123word"}
+
+    def test_validation_pesel_match_date_birth(self):
+        form = NewClientForm(data = self.data)
+        # print(form.errors)
+        self.assertTrue(form.is_valid())
+
+        # testing different year but same century
+        self.data["pesel"] = "79010100004"
+        form = NewClientForm(data = self.data)
+        self.assertFalse(form.is_valid())
+
+        # testing different century only
+        self.data["pesel"]  = "89310100002"
+        form = NewClientForm(data = self.data)
+        self.assertFalse(form.is_valid())
+
+        # testing both above
+        self.data["pesel"]  = "66410100006"
+        form = NewClientForm(data = self.data)
+        self.assertFalse(form.is_valid())
+
+        # testing different month
+        self.data["pesel"] = "89110100006"
+        form = NewClientForm(data = self.data)
+        self.assertFalse(form.is_valid())
+
+        # testing different day
+        self.data["pesel"] = "89010400004"
+        form = NewClientForm(data = self.data)
+        self.assertFalse(form.is_valid())
+
+
 class PeselProviderTest(TestCase):
     @classmethod
-    def setUp(cls):
-        cls.pesel, cls.birth_date = provide_pesel_birthdate()
+    def setUp(self):
+        self.pesel, self.birth_date = provide_pesel_birthdate()
 
     def test_provide_pesel(self):
         validate_pesel(self.pesel)
