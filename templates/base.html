@@ -8,64 +8,89 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{% static "base.css" %}">
+  <link rel="stylesheet" href="{% static "form.css" %}">
   <link rel="shortcut icon" href="{% static "favicon.ico" %}" type="image/x-icon">
   {% block styles %}{% endblock styles %}
   <title>{% block title %}Fake Bank{% endblock title %}</title>
 </head>
 <body>
-
-  <header class="header-main">
+  <div class = "nav-first-container">
     <nav class="nav-first">
-      <div class="nav-first-items">
-          {# language shift #}
-          <form class="flag" action="{% url 'set_language' %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="next" value="{{ request.path }}">
-            <button type="submit" name="language" value="pl">
-              <img class= "flag" src="{% static "pl.png" %}" alt="Polski" widht="40" height="20">
-            </button>
-          </form>
-          <form class="flag" action="{% url 'set_language' %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="next" value="{{ request.path }}">
-            <button type="submit" name="language" value="en">
-              <img class= "flag" src="{% static "en.png" %}" alt="English" widht="40" height="20">
-            </button>
-          </form>
-          {# end language shift #}
-          
-          {% if logged %}
-            <a href="{% url "dashboard" %}">{% trans "Review" %}</a>
-            <a href="#">{% trans "Settings" %}</a>
-            <a href="{% url "logout" %}">{% trans "Log out" %}</a>
-          {% else %}
-            <a href="{% url "login" %}">{% trans "Log in" %}</a>
-            <a href="{% url "new_client" %}">{% trans "Register" %}</a>
-          {% endif %}
 
-      </div>
+      {# language shift #}
+      <form class="flag" action="{% url 'set_language' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.path }}">
+        <button class="flag" type="submit" name="language" value="pl">
+          <img src="{% static "pl.png" %}" alt="Polski" width="40" height="20">
+        </button>
+      </form>
+      <form class="flag" action="{% url 'set_language' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.path }}">
+        <button class="flag" type="submit" name="language" value="en">
+          <img  src="{% static "en.png" %}" alt="English" width="40" height="20">
+        </button>
+      </form>
+      {# end language shift #}
+      
+      {% if logged %}
+        <a href="{% url "dashboard" %}">{% trans "Review" %}</a>
+        <a href="#">{% trans "Settings" %}</a>
+        <a href="{% url "logout" %}">{% trans "Log out" %}</a>
+      {% else %}
+        <a href="{% url "login" %}">{% trans "Log in" %}</a>
+        <a href="{% url "new_client" %}">{% trans "Register" %}</a>
+      {% endif %}
     </nav>
+  </div>
 
-    <div class= "nav-second__background">
-      <nav class= "nav-second">
-        <a href={% url "front_page" %}><img src="{% static "logo.png" %}" alt="Fake Bank" height="100" width="100"></a>
-        <div class="nav-second__items">
-          {% if logged %}
-            <a href="">link</a>
-            <a href="">link</a>
-          {% else %}
-            <p class="welcome">Welcome</p>
-          {% endif %}
-        </div>
-      </nav>
+  <div class="side-left"></div>
+  <div class= "nav-second-container">
+    <nav class="nav-second">
+      <a href={% url "front_page" %}><img src="{% static "logo.png" %}" alt="Fake Bank" height="100" width="100"></a> 
+        {% if logged %}
+          <a href="">link</a>
+          <a href="">link</a>
+        {% endif %}
+    </nav>
+  </div>
+  <div class="side-right"></div>
 
-    </div>
-  </header>
+  <div class = "messages">
+  
   {% include "banking/includes/messages.html" %}
-
+  </div>
   <div class = "content" >
     {% block content %}{% endblock content %}
   </div>
-  
+  <div class="footer-side-left"></div>
+  <footer>
+    <div class="footer-container">
+      <div>
+        {% blocktrans %}
+          FAKE BANK is fictional institution created for demonstration and educational purposes only.
+        {% endblocktrans %}
+      </div>
+      <div>
+          <a href="">{% trans "Terms of Use" %}</a> <br>
+          <a href="">{% trans "Privace Policy" %}</a>
+      </div>
+      <div>
+        {% blocktrans %}
+          Contact <br>
+          Łukasz Flis <br>
+          <a href="mailto:flislukasz1989@gmail.com">flislukasz1989@gmail.com</a> <br>
+          + 48 727 924 239
+        {% endblocktrans %}
+      </div>
+    </div>
+
+    <div>
+      ©2026 Fake Bank. All rights reserved. This is fictional project. <a href="mailto:furiolis2005@gmail.com">furiolis2005@gmail.com</a>
+    </div>
+  </footer>
+  <div class="footer-side-right"></div>
+
 </body>
 </html>

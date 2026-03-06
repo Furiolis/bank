@@ -10,7 +10,7 @@ def validate_pesel(pesel : str):
     digit = int(str(sum(int(i) * j for i, j in zip(pesel, wage_factors)))[-1]) # last_digit_of_control_sum
     control_digit = (10 - digit) if digit != 0 else 0
     if pesel[10] != str(control_digit):
-        raise ValidationError(_("Incorrect PESEL"), code="incorrect")
+        raise ValidationError(_("Incorrect PESEL"), code="invalid")
     return True
     
 def validate_date_birth_above_18_today(date_birth: date):

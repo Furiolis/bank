@@ -13,6 +13,23 @@ class NewClientForm(UserCreationForm):
             "date_birth": forms.DateInput(attrs={'type': 'date'})
         }
 
+        error_messages = {"first_name":{
+                        "invalid":_("First name is invalid, use letters, spaces, apostrophes, hyphen"),
+                        "max_length":_("First name must be shorter than 150 characters")},
+                    "last_name":{
+                        "invalid":_("Last name is invalid, use letters, spaces, apostrophes, hyphen"),
+                        "max_length":_("Last name must be shorter than 150 characters")},
+                    "email":{
+                        "invalid":_("Incorrect email")},
+                    "pesel":{
+                        "consist":_("PESEL is required to consist only 11 digits"),
+                        "invalid":_("Incorrect PESEL")},
+                    "date_birth":{
+                                "required_age":_("Age is required to be above 18")},
+                    "phone_number":{ 
+                                "invalid":_("Phone number is required to contains only 9 digits")}}
+    
+
     def clean(self):
         cleaned_data = super().clean()
         date_birth = cleaned_data.get("date_birth")
@@ -42,16 +59,6 @@ class NewClientForm(UserCreationForm):
             phone_number=self.cleaned_data["phone_number"],
             password=self.cleaned_data["password1"])
         return user
-
-    def model_error_messages_callback(model_field, **kwargs):
-        form_field = model_field.formfield(**kwargs)
-
-        if model_field.error_messages:
-            form_field.error_messages.update(model_field.error_messages)
-
-        return form_field
-    
-    formfield_callback = model_error_messages_callback
 
 
 class NewAccountForm(forms.Form):
