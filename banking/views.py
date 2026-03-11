@@ -6,18 +6,50 @@ from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
-from .forms import NewClientForm, NewAccountForm
+from .forms import NewClientForm, NewAccountForm, CheatForm
 from .models import Client, Account, Card
 from .some_utility import provide_pesel_birthdate
 
 
-def front_page(request): # front page
+def front_page(request):
     return render(request, "banking/front_page.html",{"logged": request.user.is_authenticated})
 
 @login_required
-def dashboard(request): #dashboard
-    return render(request, "banking/dashboard.html",{"logged": request.user.is_authenticated})
+def dashboard(request):
+    accounts = list(request.user.account_set.all())
+    accounts_regular = []
+    accounts_saving = []
+    accounts_credit = []
+    for account in accounts:
+        if account.type_account == "SAVING":
+            accounts_saving.append(account)
+        if account.type_account == "REGULAR":
+            accounts_regular.append(account)
+        if account.type_account == "CREDIT":
+            accounts_credit.append(account)
+
+    funds = sum([account.money for account in accounts_regular])
+    savings = sum([account.money for account in accounts_saving])
+    credits = sum([account.money for account in accounts_credit])
+
+    accounts_regular.sort(reverse=True, key= lambda x:x.money)
+    accounts_saving.sort(reverse=True, key= lambda x:x.money)
+    accounts_credit.sort(reverse=True, key= lambda x:x.money)
+
+    accounts_to_view = accounts_regular + accounts_saving
+    accounts_to_view.sort(reverse = True, key= lambda x:x.money)
+
+    return render(request, "banking/dashboard.html",{
+        "logged": request.user.is_authenticated,
+        "owner": f"{request.user.first_name.capitalize()} {request.user.last_name.capitalize()}",
+        "funds": funds,
+        "savings": savings,
+        "debts": credits,
+        "accounts": accounts_to_view[:5],
+        "accounts_credit": accounts_credit[:3],
+        "last_login": request.user.last_login,})
 
 def login(request):
     if request.user.is_authenticated:
@@ -107,3 +139,42 @@ def new_credit_card(request):
     else:
         return render(request, "banking/logout.html")
     
+@login_required
+def accounts(request):
+    accounts = list(request.user.account_set.all())
+    accounts_regular = []
+    accounts_saving = []
+    accounts_credit = []
+    for account in accounts:
+        if account.type_account == "SAVING":
+            accounts_saving.append(account)
+        if account.type_account == "REGULAR":
+            accounts_regular.append(account)
+        if account.type_account == "CREDIT":
+            accounts_credit.append(account)
+
+    savings = sum([account.money for account in accounts_saving])
+    funds = sum([account.money for account in accounts_regular])
+    credit = sum([account.money for account in accounts_credit])
+
+    accounts_regular.sort(reverse=True, key= lambda x:x.money)
+    accounts_saving.sort(reverse=True, key= lambda x:x.money)
+    accounts_credit.sort(reverse=True, key= lambda x:x.money)
+
+    form = CheatForm()
+
+    if request.method == "POST":
+        form_filled = CheatForm(request.POST)
+        if form_filled.is_valid():
+            money = form_filled["money"]
+            account = Account.objects.get(number=int(form_filled["account"]))
+            account.money += money
+            account.save()
+            
+    return render(request, "banking/accounts.html",{
+        "logged": request.user.is_authenticated,
+        "account": accounts,
+        "accounts_saving": accounts_saving,
+        "accounts_regular": accounts_regular,
+        "accounts_credit": accounts_credit,
+        "form":form})

@@ -32,3 +32,12 @@
 .bottom a:active{
     color: gold;
 }
+
+
+
+.errorlist {
+    list-style: none;
+    color:red;
+    font-weight: bold;
+}
+

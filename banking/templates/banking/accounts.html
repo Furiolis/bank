@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %} Accounts {% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{% static "banking/accounts.css" %}">
+{% endblock styles %}
+
+{% block content %}
+<div class="review">
+    <h2>{% trans "Review" %}</h2>
+    <div class="review-items">
+        <div>{% trans "Funds" %}:</div>
+        <div class="right-part">{{funds}} PLN</div>
+    </div>
+    <div class="review-items">
+        <div>{% trans "Savings" %}:</div>
+        <div class="right-part">{{saving}} PLN</div>
+    </div>
+    <div class="review-items">
+        <div>{% trans "Debts" %}:</div>
+        <div class="right-part">{{debts}} PLN</div>
+    </div>
+</div>
+<div class="accounts-container">
+    <div class="review accounts-regular">
+        <h2>{% trans "Personal accounts" %}</h2>
+        {% for account  in accounts_regular %}
+            {% include "banking/includes/account.html" %}
+        {% empty %}
+            {% trans "No credits" %}
+        {% endfor %}
+    </div>
+    <div class="review accounts-saving">
+        <h2>{% trans "Saving accounts" %}</h2>
+        {% for account  in accounts_saving %}
+            {% include "banking/includes/account.html" %}
+        {% empty %}
+            {% trans "No credits" %}
+        {% endfor %}
+    </div>
+    <div class="review accounts-credit">
+        <h2>{% trans "Credit accounts" %}</h2>
+        {% for account  in accounts_credit%}
+            {% include "banking/includes/account.html" %}
+        {% empty %}
+            {% trans "No credits" %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}  

@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'banking'
+    'banking',
+    'debug_toolbar'
 ]
 
 MIDDLEWARE = [
@@ -49,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'bank.urls'
@@ -140,9 +142,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Others
 
-SESSION_COOKIE_AGE = 600
-SESSION_SAVE_EVERY_REQUEST = True
+# SESSION_COOKIE_AGE = 600
+# SESSION_SAVE_EVERY_REQUEST = True
 
 AUTH_USER_MODEL = "banking.Client"
 
 LOGIN_URL = '/'
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]

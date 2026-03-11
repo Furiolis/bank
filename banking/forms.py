@@ -79,3 +79,8 @@ class NewLoanForm(forms.ModelForm):
 
 class NewCreditCardForm(forms.ModelForm):
     pass
+
+class CheatForm(forms.Form):
+    money = forms.IntegerField() 
+    account = forms.IntegerField()
+    

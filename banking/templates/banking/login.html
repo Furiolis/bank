@@ -3,12 +3,11 @@
 {% load i18n %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{% static "form.css" %}">
 {% endblock styles %}
 
 {% block content %}
 
-    <form method="post">
+    <form class="standard-form" method="post">
         {% csrf_token %}
         {{form.username.label_tag}} <br>
         {{form.username}} <br>

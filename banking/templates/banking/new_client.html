@@ -3,7 +3,6 @@
 {% load static %}
 
 {% block styles %}
-    <link rel="stylesheet" href="{% static "form.css" %}">
     <link rel="stylesheet" href="{% static "banking/new_client.css" %}">
 {% endblock styles %}
 
@@ -25,7 +24,7 @@
       and email, ther are recuired to log in.
     {% endblocktrans %}
   </div>
-  <form method="post" class="register_form">
+  <form method="post" class="standard-form">
       {% csrf_token %}
       {% for field in form %}
         <div class=" {% if field.errors %}form_field_error {% endif%}">

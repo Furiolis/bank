@@ -8,7 +8,7 @@ body{
     background-color: #e6effc;
     display: grid;
 
-    grid-template-rows: 50px 110px auto minmax(70vh, auto) auto;
+    grid-template-rows: 50px auto auto minmax(70vh, auto) auto;
     grid-template-columns: 100%;
     grid-template-areas: "nav_top"
                         "nav_main"
@@ -30,6 +30,10 @@ body{
     width:fit-content;
     border-radius: 16px 16px 0 0;
     background-color: #132335;
+}
+
+.nav-first a{
+    padding: 10px;
 }
 
 .flag {
@@ -81,20 +85,35 @@ img.flag {
 
 .nav-second-container {
     background-color: #132335;
-    height: 110px;
     display: flex;
     grid-area: nav_main;
+    flex-wrap: wrap;
 }
 
 .nav-second{
     display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.nav-second a{
+    padding: 10px;
+    color: orange;
+}
+
+.nav-second a:hover,
+.nav-second a:active{
+    padding: 10px;
+    background-color: white;
+    border-radius: 10px;
+    color: #132335;
 }
 
 .content {
     margin-top: 10px;
     margin-bottom: 30px;
     grid-area: content;
-
 }
 
 .messages{
@@ -173,6 +192,22 @@ footer div{
 a:hover,
 a:active {
     color:orange;
+}
+
+.link{
+    display: inline-block;
+    margin: 10px;
+    padding: 10px;
+    text-decoration: none;
+    color: black;
+    border-radius: 10px;
+}
+
+.link:hover,
+.link:active{
+    background-color: #132335;
+    color: orange;
+
 }
 
 @media screen and (min-width:800px){

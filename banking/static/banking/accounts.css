@@ -1,0 +1,44 @@
+.review{
+    width: 100%;
+    border-radius: 10px;
+    background-color: white;
+    padding: 5px 0px 10px 5px;
+    margin: 10px;
+}
+
+.review-items{
+    display:flex;
+    justify-content: space-between;
+}
+
+.right-part{
+    text-align: right;
+}
+
+.accounts-container{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.account {
+    display: flex;
+    border-bottom:1px solid #b1d5ff;
+    justify-content: space-between;
+    padding: 10px;    
+}
+
+.account:last-child{
+    border-bottom: none;
+}
+
+.right-part {
+    text-align: right;
+}
+
+@media screen and (min-width:800px){
+    .accounts-container{
+    grid-template-columns: 1fr 1fr;
+    }
+}
+

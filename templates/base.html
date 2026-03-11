@@ -35,7 +35,6 @@
       {# end language shift #}
       
       {% if logged %}
-        <a href="{% url "dashboard" %}">{% trans "Review" %}</a>
         <a href="#">{% trans "Settings" %}</a>
         <a href="{% url "logout" %}">{% trans "Log out" %}</a>
       {% else %}
@@ -47,23 +46,32 @@
 
   <div class="side-left"></div>
   <div class= "nav-second-container">
+    <a href={% url "front_page" %}><img src="{% static "logo.png" %}" alt="Fake Bank" height="100" width="100"></a> 
     <nav class="nav-second">
-      <a href={% url "front_page" %}><img src="{% static "logo.png" %}" alt="Fake Bank" height="100" width="100"></a> 
-        {% if logged %}
-          <a href="">link</a>
-          <a href="">link</a>
-        {% endif %}
+      {% if logged %}
+        <a href="{% url "dashboard" %}">{% trans "Dashboard" %}</a>
+        <a href="">{% trans "History" %}</a>
+        <a href="{% url "accounts" %}">{% trans "Accounts" %}</a>
+        <a href="">{% trans "Transfers" %}</a>
+      {% endif %}
     </nav>
   </div>
   <div class="side-right"></div>
 
   <div class = "messages">
-  
-  {% include "banking/includes/messages.html" %}
+    {% if messages %}
+      <ul class="messages">
+      {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
   </div>
+
   <div class = "content" >
     {% block content %}{% endblock content %}
   </div>
+
   <div class="footer-side-left"></div>
   <footer>
     <div class="footer-container">

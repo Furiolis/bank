@@ -1,10 +1,10 @@
 
-form label{
+.standard-form label{
     font-weight: bold;
     font-size: 1.25em;
 }
 
-form input{
+.standard-form input{
     margin: 10px;
     position: relative;
     border-radius: 6px;
@@ -12,34 +12,34 @@ form input{
     font-size: 1.5rem;
 }
 
-.form_field_error input{
+.standard-form_field_error input{
     background-color: red;
     color: black;
 }
 
-form input:hover,
-form input:active{
+.standard-form  input:hover,
+.standard-form input:active{
     border-color: gold;
     color: black;
 }
 
-form input:focus{
+.standard-form  input:focus{
     background-color: gold;
 }
 
-button {
+.standard-form button {
     height: 40px;
     padding: 0px 20px;
     font-size: 1.5rem;
     border-radius: 10px;
 }
 
-form button.submit{
+.standard-form button.submit{
     background-color: lightgreen;
     border-color: green;
 }
 
-form button.reset{
+.standard-form button.reset{
     background-color: lightcoral;
     border-color: red;
 }

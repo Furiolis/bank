@@ -1,0 +1,49 @@
+
+.content {
+    margin: 20px;
+}
+
+.dashboard-container{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.dashboard-container div{
+    width: 100%;
+    border-radius: 10px;
+    background-color: white     ;
+}
+
+.review h2,
+.accounts h2{
+    margin-left: 20px;
+}
+
+.review div,
+.account{
+    padding:10px;
+}
+.review-items{
+    display: flex;
+}
+
+.account {
+    display: flex;
+    border-bottom:1px solid #b1d5ff;
+}
+
+.right-part {
+    text-align: right;
+}
+
+.account:last-child{
+    border-bottom: none;
+}
+
+@media screen and (min-width:800px){
+    .dashboard-container{
+    grid-template-columns: 1fr 1fr;
+    }
+}
+

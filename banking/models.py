@@ -74,14 +74,14 @@ class Client(AbstractUser, PermissionsMixin):
 
 class Account(models.Model):
     TYPE_CHOICES = (
-        ("REGULAR",_("Regular")),
+        ("PERSONAL",_("Personal")),
         ("SAVING",_("Saving")),
         ("CREDIT",_("Credit"))
     )
     number = models.IntegerField(unique=True, null=True)
     owner = models.ForeignKey(Client, on_delete=models.CASCADE)
     money = models.BigIntegerField(default = 0)
-    type_account = models.CharField(choices=TYPE_CHOICES, default="REGULAR")
+    type_account = models.CharField(choices=TYPE_CHOICES, default="PERSONAL")
     # Account.card
 
     def save(self, *args, **kwargs):
@@ -95,6 +95,8 @@ class Account(models.Model):
         super().save(*args, **kwargs)
         return self
 
+    def __str__(self):
+        return f"{self.number}  {self.type_account}  {self.money}"
 
 class Card(models.Model):
     number = models.IntegerField(unique=True, null=True)
@@ -120,4 +122,3 @@ class Card(models.Model):
             self.pin = random_pin
         super().save(self, *args, **kwargs)
         return self
-

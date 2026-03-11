@@ -3,13 +3,48 @@
 {% load i18n %}
 
 {% block styles %}
+<link rel="stylesheet" href="{% static "banking/dashboard.css" %}">
 {% endblock styles %}
 
 {% block content %}
-  tutaj będą produkty
-  <a href = {% url "logout" %}><button type="button">Wyloguj</button></a>
-  <a href = {% url "new_account" %}><button type = "button">Załóż nowy rachunek</button></a>
-  <a href = {% url "new_loan" %}><button type = "button">Weź pożyczke</button></a>
-  <a href = {% url "new_credit_card" %}><button type = "button">Nowa karta kredytowa</button></a>
+
+  <h1>{% trans "Welcome" %}, {{owner|title}}</h1>
+  <h3>{% trans "Last login" %}: {{last_login}}</h3>
+  <div class="dashboard-container">
+
+    <div class="review">
+      <h2>{% trans "Review" %}</h2>
+      <div class="review-items">
+        <div>{% trans "Funds" %}:</div>
+        <div class="right-part">{{funds}} PLN</div>
+      </div>
+      <div class="review-items">
+        <div>{% trans "Savings" %}:</div>
+        <div class="right-part">{{savings}} PLN</div>
+      </div>      
+      <div class="review-items">
+        <div>{% trans "Debts" %}:</div>
+        <div class="right-part">{{debts}} PLN</div>
+      </div>
+    </div>
+
+    <div class="accounts">
+      <h2>{% trans "Accounts" %}</h2>
+      <div class="accounts-items">
+        {% for account in accounts %}
+          {% include "banking/includes/account.html" %}
+        {% endfor %}
+      </div>
+      <a class="link" href="{% url "accounts"%}">{% trans "See more" %}</a>
+    </div>
+
+    <div class="cards">
+      karty
+    </div>
+
+    <div class="credits">
+      kredyty
+    </div>
+  </div>
 {% endblock content %}
 

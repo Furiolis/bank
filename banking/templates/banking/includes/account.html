@@ -1,0 +1,11 @@
+{% load i18n %}
+<div class="account">
+    <div>
+        <div><b>{{account.type_account|title}} {% trans "account" %}</b></div>
+        <div>{{account.number}}</div>
+    </div>
+    <div class="right-part">
+        <div>{{account.money}}</div>
+        <div>PLN</div>
+    </div>
+</div>
