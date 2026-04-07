@@ -11,9 +11,7 @@ Fake Bank is my one-person project to present and practice my skills, programing
 
 ## Features Fake Bank related
 - Get your personal access to Fake Bank
-- 
 - Open accounts, presonal, saving, credits with or without card and end them
-- 
 
 ## Localisation
 Language switch is flag  
