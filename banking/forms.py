@@ -63,7 +63,7 @@ class NewClientForm(UserCreationForm):
 
 class NewAccountForm(forms.Form):
     TYPE_CHOICES = (
-        ("REGULAR",_("Regular")),
+        ("PERSONAL",_("Personal")),
         ("SAVING",_("Saving")),
     )
     type_account = forms.ChoiceField(choices=TYPE_CHOICES)
@@ -73,14 +73,42 @@ class NewAccountForm(forms.Form):
         account = Account(owner=owner, type_account=self.cleaned_data["type_account"])
         account.save()
         return account
-
-class NewLoanForm(forms.ModelForm):
-    pass
-
-class NewCreditCardForm(forms.ModelForm):
-    pass
-
-class CheatForm(forms.Form):
-    money = forms.IntegerField() 
-    account = forms.IntegerField()
     
+class NewCreditForm(forms.Form):
+    money = forms.IntegerField(label=_("How much money you need"))
+    add_card = forms.BooleanField(required=False)
+
+    def save(self, owner:Client):
+        account = Account(owner=owner, type_account="CREDIT", money = self.cleaned_data["money"])
+        account.save()
+        return account
+
+class AccountManagerForm(forms.Form):
+    accounts = forms.ModelChoiceField(queryset=Account.objects.none())
+
+    def __init__(self, *args, owner=None, **kwargs):
+        super().__init__(*args,**kwargs)
+        self.owner = owner
+        if self.owner:
+            self.fields["accounts"].queryset = self.owner.account_set.all().order_by("-money")
+            # equals to line below, left for my personal educational purpose
+            # self.fields["accounts"].queryset = Account.objects.filter(owner=self.owner).order_by("-money")
+    
+    def get_blocked_options(self):
+        blocked_options = {}
+
+        if not self.owner:
+            return blocked_options
+        
+        accounts = self.owner.account_set.select_related("card").all()
+        # equals to line below, left for my personal educational purpose
+        # accounts = Account.objects.select_related("card").filter(owner=self.owner)
+
+        for account in accounts:
+            if hasattr(account, "card"):
+                blocked_options[f"{account.id}"] = "True"
+            else:
+                blocked_options[f"{account.id}"] = "False"
+        return blocked_options
+
+

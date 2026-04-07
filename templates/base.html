@@ -34,12 +34,12 @@
       </form>
       {# end language shift #}
       
-      {% if logged %}
-        <a href="#">{% trans "Settings" %}</a>
-        <a href="{% url "logout" %}">{% trans "Log out" %}</a>
-      {% else %}
+      {% if not_logged %}
         <a href="{% url "login" %}">{% trans "Log in" %}</a>
         <a href="{% url "new_client" %}">{% trans "Register" %}</a>
+      {% else %}
+        <a href="#">{% trans "Settings" %}</a>
+        <a href="{% url "logout" %}">{% trans "Log out" %}</a>
       {% endif %}
     </nav>
   </div>
@@ -48,7 +48,8 @@
   <div class= "nav-second-container">
     <a href={% url "front_page" %}><img src="{% static "logo.png" %}" alt="Fake Bank" height="100" width="100"></a> 
     <nav class="nav-second">
-      {% if logged %}
+      {% if not_logged %}
+      {% else %}
         <a href="{% url "dashboard" %}">{% trans "Dashboard" %}</a>
         <a href="">{% trans "History" %}</a>
         <a href="{% url "accounts" %}">{% trans "Accounts" %}</a>

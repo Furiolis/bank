@@ -29,21 +29,45 @@
     </div>
 
     <div class="accounts">
-      <h2>{% trans "Accounts" %}</h2>
+      <h2>{% trans "Personal accounts" %}</h2>
       <div class="accounts-items">
+        <a class="link" href="{% url "accounts"%}">{% trans "See more" %}</a>
+        <a class="link" href="{% url "accounts_manage"%}">{% trans "Manage accounts" %}</a>
         {% for account in accounts %}
           {% include "banking/includes/account.html" %}
+        {% empty %}
+          <p class="no-account">{% trans "No credits accounts" %}</p>
         {% endfor %}
       </div>
-      <a class="link" href="{% url "accounts"%}">{% trans "See more" %}</a>
-    </div>
-
-    <div class="cards">
-      karty
     </div>
 
     <div class="credits">
-      kredyty
+      <div class="accounts">
+        <h2>{% trans "Credit accounts" %}</h2>
+        <div class="accounts-items">
+          <a class="link" href="{% url "accounts"%}">{% trans "See more" %}</a>
+          <a class="link" href="{% url "accounts_manage"%}">{% trans "Manage accounts" %}</a>
+          {% for account in accounts_credit %}
+            {% include "banking/includes/account.html" %}
+          {% empty %}
+            <p class="no-account">{% trans "No credits accounts" %}</p>
+          {% endfor %}
+        </div>
+
+      </div>
+    </div>
+
+    <div class="cards">
+      <h2>{% trans "Cards" %}</h2>
+      <div class="cards-items">
+        <a class="link" href="{% url "cards"%}">{% trans "See more" %}</a>
+        <a class="link" href="{% url "cards_manage"%}">{% trans "Manage cards" %}</a>
+          {% for card in cards %}
+            {% include "banking/includes/card.html" %}
+          {% empty %}
+            <p class="no-card">{% trans "No cards" %}</p>
+          {% endfor %}
+      </div>
     </div>
   </div>
 {% endblock content %}

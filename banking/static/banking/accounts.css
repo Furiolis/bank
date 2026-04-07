@@ -32,6 +32,10 @@
     border-bottom: none;
 }
 
+.no-account{
+    margin: 20px;
+}
+
 .right-part {
     text-align: right;
 }

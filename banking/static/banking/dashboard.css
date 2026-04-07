@@ -41,9 +41,21 @@
     border-bottom: none;
 }
 
+.no-account{
+    margin: 20px;
+}
+
+
 @media screen and (min-width:800px){
     .dashboard-container{
-    grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr;
     }
+    .review{
+        grid-area: 1 / 1 / span 1/ span 2;
+    }
+    .cards{
+        grid-area: span 1 / span 2;
+    }
+
 }
 

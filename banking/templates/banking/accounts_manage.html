@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}
+    {% trans "Accounts management" %}
+{% endblock title %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static "banking/accounts_manage.css" %}">
+{% endblock  %}
+{% block content %}
+    <div class="white-container">
+        <h2>{% trans "Open new account" %}</h2>
+        <a class="link" href={% url "new_account"%}>{% trans "Personal" %}</a>
+        <a class="link" href={% url "new_credit"%}>{% trans "Credit" %}</a>
+    </div>
+    <div class="white-container">
+        <h2>{% trans "Accounts management" %}</h2>
+        <form class="standard-form" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <button id="add_card_btn" type="submit" name="action" value="add_card" disabled>{% trans "Choose account" %}</button>
+            <button id="del_acc_btn" type="submit" name="action" value="delete_account" disabled onclick="return confirm('{% trans "Are you sure" %}')">{% trans "Choose account" %}</button>
+            <script>
+                const blockedOptions = {{ blocked_options|safe }};
+                const selectElement = document.getElementById('id_accounts');
+                const addsubmitBtn = document.getElementById('add_card_btn');
+                const delsubmitBtn = document.getElementById('del_acc_btn');
+                function updateButtons() {
+                    const selectedValue = selectElement.value;
+                    if (!selectedValue) {
+                        addsubmitBtn.disabled = true;
+                        addsubmitBtn.textContent = "{% trans "Choose account" %}";
+                        delsubmitBtn.disabled = true;
+                        delsubmitBtn.textContent = "{% trans "Choose account" %}";
+                        } 
+                    else if (blockedOptions[selectedValue] === "True") {
+                        addsubmitBtn.disabled = true;
+                        addsubmitBtn.textContent = "{% trans "Card already added" %}";
+                        delsubmitBtn.disabled = false;
+                        delsubmitBtn.textContent = "{% trans "Delete account" %}";
+                        } 
+                    else {
+                        addsubmitBtn.disabled = false;
+                        addsubmitBtn.textContent = "{% trans "Add card" %}";
+                        delsubmitBtn.disabled = false;
+                        delsubmitBtn.textContent = "{% trans "Delete account" %}";
+                        }            
+                }
+                selectElement.addEventListener('change', updateButtons);
+                updateButton();
+            </script>        
+        </form>
+    </div>
+{% endblock content %}

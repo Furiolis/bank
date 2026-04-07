@@ -13,12 +13,15 @@ class ClientManager(BaseUserManager):
 
     def create_user(self, email, first_name, last_name, password = None, username = "", **extra_fields):
         if username == "":
-            usernames = Client.objects.values_list("username", flat=True)
+        #   usernames = Client.objects.values_list("username", flat=True)
             username = "username"
+            first_name_truncated = first_name.lower()[:6]
+            last_name_truncated = last_name.lower()[:6]
             while True:
                 random_number = randint(1000, 9999)
-                username = unidecode(first_name.lower()[:6]) + str(random_number) + unidecode(last_name.lower()[:6])
-                if username not in usernames:
+                username = unidecode(first_name_truncated) + str(random_number) + unidecode(last_name_truncated)
+        #       if username not in usernames:
+                if not Client.objects.filter(username=username).exists():
                     break
 
         email = self.normalize_email(email)
@@ -37,7 +40,7 @@ class ClientManager(BaseUserManager):
         return self.create_user(**extra_fields)
 
 
-class Client(AbstractUser, PermissionsMixin):
+class Client(AbstractUser):
     username = models.CharField(_("username"),  # username created automatically from first_name and last_name
                                 max_length=150,
                                 unique=True,
@@ -78,7 +81,7 @@ class Account(models.Model):
         ("SAVING",_("Saving")),
         ("CREDIT",_("Credit"))
     )
-    number = models.IntegerField(unique=True, null=True)
+    number = models.IntegerField(unique=True)
     owner = models.ForeignKey(Client, on_delete=models.CASCADE)
     money = models.BigIntegerField(default = 0)
     type_account = models.CharField(choices=TYPE_CHOICES, default="PERSONAL")
@@ -86,20 +89,21 @@ class Account(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.number:
-            accounts = Account.objects.values_list("number",flat=True)
+        #   accounts = Account.objects.values_list("number",flat=True)
             while True:
                 random_number = randint(100000, 999999)
-                if random_number not in accounts:
+        #       if random_number not in accounts:
+                if not Account.objects.filter(number=random_number).exists():
                     self.number = random_number
                     break
         super().save(*args, **kwargs)
         return self
 
     def __str__(self):
-        return f"{self.number}  {self.type_account}  {self.money}"
+        return f"{self.get_type_account_display()} {_("account")} ({self.money} PLN)" 
 
 class Card(models.Model):
-    number = models.IntegerField(unique=True, null=True)
+    number = models.IntegerField(unique=True)
     owner = models.ForeignKey(Client, on_delete=models.CASCADE)
     account = models.OneToOneField(Account, on_delete=models.CASCADE)
     pin = models.CharField(validators=[RegexValidator(r'\d{4}')], default="0000")
@@ -107,18 +111,22 @@ class Card(models.Model):
     def set_pin(self, raw_pin):
         self.pin = make_password(raw_pin)
 
-    def chech_pin(self, raw_pin):
+    def check_pin(self, raw_pin):
         return check_password(raw_pin, self.pin)
 
     def save(self, *args, **kwargs):
         if not self.number:
-            cards = Card.objects.values_list("number", flat=True)
+        #   cards = Card.objects.values_list("number", flat=True)
             while True:
                 random_number = randint(1000,9999)
-                if random_number not in cards:
+        #       if random_number not in cards:
+                if not Card.objects.filter(number=random_number).exists():
                     self.number = random_number
                     break
             random_pin = str(randint(1000,9999))
-            self.pin = random_pin
-        super().save(self, *args, **kwargs)
+            self.set_pin(random_pin)
+        super().save(*args, **kwargs)
         return self
+
+    def __str__(self):
+        return f"{self.number}"

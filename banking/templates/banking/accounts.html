@@ -16,7 +16,7 @@
     </div>
     <div class="review-items">
         <div>{% trans "Savings" %}:</div>
-        <div class="right-part">{{saving}} PLN</div>
+        <div class="right-part">{{savings}} PLN</div>
     </div>
     <div class="review-items">
         <div>{% trans "Debts" %}:</div>
@@ -24,28 +24,31 @@
     </div>
 </div>
 <div class="accounts-container">
-    <div class="review accounts-regular">
+    <div class="review accounts-personal">
         <h2>{% trans "Personal accounts" %}</h2>
-        {% for account  in accounts_regular %}
+        <a class="link" href="{% url "accounts_manage"%}">{% trans "Manage accounts" %}</a>
+        {% for account  in accounts_personal %}
             {% include "banking/includes/account.html" %}
         {% empty %}
-            {% trans "No credits" %}
+            <p class="no-account">{% trans "No personal accounts" %}</p>
         {% endfor %}
     </div>
     <div class="review accounts-saving">
         <h2>{% trans "Saving accounts" %}</h2>
+        <a class="link" href="{% url "accounts_manage"%}">{% trans "Manage accounts" %}</a>
         {% for account  in accounts_saving %}
             {% include "banking/includes/account.html" %}
         {% empty %}
-            {% trans "No credits" %}
+            <p class="no-account">{% trans "No savings accounts" %}</p>
         {% endfor %}
     </div>
     <div class="review accounts-credit">
         <h2>{% trans "Credit accounts" %}</h2>
+        <a class="link" href="{% url "accounts_manage"%}">{% trans "Manage accounts" %}</a>
         {% for account  in accounts_credit%}
             {% include "banking/includes/account.html" %}
         {% empty %}
-            {% trans "No credits" %}
+            <p class="no-account">{% trans "No credits accounts" %}</p>
         {% endfor %}
     </div>
 </div>

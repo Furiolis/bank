@@ -12,6 +12,15 @@
     font-size: 1.5rem;
 }
 
+.standard-form select{
+    margin: 10px;
+    position: relative;
+    border-radius: 6px;
+    background-color: white;
+    font-size: 1.5rem;
+}
+
+
 .standard-form_field_error input{
     background-color: red;
     color: black;
@@ -33,6 +42,7 @@
     font-size: 1.5rem;
     border-radius: 10px;
 }
+
 
 .standard-form button.submit{
     background-color: lightgreen;

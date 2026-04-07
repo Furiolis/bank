@@ -111,8 +111,7 @@ img.flag {
 }
 
 .content {
-    margin-top: 10px;
-    margin-bottom: 30px;
+    padding: 0 10px;
     grid-area: content;
 }
 
@@ -132,9 +131,9 @@ li.success {
 }
 
 li.warning{
-    border: orangered solid 2px;
+    border: orange solid 2px;
     border-radius: 5px;
-    background-color: lightsalmon;
+    background-color: yellow;
 }
 
 li.error{
@@ -148,9 +147,6 @@ li.info, li.debug{
     border-radius: 5px;
 }
 
-.content {
-    width: 100%;
-}
 
 footer {
     color: orange;
@@ -201,6 +197,7 @@ a:active {
     text-decoration: none;
     color: black;
     border-radius: 10px;
+    border: solid 2px orange;
 }
 
 .link:hover,
@@ -208,6 +205,14 @@ a:active {
     background-color: #132335;
     color: orange;
 
+}
+
+.white-container{
+    width: 100%;
+    border-radius: 10px;
+    background-color: white;
+    padding: 5px 0px 10px 5px;
+    margin: 10px;
 }
 
 @media screen and (min-width:800px){
