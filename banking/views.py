@@ -123,9 +123,9 @@ def new_account(request):
             if form.data.get("add_card") == "on":
                 card = Card(owner=user, account=account)
                 card.save()
-                messages.success(request, _(f"{card.account.type_account.capitalize()} account {account.number}, with a card was created succesfully"))
+                messages.success(request, _(f"{account.type_account.capitalize()} account {account.number}, with a card was created succesfully"))
             else:
-                messages.success(request, _(f"{card.account.type_account.capitalize()} account {account.number} was created succesfully"))
+                messages.success(request, _(f"{account.type_account.capitalize()} account {account.number} was created succesfully"))
             return redirect("dashboard")
     else: # request.method == "GET" 
         form = NewAccountForm()
@@ -151,27 +151,6 @@ def new_credit(request):
 
 @login_required
 def products(request):
-    # TODO Move that logic to the ClientManager
-    accounts = list(request.user.account_set.all())
-    accounts_personal = []
-    accounts_saving = []
-    accounts_credit = []
-    for account in accounts:
-        if account.type_account == "SAVING":
-            accounts_saving.append(account)
-        if account.type_account == "PERSONAL":
-            accounts_personal.append(account)
-        if account.type_account == "CREDIT":
-            accounts_credit.append(account)
-
-    savings = sum([account.money for account in accounts_saving])
-    funds = sum([account.money for account in accounts_personal])
-    credit = sum([account.money for account in accounts_credit])
-
-    accounts_personal.sort(reverse=True, key= lambda x:x.money)
-    accounts_saving.sort(reverse=True, key= lambda x:x.money)
-    accounts_credit.sort(reverse=True, key= lambda x:x.money)
-
     if request.method == "POST":
         action = request.POST.get('action')
         form = AccountManagerForm(request.POST, owner=request.user, action=action)
@@ -199,6 +178,29 @@ def products(request):
             form = AccountManagerForm(owner=request.user)
     else:
         form = AccountManagerForm(owner=request.user)
+    # TODO Move that logic to the ClientManager
+
+    accounts = list(request.user.account_set.all())
+    accounts_personal = []
+    accounts_saving = []
+    accounts_credit = []
+    for account in accounts:
+        if account.type_account == "SAVING":
+            accounts_saving.append(account)
+        if account.type_account == "PERSONAL":
+            accounts_personal.append(account)
+        if account.type_account == "CREDIT":
+            accounts_credit.append(account)
+
+    savings = sum([account.money for account in accounts_saving])
+    funds = sum([account.money for account in accounts_personal])
+    credit = sum([account.money for account in accounts_credit])
+
+    accounts_personal.sort(reverse=True, key= lambda x:x.money)
+    accounts_saving.sort(reverse=True, key= lambda x:x.money)
+    accounts_credit.sort(reverse=True, key= lambda x:x.money)
+
+
 
     return render(request, "banking/products.html",{
         "account": accounts,
