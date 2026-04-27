@@ -86,23 +86,29 @@ class NewCreditForm(forms.Form):
 class AccountManagerForm(forms.Form):
     accounts = forms.ModelChoiceField(queryset=Account.objects.none())
 
-    def __init__(self, *args, owner=None, **kwargs):
+    def __init__(self, *args, owner, action=None, **kwargs):
         super().__init__(*args,**kwargs)
         self.owner = owner
-        if self.owner:
-            self.fields["accounts"].queryset = self.owner.account_set.all().order_by("-money")
-            # equals to line below, left for my personal educational purpose
-            # self.fields["accounts"].queryset = Account.objects.filter(owner=self.owner).order_by("-money")
-    
-    def get_blocked_options(self):
-        blocked_options = {}
+        self.action = action
+        self.fields["accounts"].queryset = self.owner.account_set.all().order_by("-money")
+        # equals to line below, left for my personal educational purpose
+        # self.fields["accounts"].queryset = Account.objects.filter(owner=self.owner).order_by("-money")
+            
+    def clean(self):
+        if self.action == "add_card":
+            account = self.cleaned_data["accounts"]
+            if hasattr(account, "card"):
+                self.add_error("accounts", _(f"Card already exists to {account.number}"))
+        self.cleaned_data
 
-        if not self.owner:
-            return blocked_options
-        
+    def get_blocked_options(self):
+        blocked_options = {}        
         accounts = self.owner.account_set.select_related("card").all()
         # equals to line below, left for my personal educational purpose
         # accounts = Account.objects.select_related("card").filter(owner=self.owner)
+
+        # line below saved to remember, filter accounts without card
+        # self.fields["accounts"].queryset = self.owner.account_set.filter(card__isnull=True)
 
         for account in accounts:
             if hasattr(account, "card"):
@@ -110,5 +116,4 @@ class AccountManagerForm(forms.Form):
             else:
                 blocked_options[f"{account.id}"] = "False"
         return blocked_options
-
-
+      

@@ -9,7 +9,7 @@
     gap: 20px;
 }
 
-.dashboard-container div{
+.dashboard-container > div{
     width: 100%;
     border-radius: 10px;
     background-color: white     ;
@@ -26,7 +26,13 @@
 }
 .review-items{
     display: flex;
+    width: 100%;
 }
+.review-items div,
+.account div{
+    width: 100%;
+}
+
 
 .account {
     display: flex;
@@ -45,6 +51,19 @@
     margin: 20px;
 }
 
+
+.cards-items {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.card {
+    margin: 10px;
+    width: 250px;
+    height: 120px;
+    background-image: linear-gradient(to right,lightblue, rgb(113, 113, 248) ,blue, darkblue);
+    border-radius: 20px;
+}
 
 @media screen and (min-width:800px){
     .dashboard-container{

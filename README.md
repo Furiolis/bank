@@ -20,7 +20,10 @@ Language switch is flag
 
 
 # Things to do
-- TODO Password restoration
 - TODO Transfers
 - TODO Django Rest Framework
 - TODO Two-factor authentication (2FA)
+
+## Minors to do
+- TODO Password restoration and modyfication
+- TODO Pin to cards modyfication

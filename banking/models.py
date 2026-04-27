@@ -129,4 +129,4 @@ class Card(models.Model):
         return self
 
     def __str__(self):
-        return f"{self.number}"
+        return f"{self.number} ({self.account.money})PLN"

@@ -18,7 +18,7 @@ def front_page(request):
 
 @login_required
 def dashboard(request):
-    # TODO Move that logic to the AccountManager
+    # TODO Move that logic to the ClientManager
     accounts = list(request.user.account_set.all())
     accounts_personal = []
     accounts_saving = []
@@ -42,6 +42,8 @@ def dashboard(request):
     accounts_to_view = accounts_personal + accounts_saving
     accounts_to_view.sort(reverse = True, key= lambda x:x.money)
 
+    cards = request.user.card_set.all().order_by("-account__money")
+
     return render(request, "banking/dashboard.html",{
         "owner": f"{request.user.first_name.capitalize()} {request.user.last_name.capitalize()}",
         "funds": funds,
@@ -49,6 +51,7 @@ def dashboard(request):
         "debts": credits,
         "accounts": accounts_to_view[:5],
         "accounts_credit": accounts_credit[:3],
+        "cards": cards[:3],
         "last_login": request.user.last_login,})
 
 def login(request):
@@ -118,12 +121,11 @@ def new_account(request):
             user = request.user
             account = form.save(owner=user)
             if form.data.get("add_card") == "on":
-                # TODO Move adding card logic to save method
                 card = Card(owner=user, account=account)
                 card.save()
-                messages.success(request, f"Account {account.number}, with a card was created succesfully")
+                messages.success(request, _(f"{card.account.type_account.capitalize()} account {account.number}, with a card was created succesfully"))
             else:
-                messages.success(request, f"Account {account.number} was created succesfully")
+                messages.success(request, _(f"{card.account.type_account.capitalize()} account {account.number} was created succesfully"))
             return redirect("dashboard")
     else: # request.method == "GET" 
         form = NewAccountForm()
@@ -137,20 +139,19 @@ def new_credit(request):
             user = request.user
             account = form.save(owner=user)
             if form.data.get("add_card") == "on":
-                # TODO Move adding card logic to save method
                 card = Card(owner=user, account=account)
                 card.save()
-                messages.success(request, f"Account {account.number}, with a card was created succesfully")
+                messages.success(request, f"Credit account {account.number}, with a card was created succesfully")
             else:
-                messages.success(request, f"Account {account.number} was created succesfully")
+                messages.success(request, f"Credit account {account.number} was created succesfully")
             return redirect("dashboard")
     else: # request.method == "GET" 
         form = NewCreditForm()
     return render(request, "banking/new_credit.html", {"form": form})
 
 @login_required
-def accounts(request):
-    # TODO Move that logic to the AccountManager
+def products(request):
+    # TODO Move that logic to the ClientManager
     accounts = list(request.user.account_set.all())
     accounts_personal = []
     accounts_saving = []
@@ -171,40 +172,42 @@ def accounts(request):
     accounts_saving.sort(reverse=True, key= lambda x:x.money)
     accounts_credit.sort(reverse=True, key= lambda x:x.money)
 
-    return render(request, "banking/accounts.html",{
+    if request.method == "POST":
+        action = request.POST.get('action')
+        form = AccountManagerForm(request.POST, owner=request.user, action=action)
+        if form.is_valid():
+            account = form.cleaned_data["accounts"]
+            if action == "delete_account":
+                account_number = account.number
+                account_type = account.type_account.lower()
+                card_part = ""
+                if hasattr(account, "card"):
+                    card_part = _(", with a card,")
+                # TODO What to do with the money
+                account.delete()
+                messages.success(request, _(f"Your {account_type} account with number {account_number}{card_part} has been deleted succesfully"))
+            elif action == "add_card":
+                card = Card(account = account, owner = request.user)
+                card.save()
+                messages.success(request, _(f"Your new card {card.number} to account with number {account.number} was created succesfully"))
+            elif action == "delete_card":
+                card = account.card
+                card_number = card.number
+                account_number = account.number
+                card.delete()
+                messages.success(request, _(f"Your card number {card_number} to account {account_number} has been deleted succesfully"))
+            form = AccountManagerForm(owner=request.user)
+    else:
+        form = AccountManagerForm(owner=request.user)
+
+    return render(request, "banking/products.html",{
         "account": accounts,
         "savings":savings,
         "funds":funds,
         "credit":credit,
         "accounts_saving": accounts_saving,
         "accounts_personal": accounts_personal,
-        "accounts_credit": accounts_credit})
-
-@login_required
-def accounts_manage(request):
-    if request.method == "POST":
-        action = request.POST.get('action')
-        if action == "delete_account" or action == "add_card":
-            form = AccountManagerForm(request.POST, owner=request.user)
-            if form.is_valid():
-                account = form.cleaned_data["accounts"]
-                if action == "delete_account":
-                    account.delete()
-                elif action == "add_card":
-                    card = Card(account = account, owner = request.user)
-                    card.save()
-    else:
-        form = AccountManagerForm(owner=request.user)
-    print(form.get_blocked_options())
-    return render(request, "banking/accounts_manage.html",{
+        "accounts_credit": accounts_credit,
         "form":form,
-        "blocked_options": form.get_blocked_options()
-    })
+        "blocked_options": form.get_blocked_options()})
 
-@login_required
-def cards(request):
-   return render(request, "banking/cards.html",)
-
-@login_required
-def cards_manage(request):
-    return render(request, "banking/cards_manage.html",)
