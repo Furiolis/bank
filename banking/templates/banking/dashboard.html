@@ -31,7 +31,7 @@
     <div class="accounts">
       <h2>{% trans "Personal accounts" %}</h2>
       <div class="accounts-items">
-        <a class="link" href="{% url "products"%}">{% trans "See more" %}</a>
+        <a class="link" href="{% url "banking:products"%}">{% trans "See more" %}</a>
         {% for account in accounts %}
           {% include "banking/includes/account.html" %}
         {% empty %}
@@ -44,7 +44,7 @@
       <div class="accounts">
         <h2>{% trans "Credit accounts" %}</h2>
         <div class="accounts-items">
-          <a class="link" href="{% url "products"%}">{% trans "See more" %}</a>
+          <a class="link" href="{% url "banking:products"%}">{% trans "See more" %}</a>
           {% for account in accounts_credit %}
             {% include "banking/includes/account.html" %}
           {% empty %}
@@ -57,7 +57,7 @@
 
     <div class="cards">
       <h2>{% trans "Cards" %}</h2>
-      <a class="link" href="{% url "products" %}">{% trans "See more" %}</a>
+      <a class="link" href="{% url "banking:products" %}">{% trans "See more" %}</a>
       <div class="cards-items">
           {% for card in cards %}
             {% include "banking/includes/card.html" %}

@@ -2,6 +2,6 @@
 
 {% block content %}
     Jesteś niezalogowany
-    <a href = {% url "login" %}><button type="button">Zaloguj</button></a>
-    <a href = {% url "new_client" %}><button type="button">Zajestruj</button></a>
+    <a href = {% url "banking:login" %}><button type="button">Zaloguj</button></a>
+    <a href = {% url "banking:new_client" %}><button type="button">Zajestruj</button></a>
 {% endblock content %}
