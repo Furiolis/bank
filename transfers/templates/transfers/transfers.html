@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+    <div class= "white-container">
+        <a class = "link" href={% url "transfers:internal" %}>{% trans "Internal transfer" %}</a>
+        <a class = "link" href={% url "transfers:external" %}>{% trans "External transfer" %}</a>
+    </div>
+    <div class= "white-container">
+        class="review"
+    </div>
+
+{% endblock %}
