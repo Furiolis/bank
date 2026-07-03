@@ -113,6 +113,7 @@ img.flag {
 .content {
     padding: 0 10px;
     grid-area: content;
+    margin: 20px;
 }
 
 .messages{
@@ -147,7 +148,6 @@ li.info, li.debug{
     border-radius: 5px;
 }
 
-
 footer {
     color: orange;
     grid-area: footer;
@@ -155,12 +155,10 @@ footer {
     background-color: #132335;
 }
 
-
 .footer-container {
     display: flex;
     flex-direction: column;
 }
-
 
 .footer-container div{
     padding: 5px 10px;
@@ -175,7 +173,6 @@ footer div{
     background-color: #132335;
     height: 100%;
     width: 100%;
-
 }
 
 .footer-side-right{
@@ -210,8 +207,11 @@ a:active {
     width: 100%;
     border-radius: 10px;
     background-color: white;
-    padding: 5px 0px 10px 5px;
-    margin: 10px;
+    padding: 10px;
+}
+
+.white-container h2{
+    margin-left: 20px;
 }
 
 @media screen and (min-width:800px){

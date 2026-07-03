@@ -8,7 +8,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{% static "base.css" %}">
-  <link rel="stylesheet" href="{% static "form.css" %}">
   <link rel="shortcut icon" href="{% static "favicon.ico" %}" type="image/x-icon">
   {% block styles %}{% endblock styles %}
   <title>{% block title %}Fake Bank{% endblock title %}</title>
@@ -52,8 +51,8 @@
       {% else %}
         <a href="{% url "banking:dashboard" %}">{% trans "Dashboard" %}</a>
         <a href="{% url "banking:products" %}">{% trans "Products" %}</a>
-        <a href="">{% trans "Transfers" %}</a>
-        <a href="">{% trans "History" %}</a>
+        {% comment %} <a href="{% url "transfers:transfers" %}">{% trans "Transfers" %}</a> {% endcomment %}
+        {% comment %} <a href="{% url "transfers:history" %}">{% trans "History" %}</a> {% endcomment %}
       {% endif %}
     </nav>
   </div>

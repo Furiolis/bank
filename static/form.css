@@ -20,7 +20,6 @@
     font-size: 1.5rem;
 }
 
-
 .standard-form_field_error input{
     background-color: red;
     color: black;
@@ -42,7 +41,6 @@
     font-size: 1.5rem;
     border-radius: 10px;
 }
-
 
 .standard-form button.submit{
     background-color: lightgreen;

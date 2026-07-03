@@ -1,0 +1,13 @@
+
+.review-item{
+    display: flex;
+    margin: 10px;
+}
+
+.review-item div{
+    width: 100%;
+}
+
+.right-part {
+    text-align: right;
+}

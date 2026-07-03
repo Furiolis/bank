@@ -57,7 +57,7 @@ def dashboard(request):
 def login(request):
     if request.user.is_authenticated:
         messages.warning(request, _("You are already logged in"))
-        return redirect("dashboard")
+        return redirect("banking:dashboard")
     else:
         if request.method == "POST":
             form = AuthenticationForm(request, data=request.POST)
@@ -65,7 +65,7 @@ def login(request):
                 user = form.get_user()
                 login_user(request, user)
                 messages.success(request, mark_safe(_(f"Welcome {user.get_short_name()}, you have logged in succesfully. What We are gonna do today?")))
-                return redirect("dashboard")
+                return redirect("banking:dashboard")
             else:
                 messages.warning(request, mark_safe(_("Please enter a correct %(username)s and password. Note that both fields may be case-sensitive.") % {"username": form.username_field.verbose_name}))
         else: # request.method == "GET"
@@ -78,19 +78,19 @@ def logout(request):
     if request.user.is_authenticated:
         logout_user(request)
         messages.success(request, _("You where log out succesfully"))
-    return redirect("front_page")
+    return redirect("banking:front_page")
 
 def new_client(request):
     if request.user.is_authenticated:
         messages.warning(request,_("You already are client of Fake Bank, and you are logged in"))
-        return redirect("dashboard")
+        return redirect("banking:dashboard")
     else:
         if request.method == "POST":
             form = NewClientForm(request.POST)
             if form.is_valid():
                 client = form.save()
                 request.session["confirmation_client_id"] = client.id
-                return redirect("confirmation") 
+                return redirect("banking:confirmation") 
         else: # request.method == "GET"
             form = NewClientForm()
         pesel, birth_date = provide_pesel_birthdate()
@@ -102,7 +102,7 @@ def new_client(request):
 
 def confirmation(request):
     if request.user.is_authenticated:
-        return redirect("dashboard")
+        return redirect("banking:dashboard")
     else:
         client_id = request.session.pop("confirmation_client_id",None)
         if client_id:
@@ -126,7 +126,7 @@ def new_account(request):
                 messages.success(request, _(f"{account.type_account.capitalize()} account {account.number}, with a card was created succesfully"))
             else:
                 messages.success(request, _(f"{account.type_account.capitalize()} account {account.number} was created succesfully"))
-            return redirect("dashboard")
+            return redirect("banking:dashboard")
     else: # request.method == "GET" 
         form = NewAccountForm()
     return render(request, "banking/new_account.html", {"form": form})
@@ -144,7 +144,7 @@ def new_credit(request):
                 messages.success(request, f"Credit account {account.number}, with a card was created succesfully")
             else:
                 messages.success(request, f"Credit account {account.number} was created succesfully")
-            return redirect("dashboard")
+            return redirect("banking:dashboard")
     else: # request.method == "GET" 
         form = NewCreditForm()
     return render(request, "banking/new_credit.html", {"form": form})
@@ -200,13 +200,15 @@ def products(request):
     accounts_saving.sort(reverse=True, key= lambda x:x.money)
     accounts_credit.sort(reverse=True, key= lambda x:x.money)
 
-
+    cards = request.user.card_set.all().order_by("-account__money")
 
     return render(request, "banking/products.html",{
+        "owner": f"{request.user.first_name.capitalize()} {request.user.last_name.capitalize()}",
         "account": accounts,
         "savings":savings,
         "funds":funds,
         "credit":credit,
+        "cards": cards,
         "accounts_saving": accounts_saving,
         "accounts_personal": accounts_personal,
         "accounts_credit": accounts_credit,

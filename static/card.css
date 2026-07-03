@@ -1,0 +1,12 @@
+.cards{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.card {
+    margin: 10px;
+    width: 250px;
+    height: 120px;
+    background-image: linear-gradient(to right,lightblue, rgb(113, 113, 248) ,blue, darkblue);
+    border-radius: 20px;
+}

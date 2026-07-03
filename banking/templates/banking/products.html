@@ -5,79 +5,83 @@
 {% block title %} {% trans "Products" %}{% endblock %}
 {% block styles %}
 <link rel="stylesheet" href="{% static "banking/products.css" %}">
+<link rel="stylesheet" href="{% static "grid_layout.css" %}">
+<link rel="stylesheet" href="{% static "card.css" %}">
+<link rel="stylesheet" href="{% static "account.css" %}">
+<link rel="stylesheet" href="{% static "form.css" %}">
+<link rel="stylesheet" href="{% static "client_review.css" %}">
 {% endblock styles %}
 
 {% block content %}
-<div class="review">
-    <h2>{% trans "Review" %}</h2>
-    <div class="review-items">
-        <div>{% trans "Funds" %}:</div>
-        <div class="right-part">{{funds}} PLN</div>
+<div class="main-layout">
+    <div class="white-container grid-item-reviews">
+        <h2>{% trans "Review" %}</h2>
+        <div class="review-item">
+            <div>{% trans "Funds" %}:</div>
+            <div class="right-part">{{funds}} PLN</div>
+        </div>
+        <div class="review-item">
+            <div>{% trans "Savings" %}:</div>
+            <div class="right-part">{{savings}} PLN</div>
+        </div>
+        <div class="review-item">
+            <div>{% trans "Debts" %}:</div>
+            <div class="right-part">{{debts}} PLN</div>
+        </div>
     </div>
-    <div class="review-items">
-        <div>{% trans "Savings" %}:</div>
-        <div class="right-part">{{savings}} PLN</div>
+    <div class="white-container">
+        <h2>{% trans "Open new account" %}</h2>
+        <a class="link" href={% url "banking:new_account"%}>{% trans "Personal" %}</a>
+        <a class="link" href={% url "banking:new_credit"%}>{% trans "Credit" %}</a>
     </div>
-    <div class="review-items">
-        <div>{% trans "Debts" %}:</div>
-        <div class="right-part">{{debts}} PLN</div>
+    <div class="white-container grid-item-management">
+        <h2>{% trans "Products management" %}</h2>
+        <form class="standard-form" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <button id="add_card_btn" type="submit" name="action" value="add_card" disabled>{% trans "Choose account" %}</button>
+            <button id="del_card_btn" class="reset" type="submit" name="action" value="delete_card">{% trans "Choose account" %}</button>
+            <button id="del_acc_btn"  class="reset" type="submit" name="action" value="delete_account" 
+            disabled onclick="return confirm('{% trans "Are you sure" %}')">{% trans "Choose account" %}</button>
+            <script>
+                const blockedOptions = {{ blocked_options|safe }};
+                const selectElement = document.getElementById('id_accounts');
+                const addsubmitBtn = document.getElementById('add_card_btn');
+                const delsubmitBtn = document.getElementById('del_acc_btn');
+                const delcardBtn = document.getElementById('del_card_btn');
+                function updateButtons() {
+                    const selectedValue = selectElement.value;
+                    if (!selectedValue) {
+                        addsubmitBtn.disabled = true;
+                        addsubmitBtn.textContent = "{% trans "Choose account" %}";
+                        delsubmitBtn.disabled = true;
+                        delsubmitBtn.textContent = "{% trans "Choose account" %}";
+                        delcardBtn.disabled = true;
+                        delcarBtn.textContent = "{% trans "Choose account" %}";
+                        } 
+                    else if (blockedOptions[selectedValue] === "True") {
+                        addsubmitBtn.disabled = true;
+                        addsubmitBtn.textContent = "{% trans "Card already added" %}";
+                        delsubmitBtn.disabled = false;
+                        delsubmitBtn.textContent = "{% trans "Delete account" %}";
+                        delcardBtn.disabled = false;
+                        delcardBtn.textContent = "{% trans "Delete card" %}";
+                        } 
+                    else {
+                        addsubmitBtn.disabled = false;
+                        addsubmitBtn.textContent = "{% trans "Add card" %}";
+                        delsubmitBtn.disabled = false;
+                        delsubmitBtn.textContent = "{% trans "Delete account" %}";
+                        delcardBtn.disabled = true;
+                        delcardBtn.textContent = "{% trans "No card" %}";
+                        }            
+                }
+                selectElement.addEventListener('change', updateButtons);
+                updateButton();
+            </script>        
+        </form>
     </div>
-</div>
-<div class="white-container">
-    <h2>{% trans "Open new account" %}</h2>
-    <a class="link" href={% url "banking:new_account"%}>{% trans "Personal" %}</a>
-    <a class="link" href={% url "banking:new_credit"%}>{% trans "Credit" %}</a>
-</div>
-<div class="white-container">
-    <h2>{% trans "Products management" %}</h2>
-    <form class="standard-form" method="post">
-        {% csrf_token %}
-        {{ form }}
-        <button id="add_card_btn" type="submit" name="action" value="add_card" disabled>{% trans "Choose account" %}</button>
-        <button id="del_card_btn" class="reset" type="submit" name="action" value="delete_card">{% trans "Choose account" %}</button>
-        <button id="del_acc_btn"  class="reset" type="submit" name="action" value="delete_account" 
-        disabled onclick="return confirm('{% trans "Are you sure" %}')">{% trans "Choose account" %}</button>
-        <script>
-            const blockedOptions = {{ blocked_options|safe }};
-            const selectElement = document.getElementById('id_accounts');
-            const addsubmitBtn = document.getElementById('add_card_btn');
-            const delsubmitBtn = document.getElementById('del_acc_btn');
-            const delcardBtn = document.getElementById('del_card_btn');
-            function updateButtons() {
-                const selectedValue = selectElement.value;
-                if (!selectedValue) {
-                    addsubmitBtn.disabled = true;
-                    addsubmitBtn.textContent = "{% trans "Choose account" %}";
-                    delsubmitBtn.disabled = true;
-                    delsubmitBtn.textContent = "{% trans "Choose account" %}";
-                    delcardBtn.disabled = true;
-                    delcarBtn.textContent = "{% trans "Choose account" %}";
-                    } 
-                else if (blockedOptions[selectedValue] === "True") {
-                    addsubmitBtn.disabled = true;
-                    addsubmitBtn.textContent = "{% trans "Card already added" %}";
-                    delsubmitBtn.disabled = false;
-                    delsubmitBtn.textContent = "{% trans "Delete account" %}";
-                    delcardBtn.disabled = false;
-                    delcardBtn.textContent = "{% trans "Delete card" %}";
-                    } 
-                else {
-                    addsubmitBtn.disabled = false;
-                    addsubmitBtn.textContent = "{% trans "Add card" %}";
-                    delsubmitBtn.disabled = false;
-                    delsubmitBtn.textContent = "{% trans "Delete account" %}";
-                    delcardBtn.disabled = true;
-                    delcardBtn.textContent = "{% trans "No card" %}";
-                    }            
-            }
-            selectElement.addEventListener('change', updateButtons);
-            updateButton();
-        </script>        
-    </form>
-</div>
-
-<div class="accounts-container">
-    <div class="review accounts-personal">
+    <div class="white-container">
         <h2>{% trans "Personal accounts" %}</h2>
         {% for account  in accounts_personal %}
             {% include "banking/includes/account.html" %}
@@ -85,7 +89,7 @@
             <p class="no-account">{% trans "No personal accounts" %}</p>
         {% endfor %}
     </div>
-    <div class="review accounts-saving">
+    <div class="white-container">
         <h2>{% trans "Saving accounts" %}</h2>
         {% for account  in accounts_saving %}
             {% include "banking/includes/account.html" %}
@@ -93,7 +97,7 @@
             <p class="no-account">{% trans "No savings accounts" %}</p>
         {% endfor %}
     </div>
-    <div class="review accounts-credit">
+    <div class="white-container">
         <h2>{% trans "Credit accounts" %}</h2>
         {% for account  in accounts_credit%}
             {% include "banking/includes/account.html" %}
@@ -101,5 +105,16 @@
             <p class="no-account">{% trans "No credits accounts" %}</p>
         {% endfor %}
     </div>
+    <div class="white-container  grid-item-cards">
+      <h2>{% trans "Cards" %}</h2>
+      <div class="cards">
+          {% for card in cards %}
+            {% include "banking/includes/card.html" %}
+          {% empty %}
+            <p class="no-card">{% trans "No cards" %}</p>
+          {% endfor %}
+      </div>
+    </div>
 </div>
+
 {% endblock content %}  
