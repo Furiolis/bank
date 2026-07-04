@@ -1,9 +1,8 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from .models import Client, Account, Card
-from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
+from .models import Client, Account
 
 class NewClientForm(UserCreationForm):
     class Meta:
@@ -13,23 +12,23 @@ class NewClientForm(UserCreationForm):
             "date_birth": forms.DateInput(attrs={'type': 'date'})
         }
 
-        error_messages = {"first_name":{
-                        "invalid":_("First name is invalid, use letters, spaces, apostrophes, hyphen"),
-                        "max_length":_("First name must be shorter than 150 characters")},
-                    "last_name":{
-                        "invalid":_("Last name is invalid, use letters, spaces, apostrophes, hyphen"),
-                        "max_length":_("Last name must be shorter than 150 characters")},
-                    "email":{
-                        "invalid":_("Incorrect email")},
-                    "pesel":{
-                        "consist":_("PESEL is required to consist only 11 digits"),
-                        "invalid":_("Incorrect PESEL")},
-                    "date_birth":{
-                                "required_age":_("Age is required to be above 18")},
-                    "phone_number":{ 
-                                "invalid":_("Phone number is required to contains only 9 digits")}}
+        error_messages = {
+            "first_name":{
+                "invalid":_("First name is invalid, use letters, spaces, apostrophes, hyphen"),
+                "max_length":_("First name must be shorter than 150 characters")},
+            "last_name":{
+                "invalid":_("Last name is invalid, use letters, spaces, apostrophes, hyphen"),
+                "max_length":_("Last name must be shorter than 150 characters")},
+            "email":{
+                "invalid":_("Incorrect email")},
+            "pesel":{
+                "consist":_("PESEL is required to consist only 11 digits"),
+                "invalid":_("Incorrect PESEL")},
+            "date_birth":{
+                        "required_age":_("Age is required to be above 18")},
+            "phone_number":{ 
+                        "invalid":_("Phone number is required to contains only 9 digits")}}
     
-
     def clean(self):
         cleaned_data = super().clean()
         date_birth = cleaned_data.get("date_birth")

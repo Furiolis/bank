@@ -3,35 +3,38 @@
 {% load i18n %}
 
 {% block styles %}
-<link rel="stylesheet" href="{% static "banking/dashboard.css" %}">
+<link rel="stylesheet" href="{% static "grid_layout.css" %}">
+<link rel="stylesheet" href="{% static "card.css" %}">
+<link rel="stylesheet" href="{% static "account.css" %}">
+<link rel="stylesheet" href="{% static "client_review.css" %}">
 {% endblock styles %}
 
 {% block content %}
 
   <h1>{% trans "Welcome" %}, {{owner|title}}</h1>
   <h3>{% trans "Last login" %}: {{last_login}}</h3>
-  <div class="dashboard-container">
+  <div class="main-layout">  
 
-    <div class="review">
+    <div class="white-container grid-item-reviews">
       <h2>{% trans "Review" %}</h2>
-      <div class="review-items">
+      <div class="review-item">
         <div>{% trans "Funds" %}:</div>
         <div class="right-part">{{funds}} PLN</div>
       </div>
-      <div class="review-items">
+      <div class="review-item">
         <div>{% trans "Savings" %}:</div>
         <div class="right-part">{{savings}} PLN</div>
       </div>      
-      <div class="review-items">
+      <div class="review-item">
         <div>{% trans "Debts" %}:</div>
         <div class="right-part">{{debts}} PLN</div>
       </div>
     </div>
 
-    <div class="accounts">
+    <div class="white-container">
       <h2>{% trans "Personal accounts" %}</h2>
-      <div class="accounts-items">
-        <a class="link" href="{% url "products"%}">{% trans "See more" %}</a>
+      <div>
+        <a class="link" href="{% url "banking:products"%}">{% trans "See more" %}</a>
         {% for account in accounts %}
           {% include "banking/includes/account.html" %}
         {% empty %}
@@ -40,25 +43,22 @@
       </div>
     </div>
 
-    <div class="credits">
-      <div class="accounts">
-        <h2>{% trans "Credit accounts" %}</h2>
-        <div class="accounts-items">
-          <a class="link" href="{% url "products"%}">{% trans "See more" %}</a>
-          {% for account in accounts_credit %}
-            {% include "banking/includes/account.html" %}
-          {% empty %}
-            <p class="no-account">{% trans "No credits accounts" %}</p>
-          {% endfor %}
-        </div>
-
+    <div class="white-container">
+      <h2>{% trans "Credit accounts" %}</h2>
+      <div>
+        <a class="link" href="{% url "banking:products"%}">{% trans "See more" %}</a>
+        {% for account in accounts_credit %}
+          {% include "banking/includes/account.html" %}
+        {% empty %}
+          <p class="no-account">{% trans "No credits accounts" %}</p>
+        {% endfor %}
       </div>
     </div>
 
-    <div class="cards">
+    <div class="white-container  grid-item-cards">
       <h2>{% trans "Cards" %}</h2>
-      <a class="link" href="{% url "products" %}">{% trans "See more" %}</a>
-      <div class="cards-items">
+      <a class="link" href="{% url "banking:products" %}">{% trans "See more" %}</a>
+      <div class="cards">
           {% for card in cards %}
             {% include "banking/includes/card.html" %}
           {% empty %}

@@ -9,17 +9,17 @@
     position: relative;
     border-radius: 6px;
     background-color: white;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
 }
 
 .standard-form select{
+    width: auto;
     margin: 10px;
     position: relative;
     border-radius: 6px;
     background-color: white;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
 }
-
 
 .standard-form_field_error input{
     background-color: red;
@@ -39,10 +39,9 @@
 .standard-form button {
     height: 40px;
     padding: 0px 20px;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     border-radius: 10px;
 }
-
 
 .standard-form button.submit{
     background-color: lightgreen;

@@ -4,8 +4,10 @@ from django.core.validators import RegexValidator
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.hashers import make_password, check_password
+
 from random import randint
 from unidecode import unidecode
+
 from .validators import validate_pesel, validate_date_birth_above_18_today
 
 
@@ -73,7 +75,6 @@ class Client(AbstractUser):
     
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["email", "phone_number", "first_name", "last_name", "date_birth"]
-    
 
 class Account(models.Model):
     TYPE_CHOICES = (

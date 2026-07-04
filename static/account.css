@@ -1,0 +1,22 @@
+.account {
+    display: flex;
+    padding:10px;
+    border-bottom:1px solid #b1d5ff;
+    /* justify-content: space-between; */
+}
+
+.account div{
+    width: 100%;
+}
+    
+.right-part {
+    text-align: right;
+}
+
+.account:last-child{
+    border-bottom: none;
+}
+
+.no-account{
+    margin: 20px;
+}

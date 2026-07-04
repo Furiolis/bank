@@ -8,7 +8,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{% static "base.css" %}">
-  <link rel="stylesheet" href="{% static "form.css" %}">
   <link rel="shortcut icon" href="{% static "favicon.ico" %}" type="image/x-icon">
   {% block styles %}{% endblock styles %}
   <title>{% block title %}Fake Bank{% endblock title %}</title>
@@ -35,25 +34,25 @@
       {# end language shift #}
       
       {% if not_logged %}
-        <a href="{% url "login" %}">{% trans "Log in" %}</a>
-        <a href="{% url "new_client" %}">{% trans "Register" %}</a>
+        <a href="{% url "banking:login" %}">{% trans "Log in" %}</a>
+        <a href="{% url "banking:new_client" %}">{% trans "Register" %}</a>
       {% else %}
         <a href="#">{% trans "Settings" %}</a>
-        <a href="{% url "logout" %}">{% trans "Log out" %}</a>
+        <a href="{% url "banking:logout" %}">{% trans "Log out" %}</a>
       {% endif %}
     </nav>
   </div>
 
   <div class="side-left"></div>
   <div class= "nav-second-container">
-    <a href={% url "front_page" %}><img src="{% static "logo.png" %}" alt="Fake Bank" height="100" width="100"></a> 
+    <a href={% url "banking:front_page" %}><img src="{% static "logo.png" %}" alt="Fake Bank" height="100" width="100"></a> 
     <nav class="nav-second">
       {% if not_logged %}
       {% else %}
-        <a href="{% url "dashboard" %}">{% trans "Dashboard" %}</a>
-        <a href="">{% trans "History" %}</a>
-        <a href="{% url "products" %}">{% trans "Products" %}</a>
-        <a href="">{% trans "Transfers" %}</a>
+        <a href="{% url "banking:dashboard" %}">{% trans "Dashboard" %}</a>
+        <a href="{% url "banking:products" %}">{% trans "Products" %}</a>
+        {% comment %} <a href="{% url "transfers:transfers" %}">{% trans "Transfers" %}</a> {% endcomment %}
+        {% comment %} <a href="{% url "transfers:history" %}">{% trans "History" %}</a> {% endcomment %}
       {% endif %}
     </nav>
   </div>
