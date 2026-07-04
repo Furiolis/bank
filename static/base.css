@@ -7,8 +7,7 @@ body{
     font-family:sans-serif;
     background-color: #e6effc;
     display: grid;
-
-    grid-template-rows: 50px auto auto minmax(70vh, auto) auto;
+    grid-template-rows: 50px auto auto minmax(71vh, auto) auto;
     grid-template-columns: 100%;
     grid-template-areas: "nav_top"
                         "nav_main"
@@ -16,7 +15,6 @@ body{
                         "content"
                         "footer";
 }
-
 
 .nav-first-container {
     grid-area: nav_top;
@@ -40,7 +38,6 @@ body{
     display: inline;
     padding: 10px 3px 10px 3px !important;
     margin: 0px !important;
-
 }
 
 .flag button {
@@ -63,7 +60,6 @@ img.flag {
     text-decoration: none;
     font-size: 1.25em;
 }
-
 
 .side-left, .side-right{
     background-color: #132335;
@@ -88,6 +84,7 @@ img.flag {
     display: flex;
     grid-area: nav_main;
     flex-wrap: wrap;
+    width: 100%;
 }
 
 .nav-second{
@@ -111,9 +108,7 @@ img.flag {
 }
 
 .content {
-    padding: 0 10px;
     grid-area: content;
-    margin: 20px;
 }
 
 .messages{
