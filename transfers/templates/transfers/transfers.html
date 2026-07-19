@@ -1,14 +1,40 @@
 {% extends "base.html" %}
 {% load static %}
 {% load i18n %}
-
+{% block styles %}
+<link rel="stylesheet" href="{% static "form.css" %}">
+{% endblock styles %}
 {% block content %}
-    <div class= "white-container">
-        <a class = "link" href={% url "transfers:internal" %}>{% trans "Internal transfer" %}</a>
-        <a class = "link" href={% url "transfers:external" %}>{% trans "External transfer" %}</a>
+<div>
+    <div>
+        <button id="btn_external" type="button" name="action"  class ="link" >{% trans "External transfer" %}</button>
+        <button id="btn_internal" type="button" name="action"  class ="link" >{% trans "Internal transfer" %}</button>
     </div>
-    <div class= "white-container">
-        class="review"
+    <div id="external_form_container" class="white-container">
+        <form class="standard-form" method="post">
+            {% csrf_token %}
+            <h2>{% trans "External transfer" %}</h2>
+            <input type="hidden" name="form_type" value="external">
+            {{external_form}}
+            <button class="submit" type="submit">{% trans "Send" %}</button>
+            <button class="reset" type="reset">{% trans "Clear" %}</button>
+        </form>
     </div>
-
+    <div id="internal_form_container" class="white-container hidden">
+        <form class="standard-form" method="post">
+            {% csrf_token %}
+            <h2>{% trans "Internal transfer" %}</h2>
+            <input type="hidden" name="form_type" value="internal">
+            {{internal_form}}
+            <button class="submit" type="submit">{% trans "Send" %}</button>
+            <button class="reset" type="reset">{% trans "Clear" %}</button>
+        </form>
+    </div>
+    <style>
+        .hidden {
+            display: none; 
+        }
+    </style>
+    <script src="{% static "transfers/transfers.js" %}"></script>   
+</div>
 {% endblock %}
