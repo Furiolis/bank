@@ -9,6 +9,8 @@
 <link rel="stylesheet" href="{% static "account.css" %}">
 <link rel="stylesheet" href="{% static "form.css" %}">
 <link rel="stylesheet" href="{% static "client_review.css" %}">
+{{ blocked_options|json_script:"blocked-options" }}
+<script src="{% static "banking/products.js" %}"></script>
 {% endblock styles %}
 
 {% block content %}
@@ -41,43 +43,7 @@
             <button id="add_card_btn" type="submit" name="action" value="add_card" disabled>{% trans "Choose account" %}</button>
             <button id="del_card_btn" class="reset" type="submit" name="action" value="delete_card">{% trans "Choose account" %}</button>
             <button id="del_acc_btn"  class="reset" type="submit" name="action" value="delete_account" 
-            disabled onclick="return confirm('{% trans "Are you sure" %}')">{% trans "Choose account" %}</button>
-            <script>
-                const blockedOptions = {{ blocked_options|safe }};
-                const selectElement = document.getElementById('id_accounts');
-                const addsubmitBtn = document.getElementById('add_card_btn');
-                const delsubmitBtn = document.getElementById('del_acc_btn');
-                const delcardBtn = document.getElementById('del_card_btn');
-                function updateButtons() {
-                    const selectedValue = selectElement.value;
-                    if (!selectedValue) {
-                        addsubmitBtn.disabled = true;
-                        addsubmitBtn.textContent = "{% trans "Choose account" %}";
-                        delsubmitBtn.disabled = true;
-                        delsubmitBtn.textContent = "{% trans "Choose account" %}";
-                        delcardBtn.disabled = true;
-                        delcardBtn.textContent = "{% trans "Choose account" %}";
-                        } 
-                    else if (blockedOptions[selectedValue] === "True") {
-                        addsubmitBtn.disabled = true;
-                        addsubmitBtn.textContent = "{% trans "Card already added" %}";
-                        delsubmitBtn.disabled = false;
-                        delsubmitBtn.textContent = "{% trans "Delete account" %}";
-                        delcardBtn.disabled = false;
-                        delcardBtn.textContent = "{% trans "Delete card" %}";
-                        } 
-                    else {
-                        addsubmitBtn.disabled = false;
-                        addsubmitBtn.textContent = "{% trans "Add card" %}";
-                        delsubmitBtn.disabled = false;
-                        delsubmitBtn.textContent = "{% trans "Delete account" %}";
-                        delcardBtn.disabled = true;
-                        delcardBtn.textContent = "{% trans "No card" %}";
-                        }            
-                }
-                selectElement.addEventListener('change', updateButtons);
-                updateButtons();
-            </script>        
+            disabled onclick="return confirm('{% trans "Are you sure" %}')">{% trans "Choose account" %}</button>    
         </form>
     </div>
     <div class="white-container">

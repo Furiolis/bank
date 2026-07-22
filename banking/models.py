@@ -1,9 +1,10 @@
-from django.db import models
+from django.db import models, IntegrityError
 from django.contrib.auth.models import AbstractUser, PermissionsMixin, BaseUserManager
 from django.core.validators import RegexValidator
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.hashers import make_password, check_password
+from django.db import transaction
 
 from random import randint
 from unidecode import unidecode
@@ -13,32 +14,38 @@ from .validators import validate_pesel, validate_date_birth_above_18_today
 
 class ClientManager(BaseUserManager):
 
-    def create_user(self, email, first_name, last_name, password = None, username = "", **extra_fields):
-        if username == "":
-        #   usernames = Client.objects.values_list("username", flat=True)
+    def create_user(self, email, first_name="none", last_name="none", password = None, username = "", **extra_fields):
+        if not email:
+            raise ValueError("Email required")
+        email = self.normalize_email(email)
+        if username == "" and first_name != "none" and last_name != "none":
+        #   usernames = Client.objects.values_list("username", flat=True) # old solution
             username = "username"
             first_name_truncated = first_name.lower()[:6]
             last_name_truncated = last_name.lower()[:6]
             while True:
                 random_number = randint(1000, 9999)
                 username = unidecode(first_name_truncated) + str(random_number) + unidecode(last_name_truncated)
-        #       if username not in usernames:
+        #       if username not in usernames: # old solution
                 if not Client.objects.filter(username=username).exists():
-                    break
+                    continue
 
-        email = self.normalize_email(email)
-        user = self.model(username = username, 
-                          email = email, 
-                          first_name = first_name, 
-                          last_name = last_name,
-                          **extra_fields)
-        user.set_password(password)
-        user.save(using = self._db)
-        return user
+                user = self.model(username = username, 
+                                email = email, 
+                                first_name = first_name, 
+                                last_name = last_name,
+                                **extra_fields)
+                user.set_password(password)
+                try: # just in case, AI suggested this, 
+                    user.save(using = self._db)
+                    return user
+                except IntegrityError:
+                    continue
+        
 
     def create_superuser(self, **extra_fields):
-        extra_fields.setdefault("is_staff", True)
-        extra_fields.setdefault("is_superuser", True)
+        extra_fields["is_staff"] = True
+        extra_fields["is_superuser"] = True
         return self.create_user(**extra_fields)
 
 
@@ -53,7 +60,7 @@ class Client(AbstractUser):
     last_name = models.CharField(_("last name"), 
                                 max_length=150, 
                                 validators=[RegexValidator(r"^[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż' -]+$")])
-    email = models.EmailField(_("email address"))                           
+    email = models.EmailField(_("email address"), unique = True)                           
     # password = models.CharField(max_length=128)
     pesel = models.CharField("PESEL", validators=[validate_pesel], unique=True, 
                                 error_messages={
@@ -76,6 +83,13 @@ class Client(AbstractUser):
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["email", "phone_number", "first_name", "last_name", "date_birth"]
 
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
+    @property
+    def full_name(self):
+        return self.__str__()
+
 class Account(models.Model):
     TYPE_CHOICES = (
         ("PERSONAL",_("Personal")),
@@ -90,15 +104,29 @@ class Account(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.number:
-        #   accounts = Account.objects.values_list("number",flat=True)
+        #   accounts = Account.objects.values_list("number",flat=True) # old solution
             while True:
                 random_number = randint(100000, 999999)
-        #       if random_number not in accounts:
+        #       if random_number not in accounts: # old solution
                 if not Account.objects.filter(number=random_number).exists():
                     self.number = random_number
                     break
         super().save(*args, **kwargs)
         return self
+
+    @classmethod
+    def transfer_money(cls, acc_from, acc_to, amount, safe_transfer):
+        from_acc = Account.objects.select_for_update().get(id = acc_from.id)
+        to_acc = Account.objects.select_for_update().get(id = acc_to.id)
+        if safe_transfer and amount > from_acc.money:
+            raise ValueError(_("Not enough funds"))
+        with transaction.atomic():
+
+            from_acc.money -= amount
+            to_acc.money += amount
+            from_acc.save()
+            to_acc.save()
+        return True
 
     def __str__(self):
         return f"{self.get_type_account_display()} {_("account")} ({self.money} PLN)" 
@@ -117,10 +145,10 @@ class Card(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.number:
-        #   cards = Card.objects.values_list("number", flat=True)
+        #   cards = Card.objects.values_list("number", flat=True) # old solution
             while True:
                 random_number = randint(1000,9999)
-        #       if random_number not in cards:
+        #       if random_number not in cards: # old solution
                 if not Card.objects.filter(number=random_number).exists():
                     self.number = random_number
                     break
