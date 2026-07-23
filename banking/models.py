@@ -96,9 +96,9 @@ class Account(models.Model):
         ("SAVING",_("Saving")),
         ("CREDIT",_("Credit"))
     )
-    number = models.IntegerField(unique=True)
+    number = models.CharField(unique=True, validators=[RegexValidator(r'\d{6}')])
     owner = models.ForeignKey(Client, on_delete=models.CASCADE)
-    money = models.BigIntegerField(default = 0)
+    money = models.DecimalField(decimal_places=2)
     type_account = models.CharField(choices=TYPE_CHOICES, default="PERSONAL")
     # Account.card
 
@@ -116,12 +116,11 @@ class Account(models.Model):
 
     @classmethod
     def transfer_money(cls, acc_from, acc_to, amount, safe_transfer):
-        from_acc = Account.objects.select_for_update().get(id = acc_from.id)
-        to_acc = Account.objects.select_for_update().get(id = acc_to.id)
-        if safe_transfer and amount > from_acc.money:
-            raise ValueError(_("Not enough funds"))
         with transaction.atomic():
-
+            from_acc = Account.objects.select_for_update().get(number = acc_from)
+            to_acc = Account.objects.select_for_update().get(id = acc_to)
+            if safe_transfer and amount > from_acc.money:
+                raise ValueError(_("Not enough funds"))
             from_acc.money -= amount
             to_acc.money += amount
             from_acc.save()
@@ -132,10 +131,10 @@ class Account(models.Model):
         return f"{self.get_type_account_display()} {_("account")} ({self.money} PLN)" 
 
 class Card(models.Model):
-    number = models.IntegerField(unique=True)
+    number = models.CharField(unique=True, validators=[RegexValidator(r'\d{4}')])
     owner = models.ForeignKey(Client, on_delete=models.CASCADE)
     account = models.OneToOneField(Account, on_delete=models.CASCADE)
-    pin = models.CharField(validators=[RegexValidator(r'\d{4}')], default="0000")
+    pin = models.CharField(validators=[RegexValidator(r'\d{4}')])
 
     def set_pin(self, raw_pin):
         self.pin = make_password(raw_pin)
