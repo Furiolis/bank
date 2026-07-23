@@ -19,7 +19,7 @@ def front_page(request):
 @login_required
 def dashboard(request):
     # TODO Move that logic to the ClientManager
-    accounts = list(request.user.account_set.all())
+    accounts = list(request.user.accounts.all())
     accounts_personal = []
     accounts_saving = []
     accounts_credit = []
@@ -42,7 +42,7 @@ def dashboard(request):
     accounts_to_view = accounts_personal + accounts_saving
     accounts_to_view.sort(reverse = True, key= lambda x:x.money)
 
-    cards = request.user.card_set.all().order_by("-account__money")
+    cards = request.user.cards.all().order_by("-account__money")
 
     return render(request, "banking/dashboard.html",{
         "owner": f"{request.user.first_name.capitalize()} {request.user.last_name.capitalize()}",
@@ -180,7 +180,7 @@ def products(request):
         form = AccountManagerForm(owner=request.user)
     # TODO Move that logic to the ClientManager
 
-    accounts = list(request.user.account_set.all())
+    accounts = list(request.user.accounts.all())
     accounts_personal = []
     accounts_saving = []
     accounts_credit = []
@@ -200,7 +200,7 @@ def products(request):
     accounts_saving.sort(reverse=True, key= lambda x:x.money)
     accounts_credit.sort(reverse=True, key= lambda x:x.money)
 
-    cards = request.user.card_set.all().order_by("-account__money")
+    cards = request.user.cards.all().order_by("-account__money")
 
     return render(request, "banking/products.html",{
         "owner": f"{request.user.first_name.capitalize()} {request.user.last_name.capitalize()}",

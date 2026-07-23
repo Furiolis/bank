@@ -35,7 +35,7 @@ class NewClientForm(UserCreationForm):
         pesel = cleaned_data.get("pesel")
 
         if not pesel or not date_birth:
-            return
+            return cleaned_data
         
         month_to_year = {"0":"19","1":"19","2":"20","3":"20","4":"21","5":"21","6":"22","7":"22","8":"18","9":"18"}
         month = pesel[2:4]
@@ -48,7 +48,7 @@ class NewClientForm(UserCreationForm):
         return cleaned_data
 
 
-    def save(self):
+    def save(self, commit=True):
         user = Client.objects.create_user(
             first_name=self.cleaned_data["first_name"],
             last_name=self.cleaned_data["last_name"],
@@ -89,7 +89,7 @@ class AccountManagerForm(forms.Form):
         super().__init__(*args,**kwargs)
         self.owner = owner
         self.action = action
-        self.fields["accounts"].queryset = self.owner.account_set.all().order_by("-money")
+        self.fields["accounts"].queryset = self.owner.accounts.all().order_by("-money")
         # equals to line below, left for my personal educational purpose
         # self.fields["accounts"].queryset = Account.objects.filter(owner=self.owner).order_by("-money")
             
@@ -98,11 +98,11 @@ class AccountManagerForm(forms.Form):
             account = self.cleaned_data["accounts"]
             if hasattr(account, "card"):
                 self.add_error("accounts", _(f"Card already exists to {account.number}"))
-        self.cleaned_data
+        return self.cleaned_data
 
     def get_blocked_options(self):
         blocked_options = {}        
-        accounts = self.owner.account_set.select_related("card").all()
+        accounts = self.owner.accounts.select_related("card").all()
         # equals to line below, left for my personal educational purpose
         # accounts = Account.objects.select_related("card").filter(owner=self.owner)
 

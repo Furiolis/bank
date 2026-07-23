@@ -75,9 +75,7 @@ class Client(AbstractUser):
                                 error_messages={
                                     "required" : _("Phone number is required"),
                                     "invalid" : _("Phone number is incorrect, can contains only 9 digits")})
-    # Client.account_set.all()
-    # Client.card_set.all()
-
+    
     objects = ClientManager()
     
     USERNAME_FIELD = "username"
@@ -97,7 +95,7 @@ class Account(models.Model):
         ("CREDIT",_("Credit"))
     )
     number = models.CharField(unique=True, validators=[RegexValidator(r'\d{6}')])
-    owner = models.ForeignKey(Client, on_delete=models.CASCADE)
+    owner = models.ForeignKey(Client, related_name="accounts", on_delete=models.CASCADE)
     money = models.DecimalField(decimal_places=2)
     type_account = models.CharField(choices=TYPE_CHOICES, default="PERSONAL")
     # Account.card
@@ -132,8 +130,8 @@ class Account(models.Model):
 
 class Card(models.Model):
     number = models.CharField(unique=True, validators=[RegexValidator(r'\d{4}')])
-    owner = models.ForeignKey(Client, on_delete=models.CASCADE)
-    account = models.OneToOneField(Account, on_delete=models.CASCADE)
+    owner = models.ForeignKey(Client, related_name="cards", on_delete=models.CASCADE)
+    account = models.OneToOneField(Account, relate_name="cards", on_delete=models.CASCADE)
     pin = models.CharField(validators=[RegexValidator(r'\d{4}')])
 
     def set_pin(self, raw_pin):
