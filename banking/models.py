@@ -1,5 +1,5 @@
 from django.db import models, IntegrityError
-from django.contrib.auth.models import AbstractUser, PermissionsMixin, BaseUserManager
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.validators import RegexValidator
 from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.utils.translation import gettext_lazy as _
@@ -27,7 +27,7 @@ class ClientManager(BaseUserManager):
                 random_number = randint(1000, 9999)
                 username = unidecode(first_name_truncated) + str(random_number) + unidecode(last_name_truncated)
         #       if username not in usernames: # old solution
-                if not Client.objects.filter(username=username).exists():
+                if Client.objects.filter(username=username).exists():
                     continue
 
                 user = self.model(username = username, 
@@ -44,8 +44,8 @@ class ClientManager(BaseUserManager):
         
 
     def create_superuser(self, **extra_fields):
-        extra_fields["is_staff"] = True
         extra_fields["is_superuser"] = True
+        extra_fields["is_staff"] = True
         return self.create_user(**extra_fields)
 
 
@@ -79,46 +79,58 @@ class Client(AbstractUser):
     objects = ClientManager()
     
     USERNAME_FIELD = "username"
-    REQUIRED_FIELDS = ["email", "phone_number", "first_name", "last_name", "date_birth"]
+    REQUIRED_FIELDS = ["email", "phone_number", "first_name", "last_name", "date_birth", "pesel"]
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return self.full_name()  
 
     @property
     def full_name(self):
-        return self.__str__()
+        return f"{self.first_name} {self.last_name}"
 
 class Account(models.Model):
-    TYPE_CHOICES = (
-        ("PERSONAL",_("Personal")),
-        ("SAVING",_("Saving")),
-        ("CREDIT",_("Credit"))
-    )
-    number = models.CharField(unique=True, validators=[RegexValidator(r'\d{6}')])
+
+    class Type(models.TextChoices):
+        PERSONAL="PERSONAL", _("Personal")
+        SAVING="SAVING", _("Saving")
+        CREDIT="CREDIT", _("Credit")
+
+    number = models.CharField(unique=True, max_length=6, validators=[RegexValidator(r"^\d{6}$")], black=True)
     owner = models.ForeignKey(Client, related_name="accounts", on_delete=models.CASCADE)
-    money = models.DecimalField(decimal_places=2)
-    type_account = models.CharField(choices=TYPE_CHOICES, default="PERSONAL")
-    # Account.card
+    money = models.DecimalField(decimal_places=2, max_digits=15, default=0)
+    type_account = models.CharField(choices=Type.choices, default=Type.PERSONAL)
 
     def save(self, *args, **kwargs):
         if not self.number:
         #   accounts = Account.objects.values_list("number",flat=True) # old solution
             while True:
-                random_number = randint(100000, 999999)
+                random_number = str(randint(100000, 999999))
         #       if random_number not in accounts: # old solution
-                if not Account.objects.filter(number=random_number).exists():
-                    self.number = random_number
-                    break
-        super().save(*args, **kwargs)
-        return self
+                if Account.objects.filter(number=random_number).exists():
+                    continue
+                self.number = random_number
+                try:
+                    super().save(*args, **kwargs)
+                    return self
+                except IntegrityError:
+                    continue
+        else:
+            super().save(*args, **kwargs)
+            return self
+        
 
     @classmethod
     def transfer_money(cls, acc_from, acc_to, amount, safe_transfer):
+        if safe_transfer and amount > acc_from.money:
+            raise ValueError(_("Not enough funds"))
+        if amount <= 0:
+            raise ValueError(_("Transfer amount must be positive"))
+        if acc_from == acc_to:
+            raise ValueError(_("Not possible to transfer money to same account"))
         with transaction.atomic():
-            from_acc = Account.objects.select_for_update().get(number = acc_from)
-            to_acc = Account.objects.select_for_update().get(id = acc_to)
-            if safe_transfer and amount > from_acc.money:
-                raise ValueError(_("Not enough funds"))
+            from_acc = Account.objects.select_for_update().get(id = acc_from.id)
+            to_acc = Account.objects.select_for_update().get(id = acc_to.id)
+ 
             from_acc.money -= amount
             to_acc.money += amount
             from_acc.save()
@@ -129,10 +141,10 @@ class Account(models.Model):
         return f"{self.get_type_account_display()} {_("account")} ({self.money} PLN)" 
 
 class Card(models.Model):
-    number = models.CharField(unique=True, validators=[RegexValidator(r'\d{4}')])
+    number = models.CharField(unique=True, max_length=4, validators=[RegexValidator(r"^\d{4}$")])
     owner = models.ForeignKey(Client, related_name="cards", on_delete=models.CASCADE)
-    account = models.OneToOneField(Account, relate_name="cards", on_delete=models.CASCADE)
-    pin = models.CharField(validators=[RegexValidator(r'\d{4}')])
+    account = models.OneToOneField(Account, related_name="card", on_delete=models.CASCADE)
+    pin = models.CharField(max_length=128)
 
     def set_pin(self, raw_pin):
         self.pin = make_password(raw_pin)
@@ -144,15 +156,21 @@ class Card(models.Model):
         if not self.number:
         #   cards = Card.objects.values_list("number", flat=True) # old solution
             while True:
-                random_number = randint(1000,9999)
+                random_number = str(randint(1000,9999))
         #       if random_number not in cards: # old solution
-                if not Card.objects.filter(number=random_number).exists():
-                    self.number = random_number
-                    break
-            random_pin = str(randint(1000,9999))
-            self.set_pin(random_pin)
-        super().save(*args, **kwargs)
-        return self
+                if Card.objects.filter(number=random_number).exists():
+                    continue
+                self.number = random_number
+                random_pin = str(randint(1000,9999))
+                self.set_pin(random_pin)
+                try:
+                    super().save(*args, **kwargs)
+                    return self
+                except IntegrityError:
+                    continue
+        else:
+            super().save(*args, **kwargs)
+            return self
 
     def __str__(self):
         return f"{self.number} ({self.account.money})PLN"

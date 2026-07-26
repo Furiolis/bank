@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.utils.translation import gettext_lazy as _
+from django.db import models
 
 from .models import Client, Account
 
@@ -61,11 +62,11 @@ class NewClientForm(UserCreationForm):
 
 
 class NewAccountForm(forms.Form):
-    TYPE_CHOICES = (
-        ("PERSONAL",_("Personal")),
-        ("SAVING",_("Saving")),
-    )
-    type_account = forms.ChoiceField(choices=TYPE_CHOICES)
+    class Type(models.TextChoices):
+        PERSONAL="PERSONAL", _("Personal")
+        SAVING="SAVING", _("Saving")
+    
+    type_account = forms.ChoiceField(choices=Type.choices)
     add_card = forms.BooleanField(required=False)
 
     def save(self, owner: Client):
@@ -74,11 +75,11 @@ class NewAccountForm(forms.Form):
         return account
     
 class NewCreditForm(forms.Form):
-    money = forms.IntegerField(label=_("How much money you need"))
+    money = forms.DecimalField(label=_("How much money you need"), decimal_places=2, max_digits=15)
     add_card = forms.BooleanField(required=False)
 
     def save(self, owner:Client):
-        account = Account(owner=owner, type_account="CREDIT", money = self.cleaned_data["money"])
+        account = Account(owner=owner, type_account=Account.Type.CREDIT, money = self.cleaned_data["money"])
         account.save()
         return account
 
@@ -94,11 +95,12 @@ class AccountManagerForm(forms.Form):
         # self.fields["accounts"].queryset = Account.objects.filter(owner=self.owner).order_by("-money")
             
     def clean(self):
+        cleaned_data = super().clean()
         if self.action == "add_card":
-            account = self.cleaned_data["accounts"]
+            account = cleaned_data.get("accounts")
             if hasattr(account, "card"):
                 self.add_error("accounts", _(f"Card already exists to {account.number}"))
-        return self.cleaned_data
+        return cleaned_data
 
     def get_blocked_options(self):
         blocked_options = {}        
