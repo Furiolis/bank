@@ -82,7 +82,7 @@ class Client(AbstractUser):
     REQUIRED_FIELDS = ["email", "phone_number", "first_name", "last_name", "date_birth", "pesel"]
 
     def __str__(self):
-        return self.full_name()  
+        return self.full_name
 
     @property
     def full_name(self):
@@ -95,7 +95,7 @@ class Account(models.Model):
         SAVING="SAVING", _("Saving")
         CREDIT="CREDIT", _("Credit")
 
-    number = models.CharField(unique=True, max_length=6, validators=[RegexValidator(r"^\d{6}$")], black=True)
+    number = models.CharField(unique=True, max_length=6, validators=[RegexValidator(r"^\d{6}$")], blank=True)
     owner = models.ForeignKey(Client, related_name="accounts", on_delete=models.CASCADE)
     money = models.DecimalField(decimal_places=2, max_digits=15, default=0)
     type_account = models.CharField(choices=Type.choices, default=Type.PERSONAL)
