@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models
 
 from .models import Client, Account
+from .validators import validate_pesel_match_birth_date
 
 class NewClientForm(UserCreationForm):
     class Meta:
@@ -37,12 +38,8 @@ class NewClientForm(UserCreationForm):
 
         if not pesel or not date_birth:
             return cleaned_data
-        
-        month_to_year = {"0":"19","1":"19","2":"20","3":"20","4":"21","5":"21","6":"22","7":"22","8":"18","9":"18"}
-        month = pesel[2:4]
-        day = pesel[4:6]
-        year = month_to_year[month[0]] + pesel[:2]
-        if year != str(date_birth.year) or int(day) != date_birth.day or int(month) % 20 != date_birth.month:
+
+        if validate_pesel_match_birth_date(pesel, date_birth):
             self.add_error("pesel",_("PESEL does not match birth date"))
             self.add_error("date_birth",_("PESEL does not match birth date"))
             
