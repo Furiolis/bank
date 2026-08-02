@@ -50,9 +50,10 @@ class TestClientManager(TestCase):
     def test_user_missing_field(self):
         fields = {"first_name", "last_name", "email", "phone_number", "pesel", "date_birth"}
         for field in fields:
-            data = {** self.user_test_data, field:None}
-            with self.assertRaises(ValueError):
-                Client.objects.create_user(**data)
+            with self.subTest(field=field):
+                data = {** self.user_test_data, field:None}
+                with self.assertRaises(ValueError):
+                    Client.objects.create_user(**data)
 
     def test_superuser_proper_flags(self):
         self.assertTrue(self.superuser.is_staff)
@@ -61,6 +62,7 @@ class TestClientManager(TestCase):
     def test_superuser_missing_field(self):
         fields = {"email", "username", "pesel"}
         for field in fields:
-            data = {** self.superuser_test_data, field:None}
-            with self.assertRaises(ValueError):
-                Client.objects.create_superuser(** data)
+            with self.subTest(field=field):
+                data = {** self.superuser_test_data, field:None}
+                with self.assertRaises(ValueError):
+                    Client.objects.create_superuser(** data)
