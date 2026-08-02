@@ -47,6 +47,7 @@ class ClientManager(BaseUserManager):
                             date_birth = date_birth,
                             phone_number = phone_number,
                             **extra_fields)
+            user.full_clean()
             user.set_password(password)
             try: # just in case, AI suggested this, 
                 user.save(using = self._db)
@@ -83,6 +84,7 @@ class ClientManager(BaseUserManager):
                           date_birth = date_birth,
                           phone_number = phone_number,
                           **extra_fields)
+        superuser.full_clean()
         superuser.set_password(password)
         superuser.save(using = self._db)
         return superuser
