@@ -8,45 +8,84 @@ from django.db import transaction
 
 from random import randint
 from unidecode import unidecode
+from datetime import date
 
 from .validators import validate_pesel, validate_date_birth_above_18_today
 
 
 class ClientManager(BaseUserManager):
-
-    def create_user(self, email, first_name="none", last_name="none", password = None, username = "", **extra_fields):
+    def create_user(self, email=None, pesel=None, date_birth=None, first_name=None, last_name=None, phone_number=None, password = None, **extra_fields):
         if not email:
-            raise ValueError("Email required")
+            raise ValueError(_("Email is required"))
+        if not pesel:
+            raise ValueError(_("Pesel is required"))
+        if not date_birth:
+            raise ValueError(_("Date of birth is required"))
+        if not first_name:
+            raise ValueError(_("First name is required"))
+        if not last_name:
+            raise ValueError(_("Last name is required"))
+        if not phone_number:
+            raise ValueError(_("Phone number is required"))
+
         email = self.normalize_email(email)
-        if username == "" and first_name != "none" and last_name != "none":
-        #   usernames = Client.objects.values_list("username", flat=True) # old solution
-            username = "username"
-            first_name_truncated = first_name.lower()[:6]
-            last_name_truncated = last_name.lower()[:6]
-            while True:
-                random_number = randint(1000, 9999)
-                username = unidecode(first_name_truncated) + str(random_number) + unidecode(last_name_truncated)
-        #       if username not in usernames: # old solution
-                if Client.objects.filter(username=username).exists():
-                    continue
+    #   usernames = Client.objects.values_list("username", flat=True) # old solution
+        first_name_truncated = first_name.lower()[:6]
+        last_name_truncated = last_name.lower()[:6]
+        while True:
+            random_number = randint(1000, 9999)
+            username = unidecode(first_name_truncated) + str(random_number) + unidecode(last_name_truncated)
+    #       if username not in usernames: # old solution
+            if Client.objects.filter(username=username).exists():
+                continue
 
-                user = self.model(username = username, 
-                                email = email, 
-                                first_name = first_name, 
-                                last_name = last_name,
-                                **extra_fields)
-                user.set_password(password)
-                try: # just in case, AI suggested this, 
-                    user.save(using = self._db)
-                    return user
-                except IntegrityError:
-                    continue
-        
+            user = self.model(username = username, 
+                            email = email, 
+                            first_name = first_name, 
+                            last_name = last_name,
+                            pesel = pesel,
+                            date_birth = date_birth,
+                            phone_number = phone_number,
+                            **extra_fields)
+            user.set_password(password)
+            try: # just in case, AI suggested this, 
+                user.save(using = self._db)
+                return user
+            except IntegrityError:
+                continue
 
-    def create_superuser(self, **extra_fields):
+
+    def create_superuser(self, 
+                        email, 
+                        username,
+                        pesel,
+                        date_birth = date(year=1900, month=1, day=1), 
+                        first_name = "Fake", 
+                        last_name = "Bank", 
+                        phone_number = "000000000", 
+                        password = None, **extra_fields):
+        if not email:
+            raise ValueError(_("Email is required"))
+        if not username:
+            raise ValueError(_("Username is  required"))
+        if not pesel:
+            raise ValueError(_("Pesel is  required"))
+
+        email = self.normalize_email(email)
         extra_fields["is_superuser"] = True
         extra_fields["is_staff"] = True
-        return self.create_user(**extra_fields)
+
+        superuser = self.model(username = username, 
+                          email = email, 
+                          first_name = first_name,
+                          last_name = last_name,
+                          pesel = pesel,
+                          date_birth = date_birth,
+                          phone_number = phone_number,
+                          **extra_fields)
+        superuser.set_password(password)
+        superuser.save(using = self._db)
+        return superuser
 
 
 class Client(AbstractUser):
