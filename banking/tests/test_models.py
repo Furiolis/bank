@@ -183,3 +183,30 @@ class TestAccountTransaction(TransactionTestCase):
             Account.transfer_money(self.account_2, self.account_2, 100)
         self.assertEqual(str(error.exception), _("Not possible to transfer money to same account"))
 
+class TestCard(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = Client.objects.create_user(first_name="Tom",
+                                    last_name="Furiolis",
+                                    email="test3@GMail.COM",
+                                    phone_number= "123456789",
+                                    pesel="89010400004",
+                                    date_birth=date(year=1989,month=1,day=4),
+                                    password="passwordhashed")
+        cls.account_1 = Account.objects.create(owner=cls.user, type_account=Account.Type.PERSONAL)
+        cls.card_1 = Card.objects.create(owner=cls.user, account = cls.account_1)
+        cls.account_2 = Account.objects.create(owner=cls.user, type_account=Account.Type.PERSONAL)
+        cls.card_2 = Card.objects.create(owner=cls.user, account = cls.account_2)
+
+    def test_card_number_is_created(self):
+        self.assertTrue(self.card_1.number.isnumeric() and len(self.card_1.number) == 4)
+        self.assertTrue(self.card_2.number.isnumeric() and len(self.card_2.number) == 4)
+        self.assertNotEqual(self.card_1.number,self.card_2.number)
+
+    def test_set_and_check_pin(self):
+        self.card_1.set_pin("1234")
+        self.assertTrue(self.card_1.check_pin("1234"))
+
+    def test_pin_is_hashed(self):
+        self.assertTrue(self.card_2.pin.startswith("pbkdf2"))
+        self.assertTrue(self.card_1.pin.startswith("pbkdf2"))
