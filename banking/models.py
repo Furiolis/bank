@@ -47,8 +47,9 @@ class ClientManager(BaseUserManager):
                             date_birth = date_birth,
                             phone_number = phone_number,
                             **extra_fields)
-            user.full_clean()
+            
             user.set_password(password)
+            user.full_clean()
             try: # just in case, AI suggested this, 
                 user.save(using = self._db)
                 return user
@@ -84,8 +85,8 @@ class ClientManager(BaseUserManager):
                           date_birth = date_birth,
                           phone_number = phone_number,
                           **extra_fields)
-        superuser.full_clean()
         superuser.set_password(password)
+        superuser.full_clean()
         superuser.save(using = self._db)
         return superuser
 
@@ -161,17 +162,16 @@ class Account(models.Model):
         
 
     @classmethod
-    def transfer_money(cls, acc_from, acc_to, amount, safe_transfer):
-        if safe_transfer and amount > acc_from.money:
-            raise ValueError(_("Not enough funds"))
-        if amount <= 0:
-            raise ValueError(_("Transfer amount must be positive"))
-        if acc_from == acc_to:
-            raise ValueError(_("Not possible to transfer money to same account"))
+    def transfer_money(cls, acc_from, acc_to, amount, safe_transfer=True):
         with transaction.atomic():
             from_acc = Account.objects.select_for_update().get(id = acc_from.id)
             to_acc = Account.objects.select_for_update().get(id = acc_to.id)
- 
+            if safe_transfer and amount > acc_from.money:
+                raise ValueError(_("Not enough funds"))
+            if amount <= 0:
+                raise ValueError(_("Transfer amount must be positive"))
+            if acc_from == acc_to:
+                raise ValueError(_("Not possible to transfer money to same account"))       
             from_acc.money -= amount
             to_acc.money += amount
             from_acc.save()
