@@ -47,6 +47,7 @@ class TestClient(TestCase):
 
     def test_password_is_hashed(self):
         self.assertTrue(self.user.check_password("passwordhashed"))
+        self.assertNotEqual(self.user.password, "passwordhashed")
 
     def test_user_missing_field(self):
         fields = {"first_name", "last_name", "email", "phone_number", "pesel", "date_birth"}

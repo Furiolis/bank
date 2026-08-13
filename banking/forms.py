@@ -4,14 +4,14 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models
 
 from .models import Client, Account
-from .validators import validate_pesel_match_birth_date
+from .validators import validate_pesel_match_birth_date, validate_pesel, validate_date_birth_above_18_today
 
 class NewClientForm(UserCreationForm):
     class Meta:
         model = Client
         fields = ["first_name", "last_name", "pesel", "date_birth", "email", "phone_number"]
         widgets = {
-            "date_birth": forms.DateInput(attrs={'type': 'date'})
+            "date_birth": forms.DateInput(attrs={"type": "date"})
         }
 
         error_messages = {
@@ -24,29 +24,43 @@ class NewClientForm(UserCreationForm):
             "email":{
                 "invalid":_("Incorrect email")},
             "pesel":{
-                "consist":_("PESEL is required to consist only 11 digits"),
+                "consist":_("PESEL must consist of 11 digits"),
                 "invalid":_("Incorrect PESEL")},
             "date_birth":{
                         "required_age":_("Age is required to be above 18")},
             "phone_number":{ 
                         "invalid":_("Phone number is required to contains only 9 digits")}}
+
+
+    def clean_pesel(self):
+        pesel = self.cleaned_data["pesel"]
+        validate_pesel(pesel)
+        return pesel
+
+    def clean_date_birth(self):
+        date_birth = self.cleaned_data["date_birth"]
+        validate_date_birth_above_18_today(date_birth)
+        return date_birth
     
     def clean(self):
         cleaned_data = super().clean()
         date_birth = cleaned_data.get("date_birth")
         pesel = cleaned_data.get("pesel")
 
+        if self.errors.get("pesel") or self.errors.get("date_birth"):
+            return cleaned_data
+
         if not pesel or not date_birth:
             return cleaned_data
 
-        if validate_pesel_match_birth_date(pesel, date_birth):
+        if not validate_pesel_match_birth_date(pesel, date_birth):
             self.add_error("pesel",_("PESEL does not match birth date"))
             self.add_error("date_birth",_("PESEL does not match birth date"))
             
         return cleaned_data
 
 
-    def save(self, commit=True):
+    def save(self):
         user = Client.objects.create_user(
             first_name=self.cleaned_data["first_name"],
             last_name=self.cleaned_data["last_name"],

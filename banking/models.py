@@ -113,7 +113,7 @@ class Client(AbstractUser):
                                 error_messages={
                                     "required" :_("Date of birth is required"),
                                     "required_age" : _("Required age above 18")})
-    phone_number = models.CharField(_("phone number"),validators=[RegexValidator(r'\d{9}')],
+    phone_number = models.CharField(_("phone number"),validators=[RegexValidator(r"^\d{9}$")],
                                 error_messages={
                                     "required" : _("Phone number is required"),
                                     "invalid" : _("Phone number is incorrect, can contains only 9 digits")})
