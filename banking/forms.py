@@ -107,10 +107,11 @@ class AccountManagerForm(forms.Form):
             
     def clean(self):
         cleaned_data = super().clean()
-        if self.action == "add_card":
-            account = cleaned_data.get("accounts")
-            if hasattr(account, "card"):
-                self.add_error("accounts", _(f"Card already exists to {account.number}"))
+        account = cleaned_data.get("accounts")
+        if self.action == "add_card" and hasattr(account, "card"):
+            self.add_error("accounts", _(f"Card already exists to {account.number}"))
+        elif self.action == "delete_card" and not hasattr(account, "card"):
+            self.add_error("accounts", _(f"Account {account.number} has no card"))
         return cleaned_data
 
     def get_blocked_options(self):

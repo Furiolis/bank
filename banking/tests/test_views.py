@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
+from django.core.exceptions import ObjectDoesNotExist
 
 from banking.models import Client, Account, Card
 from banking.validators import validate_pesel, validate_date_birth_above_18_today, validate_pesel_match_birth_date
@@ -172,3 +173,79 @@ class TestNewAccountAndNewCreditViews(TestCase):
         response = self.client.post(reverse("banking:new_credit"), data={})
         self.assertFalse(response.context["form"].is_valid())
         self.assertEqual(Account.objects.count(), 0)
+
+class TestManagingAccountCardsView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        pesel, date_birth = provide_pesel_birthdate()
+        cls.client_1 = Client.objects.create_user(first_name="Tom",
+                                            last_name="Furiolis",
+                                            email="test3@GMail.COM",
+                                            phone_number= "123456789",
+                                            pesel=pesel,
+                                            date_birth=date_birth,
+                                            password="passwordhashed")
+        cls.account_11 = Account.objects.create(owner=cls.client_1, type_account=Account.Type.PERSONAL, money=1000)
+        cls.card_11 = Card.objects.create(owner=cls.client_1, account=cls.account_11)
+        cls.account_12 = Account.objects.create(owner=cls.client_1, type_account=Account.Type.SAVING, money=2000)
+        cls.card_12 = Card.objects.create(owner=cls.client_1, account=cls.account_12)
+        cls.account_13 = Account.objects.create(owner=cls.client_1, type_account=Account.Type.CREDIT, money=3000)
+
+        pesel, date_birth = provide_pesel_birthdate()
+        cls.client_2 = Client.objects.create_user(first_name="Tomas",
+                                            last_name="Fox",
+                                            email="test@GMail.COM",
+                                            phone_number= "123456789",
+                                            pesel=pesel,
+                                            date_birth=date_birth,
+                                            password="passwordhashed")
+
+    def test_proper_list_in_form(self):
+        self.client.force_login(self.client_1)
+        response = self.client.get(reverse("banking:products"))
+        self.assertQuerySetEqual(response.context["form"].fields["accounts"].queryset, [self.account_13,self.account_12,self.account_11])
+
+    def test_client_cant_see_others_accounts(self):
+        self.client.force_login(self.client_2)
+        response = self.client.get(reverse("banking:products"))
+        queryset = response.context["form"].fields["accounts"].queryset
+        self.assertNotIn(self.account_11, queryset)
+        self.assertNotIn(self.account_12, queryset)
+        self.assertNotIn(self.account_13, queryset)
+
+    def test_adding_card(self):
+        self.client.force_login(self.client_1)
+        self.client.post(reverse("banking:products"), data={"accounts":self.account_13.id,"action":"add_card"})
+        self.assertEqual(Card.objects.count(), 3)
+        self.assertTrue(self.account_13.card)
+
+    def test_deleting_card(self):
+        self.client.force_login(self.client_1)
+        self.client.post(reverse("banking:products"), data={"accounts":self.account_11.id,"action":"delete_card"})
+        self.assertEqual(Card.objects.count(), 1)
+
+    def test_deleting_account_without_card(self):
+        self.client.force_login(self.client_1)
+        self.client.post(reverse("banking:products"), data={"accounts":self.account_13.id,"action":"delete_account"})
+        self.assertEqual(Account.objects.count(), 2)
+        self.assertEqual(Card.objects.count(), 2)
+
+    def test_deleting_account_with_card(self):
+        self.client.force_login(self.client_1)
+        self.client.post(reverse("banking:products"), data={"accounts":self.account_11.id,"action":"delete_account"})
+        self.assertEqual(Account.objects.count(), 2)
+        self.assertEqual(Card.objects.count(), 1)
+
+    def test_adding_card_to_account_with_card(self):
+        self.client.force_login(self.client_1)
+        response = self.client.post(reverse("banking:products"), data={"accounts":self.account_11.id,"action":"add_card"})
+        self.assertFalse(response.context["form"].is_valid())
+        self.assertEqual(Card.objects.count(), 2)
+
+    def test_deleting_card_from_account_without_card(self):
+        self.client.force_login(self.client_1)
+        response = self.client.post(reverse("banking:products"), data={"accounts":self.account_13.id,"action":"delete_card"})
+        form = response.context["form"]
+        self.assertFalse(form.is_valid())
+        self.assertFormError(form, "accounts", f"Account {self.account_13.number} has no card")
+        self.assertEqual(Card.objects.count(), 2)
