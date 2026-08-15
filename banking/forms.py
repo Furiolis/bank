@@ -1,15 +1,17 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.utils.translation import gettext_lazy as _
+from django.db import models
 
 from .models import Client, Account
+from .validators import validate_pesel_match_birth_date, validate_pesel, validate_date_birth_above_18_today
 
 class NewClientForm(UserCreationForm):
     class Meta:
         model = Client
         fields = ["first_name", "last_name", "pesel", "date_birth", "email", "phone_number"]
         widgets = {
-            "date_birth": forms.DateInput(attrs={'type': 'date'})
+            "date_birth": forms.DateInput(attrs={"type": "date"})
         }
 
         error_messages = {
@@ -22,26 +24,36 @@ class NewClientForm(UserCreationForm):
             "email":{
                 "invalid":_("Incorrect email")},
             "pesel":{
-                "consist":_("PESEL is required to consist only 11 digits"),
+                "consist":_("PESEL must consist of 11 digits"),
                 "invalid":_("Incorrect PESEL")},
             "date_birth":{
                         "required_age":_("Age is required to be above 18")},
             "phone_number":{ 
                         "invalid":_("Phone number is required to contains only 9 digits")}}
+
+
+    def clean_pesel(self):
+        pesel = self.cleaned_data["pesel"]
+        validate_pesel(pesel)
+        return pesel
+
+    def clean_date_birth(self):
+        date_birth = self.cleaned_data["date_birth"]
+        validate_date_birth_above_18_today(date_birth)
+        return date_birth
     
     def clean(self):
         cleaned_data = super().clean()
         date_birth = cleaned_data.get("date_birth")
         pesel = cleaned_data.get("pesel")
 
+        if self.errors.get("pesel") or self.errors.get("date_birth"):
+            return cleaned_data
+
         if not pesel or not date_birth:
-            return
-        
-        month_to_year = {"0":"19","1":"19","2":"20","3":"20","4":"21","5":"21","6":"22","7":"22","8":"18","9":"18"}
-        month = pesel[2:4]
-        day = pesel[4:6]
-        year = month_to_year[month[0]] + pesel[:2]
-        if year != str(date_birth.year) or int(day) != date_birth.day or int(month) % 20 != date_birth.month:
+            return cleaned_data
+
+        if not validate_pesel_match_birth_date(pesel, date_birth):
             self.add_error("pesel",_("PESEL does not match birth date"))
             self.add_error("date_birth",_("PESEL does not match birth date"))
             
@@ -61,11 +73,11 @@ class NewClientForm(UserCreationForm):
 
 
 class NewAccountForm(forms.Form):
-    TYPE_CHOICES = (
-        ("PERSONAL",_("Personal")),
-        ("SAVING",_("Saving")),
-    )
-    type_account = forms.ChoiceField(choices=TYPE_CHOICES)
+    class Type(models.TextChoices):
+        PERSONAL="PERSONAL", _("Personal")
+        SAVING="SAVING", _("Saving")
+    
+    type_account = forms.ChoiceField(choices=Type.choices)
     add_card = forms.BooleanField(required=False)
 
     def save(self, owner: Client):
@@ -74,11 +86,11 @@ class NewAccountForm(forms.Form):
         return account
     
 class NewCreditForm(forms.Form):
-    money = forms.IntegerField(label=_("How much money you need"))
+    money = forms.DecimalField(label=_("How much money you need"), decimal_places=2, max_digits=15)
     add_card = forms.BooleanField(required=False)
 
     def save(self, owner:Client):
-        account = Account(owner=owner, type_account="CREDIT", money = self.cleaned_data["money"])
+        account = Account(owner=owner, type_account=Account.Type.CREDIT, money = self.cleaned_data["money"])
         account.save()
         return account
 
@@ -89,20 +101,22 @@ class AccountManagerForm(forms.Form):
         super().__init__(*args,**kwargs)
         self.owner = owner
         self.action = action
-        self.fields["accounts"].queryset = self.owner.account_set.all().order_by("-money")
+        self.fields["accounts"].queryset = self.owner.accounts.all().order_by("-money")
         # equals to line below, left for my personal educational purpose
         # self.fields["accounts"].queryset = Account.objects.filter(owner=self.owner).order_by("-money")
             
     def clean(self):
-        if self.action == "add_card":
-            account = self.cleaned_data["accounts"]
-            if hasattr(account, "card"):
-                self.add_error("accounts", _(f"Card already exists to {account.number}"))
-        self.cleaned_data
+        cleaned_data = super().clean()
+        account = cleaned_data.get("accounts")
+        if self.action == "add_card" and hasattr(account, "card"):
+            self.add_error("accounts", _(f"Card already exists to {account.number}"))
+        elif self.action == "delete_card" and not hasattr(account, "card"):
+            self.add_error("accounts", _(f"Account {account.number} has no card"))
+        return cleaned_data
 
     def get_blocked_options(self):
         blocked_options = {}        
-        accounts = self.owner.account_set.select_related("card").all()
+        accounts = self.owner.accounts.select_related("card").all()
         # equals to line below, left for my personal educational purpose
         # accounts = Account.objects.select_related("card").filter(owner=self.owner)
 
