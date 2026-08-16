@@ -10,3 +10,7 @@
     background-image: linear-gradient(to right,lightblue, rgb(113, 113, 248) ,blue, darkblue);
     border-radius: 20px;
 }
+
+.no-card{
+    margin: 20px;
+}
