@@ -8,23 +8,35 @@ from django.db import transaction
 from .models import Transfer
 from banking.models import Account
 
-class TranferFormBase(ModelForm):
+class TransferFormBase(ModelForm):
     class Meta:
         model = Transfer
         exclude = ["date", "internal_transfer_type"]
         labels = {"account": _("From"),
                   "money": _("Amount"),
                   "connected_account_name": _("Recipient name"),
-                  "connected_account_number": _("Account number")
+                  "connected_account_number": _("Recipient account number")
                   }
+        
     def __init__(self,  *args, owner, **kwargs):
         super().__init__(*args, **kwargs)
         self.is_internal = False
         self.owner = owner  
-        self.queryset_ = self.owner.account_set.all()
+        self.queryset_ = self.owner.accounts.all()
         self.fields["account"].queryset = self.queryset_.filter(money__gt = 0).order_by("-money")
 
-    def save(self, commit = True):
+    def clean(self):
+        cleaned_data = super().clean()
+        if "account" not in self.errors and "money" not in self.errors:
+            account = cleaned_data["account"]
+            money = cleaned_data["money"]
+            if account.money < money:
+                raise ValidationError(_("Not enaught money to transfer"))
+            if money <= 0:
+                raise ValidationError(_("Money must be positive"))
+        return cleaned_data
+
+    def save(self):
         cleaned_data =  self.cleaned_data
         money = cleaned_data["money"]
         from_acc = cleaned_data["account"]
@@ -55,10 +67,10 @@ class TranferFormBase(ModelForm):
             Account.transfer_money(from_acc, to_acc, money, safe_transfer=True) # <---- there will be another atomic
         return transfer_from_acc, transfer_to_acc
             
-class InternalTransferForm(TranferFormBase):
+class InternalTransferForm(TransferFormBase):
     account_internal = forms.ModelChoiceField(queryset=Account.objects.none())
-    class Meta(TranferFormBase.Meta):
-        exclude = TranferFormBase.Meta.exclude + ["connected_account_name", "connected_account_number"]
+    class Meta(TransferFormBase.Meta):
+        exclude = TransferFormBase.Meta.exclude + ["connected_account_name", "connected_account_number"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -67,12 +79,12 @@ class InternalTransferForm(TranferFormBase):
 
     def clean(self):
         self.cleaned_data = super().clean()
-        if self.cleaned_data.get("account") == self.cleaned_data.get("account_internal"):
-            raise ValidationError(_("Both accounts are the same"))
+        if "account" not in self.errors:
+            if self.cleaned_data.get("account") == self.cleaned_data.get("account_internal"):
+                raise ValidationError(_("Both accounts are the same"))
         return self.cleaned_data
 
-
-class ExternalTransferForm(TranferFormBase):
+class ExternalTransferForm(TransferFormBase):
     def clean_connected_account_number(self):
         connected_account_number = self.cleaned_data["connected_account_number"]
         account = Account.objects.filter(number = connected_account_number).first()
@@ -87,6 +99,7 @@ class ExternalTransferForm(TranferFormBase):
     
     def clean(self):
         self.cleaned_data = super().clean()
-        if self.cleaned_data.get("account").number == self.cleaned_data.get("connected_account_number"):
-            raise ValidationError(_("Both accounts are the same"))
+        if "account" not in self.errors:
+            if self.cleaned_data.get("account").number == self.cleaned_data.get("connected_account_number"):
+                raise ValidationError(_("Both accounts are the same"))
         return self.cleaned_data
