@@ -5,7 +5,7 @@ from django.core.validators import RegexValidator
 from banking.models import Account
 
 class Transfer(models.Model):
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name="transfers")
     connected_account_number = models.CharField(_("connected account number"), max_length = 6, validators=[RegexValidator(r'\d{6}')])
     connected_account_name = models.CharField(_("connected account name"),max_length=100, null = True, blank=True)
     money = models.IntegerField(_("money"))

@@ -1,0 +1,16 @@
+.transfer {
+    margin: 1px;
+    padding: 10px;
+    background-color: rgb(209, 209, 209);
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.transfer h5, p{
+    margin: 2px;
+}
+
+.transfer-details {
+    text-align: center;
+}

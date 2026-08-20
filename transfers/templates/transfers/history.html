@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static "transfers/transfer.css" %}">
+{% endblock styles %}
+
+{% block content %}
+<div class="white-container">
+  Filters
+</div>
+<div class="white-container">
+  {%for transfer in transfers %}
+    {% include "transfers/include/transfer.html" %}
+  {% empty %}
+    <p> {% trans "No transfer to print" %}</p>
+  {% endfor %}
+
+</div>
+
+{% endblock content %}

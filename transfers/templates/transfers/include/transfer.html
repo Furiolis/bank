@@ -1,0 +1,18 @@
+{% load i18n %}
+<div class = "transfer">
+    <div class = "transfer-sender {% if transfer.account.owner == owner %} owner {% endif %}">
+        <h5>{% trans "Sender" %}</h5>
+        <p>{{ transfer.account.owner }}</p>
+        <p>{{ transfer.account.number }} </p>
+    </div>
+    <div class = "transfer-details">
+        <p>{{ transfer.date }}</p>
+        <p>{{ transfer.money }}</p>
+        <p>{{ transfer.title }}</p>
+    </div>
+    <div class = "transfer-recipient  {% if not transfer.account.owner == owner %} owner {% endif %}">
+        <h5>{% trans "Recipient" %}</h5>
+        <p>{{ transfer.connected_account_number }}</p>
+       <p> {{ transfer.connected_account_name }}</p>
+    </div>
+</div>
