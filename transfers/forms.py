@@ -103,3 +103,28 @@ class ExternalTransferForm(TransferFormBase):
             if self.cleaned_data.get("account").number == self.cleaned_data.get("connected_account_number"):
                 raise ValidationError(_("Both accounts are the same"))
         return self.cleaned_data
+
+class HistoryManagementForm(forms.Form):
+    accounts = forms.ChoiceField(required=False)
+    internal = forms.BooleanField(initial=True, required=False)
+    external = forms.BooleanField(initial=True, required=False)
+    lower_range_money = forms.DecimalField(decimal_places=2, max_digits=15, required=False)
+    higher_range_money = forms.DecimalField(decimal_places=2, max_digits=15, required=False)
+
+    def __init__(self, *args, owner, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.owner = owner
+        accounts = owner.accounts.all()
+        self.fields["accounts"].choices = [
+            ("all", _("All accounts")),
+            *[(str(account.pk), f"{account.type_account} {account.number}" ) for account in accounts]]
+
+
+    def clean(self):
+        cleaned_data =  super().clean()
+        if "lower_range_money" not in self.errors and "higher_range_money" not in self.errors:
+            if cleaned_data["lower_range_money"] and cleaned_data["higher_range_money"]:
+                if cleaned_data["lower_range_money"] > cleaned_data["higher_range_money"]:
+                    raise ValidationError(_("Lower limit must be lower than Higher limit"))
+
+    

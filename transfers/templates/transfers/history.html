@@ -4,11 +4,17 @@
 
 {% block styles %}
 <link rel="stylesheet" href="{% static "transfers/transfer.css" %}">
+<link rel="stylesheet" href="{% static "form.css" %}">
 {% endblock styles %}
 
 {% block content %}
 <div class="white-container">
-  Filters
+  <h2>{% trans "Filters" %}</h2>
+  <form method="post" action="" class="standard-form">
+    {% csrf_token %}
+    {{form}}
+    <button type="submit">{% trans "Refresh" %}</button>
+  </form>
 </div>
 <div class="white-container">
   {%for transfer in transfers %}

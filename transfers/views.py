@@ -2,9 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
+from django.db.models import Q
 
-from .forms import InternalTransferForm, ExternalTransferForm
+from .forms import InternalTransferForm, ExternalTransferForm, HistoryManagementForm
 from .models import Transfer
+
 
 @login_required
 def transfer(request):
@@ -35,9 +37,31 @@ def transfer(request):
 @login_required
 def history(request):
     client = request.user
-
-    all_client_transfers = Transfer.objects.filter(account__owner=client).order_by("date")
-
+    filtered_transfers = Transfer.objects.filter(account__owner=client).order_by("date")
+    if request.method == "POST":
+        form = HistoryManagementForm(request.POST, owner=client)
+        if form.is_valid():
+            #print(form.cleaned_data["accounts"], form.cleaned_data["internal"], form.cleaned_data["external"],form.cleaned_data["lower_range_money"],form.cleaned_data["higher_range_money"])
+            selected_account = form.cleaned_data["accounts"]
+            if selected_account != "all":
+                filtered_transfers = Transfer.objects.filter(account__owner=client).order_by("date")
+                filtered_transfers = filtered_transfers.filter(account_id = selected_account)
+            if not form.cleaned_data["internal"] and form.cleaned_data["external"]:
+                filtered_transfers = filtered_transfers.filter(internal_transfer_type=False)
+            elif form.cleaned_data["internal"] and not form.cleaned_data["external"]:
+                filtered_transfers = filtered_transfers.filter(internal_transfer_type=True)
+            elif not form.cleaned_data["internal"] and not form.cleaned_data["external"]:
+                filtered_transfers = filtered_transfers.none()
+            if form.cleaned_data["lower_range_money"] is not None and not form.cleaned_data["higher_range_money"]:
+                filtered_transfers = filtered_transfers.filter(Q(money__gte=form.cleaned_data["lower_range_money"]) | Q(money__lte=-form.cleaned_data["lower_range_money"]))
+            elif form.cleaned_data["higher_range_money"] is not None and not form.cleaned_data["lower_range_money"]:
+                filtered_transfers = filtered_transfers.filter(Q(money__lte=form.cleaned_data["higher_range_money"]) & Q(money__gte=-form.cleaned_data["higher_range_money"]))
+            elif form.cleaned_data["higher_range_money"] is not None and form.cleaned_data["lower_range_money"] is not None:
+                filtered_transfers = filtered_transfers.filter((Q(money__gte=-form.cleaned_data["higher_range_money"]) & Q(money__lte=-form.cleaned_data["lower_range_money"])) | (Q(money__lte=form.cleaned_data["higher_range_money"]) & Q(money__gte=form.cleaned_data["lower_range_money"])))
+        else: filtered_transfers = Transfer.objects.none()
+    else:
+        form = HistoryManagementForm(owner=client)
     return render(request, "transfers/history.html",{
-        "transfers":all_client_transfers,
-        "owner":client})
+        "transfers":filtered_transfers,
+        "owner":client,
+        "form":form})
