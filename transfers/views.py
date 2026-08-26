@@ -41,10 +41,10 @@ def history(request):
     if request.method == "POST":
         form = HistoryManagementForm(request.POST, owner=client)
         if form.is_valid():
-            #print(form.cleaned_data["accounts"], form.cleaned_data["internal"], form.cleaned_data["external"],form.cleaned_data["lower_range_money"],form.cleaned_data["higher_range_money"])
+            #print(form.cleaned_data["accounts"], form.cleaned_data["internal"], form.cleaned_data["external"],form.cleaned_data["lower_limit_money"],form.cleaned_data["higher_limit_money"])
             selected_account = form.cleaned_data["accounts"]
             if selected_account != "all":
-                filtered_transfers = Transfer.objects.filter(account__owner=client).order_by("date")
+                filtered_transfers = Transfer.objects.filter(account__owner=client)
                 filtered_transfers = filtered_transfers.filter(account_id = selected_account)
             if not form.cleaned_data["internal"] and form.cleaned_data["external"]:
                 filtered_transfers = filtered_transfers.filter(internal_transfer_type=False)
@@ -52,13 +52,21 @@ def history(request):
                 filtered_transfers = filtered_transfers.filter(internal_transfer_type=True)
             elif not form.cleaned_data["internal"] and not form.cleaned_data["external"]:
                 filtered_transfers = filtered_transfers.none()
-            if form.cleaned_data["lower_range_money"] is not None and not form.cleaned_data["higher_range_money"]:
-                filtered_transfers = filtered_transfers.filter(Q(money__gte=form.cleaned_data["lower_range_money"]) | Q(money__lte=-form.cleaned_data["lower_range_money"]))
-            elif form.cleaned_data["higher_range_money"] is not None and not form.cleaned_data["lower_range_money"]:
-                filtered_transfers = filtered_transfers.filter(Q(money__lte=form.cleaned_data["higher_range_money"]) & Q(money__gte=-form.cleaned_data["higher_range_money"]))
-            elif form.cleaned_data["higher_range_money"] is not None and form.cleaned_data["lower_range_money"] is not None:
-                filtered_transfers = filtered_transfers.filter((Q(money__gte=-form.cleaned_data["higher_range_money"]) & Q(money__lte=-form.cleaned_data["lower_range_money"])) | (Q(money__lte=form.cleaned_data["higher_range_money"]) & Q(money__gte=form.cleaned_data["lower_range_money"])))
-        else: filtered_transfers = Transfer.objects.none()
+            if not form.cleaned_data["crediting"] and form.cleaned_data["debiting"]:
+                filtered_transfers = filtered_transfers.filter(money__lt=0)
+            elif form.cleaned_data["crediting"] and not form.cleaned_data["debiting"]:
+                filtered_transfers = filtered_transfers.filter(money__gt=0)
+            elif not form.cleaned_data["crediting"] and not form.cleaned_data["debiting"]:
+                filtered_transfers = filtered_transfers.none()
+            if form.cleaned_data["lower_limit_money"] is not None and not form.cleaned_data["higher_limit_money"]:
+                filtered_transfers = filtered_transfers.filter(Q(money__gte=form.cleaned_data["lower_limit_money"]) | Q(money__lte=-form.cleaned_data["lower_limit_money"]))
+            elif form.cleaned_data["higher_limit_money"] is not None and not form.cleaned_data["lower_limit_money"]:
+                filtered_transfers = filtered_transfers.filter(Q(money__lte=form.cleaned_data["higher_limit_money"]) & Q(money__gte=-form.cleaned_data["higher_limit_money"]))
+            elif form.cleaned_data["higher_limit_money"] is not None and form.cleaned_data["lower_limit_money"] is not None:
+                filtered_transfers = filtered_transfers.filter((Q(money__gte=-form.cleaned_data["higher_limit_money"]) & Q(money__lte=-form.cleaned_data["lower_limit_money"])) | (Q(money__lte=form.cleaned_data["higher_limit_money"]) & Q(money__gte=form.cleaned_data["lower_limit_money"])))
+            filtered_transfers = filtered_transfers.filter(date__lte=form.cleaned_data["higher_limit_date"]).filter(date__gte=form.cleaned_data["lower_limit_date"])
+            filtered_transfers = filtered_transfers.order_by(form.cleaned_data["order_by"])
+        else: filtered_transfers = filtered_transfers.none()
     else:
         form = HistoryManagementForm(owner=client)
     return render(request, "transfers/history.html",{

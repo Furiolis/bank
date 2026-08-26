@@ -4,6 +4,7 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 from django.db import transaction
 
+from datetime import datetime, timedelta
 
 from .models import Transfer
 from banking.models import Account
@@ -108,8 +109,14 @@ class HistoryManagementForm(forms.Form):
     accounts = forms.ChoiceField(required=False)
     internal = forms.BooleanField(initial=True, required=False)
     external = forms.BooleanField(initial=True, required=False)
-    lower_range_money = forms.DecimalField(decimal_places=2, max_digits=15, required=False)
-    higher_range_money = forms.DecimalField(decimal_places=2, max_digits=15, required=False)
+    lower_limit_money = forms.DecimalField(decimal_places=2, max_digits=15, required=False)
+    higher_limit_money = forms.DecimalField(decimal_places=2, max_digits=15, required=False)
+    lower_limit_date = forms.DateField(initial=datetime.today().date()-timedelta(days=90),widget=forms.DateInput(attrs={"type": "date"}), required=False)
+    higher_limit_date = forms.DateField(initial=datetime.today().date(),widget=forms.DateInput(attrs={"type": "date"}), required=False)
+    crediting = forms.BooleanField(initial=True, required=False)
+    debiting = forms.BooleanField(initial=True, required=False)
+    order_by = forms.ChoiceField(choices=[("-date", _("Newest firts")),("date",_("Oldest firts")),("money",_("Amount ascending")),("-money",_("Amount descending"))])
+
 
     def __init__(self, *args, owner, **kwargs):
         super().__init__(*args, **kwargs)
@@ -119,12 +126,28 @@ class HistoryManagementForm(forms.Form):
             ("all", _("All accounts")),
             *[(str(account.pk), f"{account.type_account} {account.number}" ) for account in accounts]]
 
+    def clean_higher_limit_date(self):
+        date = self.cleaned_data["higher_limit_date"]
+        if date and date > datetime.today().date():
+            raise ValidationError(_("You must pick earlier date"))
+        return date
+        
+    def clean_lower_limit_date(self):
+        date = self.cleaned_data["lower_limit_date"]
+        if date and date > datetime.today().date():
+            raise ValidationError(_("You must pick earlier date"))
+        return date
 
     def clean(self):
         cleaned_data =  super().clean()
-        if "lower_range_money" not in self.errors and "higher_range_money" not in self.errors:
-            if cleaned_data["lower_range_money"] and cleaned_data["higher_range_money"]:
-                if cleaned_data["lower_range_money"] > cleaned_data["higher_range_money"]:
+        if "lower_limit_money" not in self.errors and "higher_limit_money" not in self.errors:
+            if cleaned_data["lower_limit_money"] and cleaned_data["higher_limit_money"]:
+                if cleaned_data["lower_limit_money"] > cleaned_data["higher_limit_money"]:
                     raise ValidationError(_("Lower limit must be lower than Higher limit"))
+        if "lower_limit_date" not in self.errors and "higher_limit_date" not in self.errors:
+            if cleaned_data["lower_limit_date"] and cleaned_data["higher_limit_date"]:
+                if cleaned_data["lower_limit_date"] > cleaned_data["higher_limit_date"]:
+                    raise ValidationError(_("Earlier date must be earlier than later"))
+        return cleaned_data
 
     

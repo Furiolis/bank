@@ -6,6 +6,7 @@ from transfers.models import Transfer
 from transfers.forms import TransferFormBase, ExternalTransferForm, InternalTransferForm, HistoryManagementForm
 from banking.some_utility import provide_pesel_birthdate
 
+from datetime import date
 
 class TestTransferForms(TestCase):
     @classmethod
@@ -210,16 +211,19 @@ class TestHistoryFilteringForm(TestCase):
             form.save()
 
     def test_failed_form_lower_limit_is_higher_than_higher(self):
-        form = HistoryManagementForm(owner=self.client_1, data={"accounts":"all","external":True, "internal":True, "lower_range_money": 300, "higher_range_money":200})
+        form = HistoryManagementForm(owner=self.client_1, data={"accounts":"all","lower_limit_money": 300, "higher_limit_money":200})
         self.assertFalse(form.is_valid())
 
     def test_form_allow_only_one_limit_to_be_defined(self):
-        form = HistoryManagementForm(owner=self.client_1, data={"accounts":"all","external":True, "internal":True, "lower_range_money": 300})
+        form = HistoryManagementForm(owner=self.client_1, data={"accounts":"all", "lower_limit_money": 300})
         self.assertTrue(form.is_valid())
 
-        form = HistoryManagementForm(owner=self.client_1, data={"accounts":"all","external":True, "internal":True, "higher_range_money":200})
+        form = HistoryManagementForm(owner=self.client_1, data={"accounts":"all", "higher_limit_money":200})
         self.assertTrue(form.is_valid())
 
+    def test_failed_form_earlier_date_is_later_than_later(self):
+        form = HistoryManagementForm(owner=self.client_1, data={"accounts":"all", "lower_limit_date":date(year=2020, month=1, day=10), "higher_limit_date":date(year=2020, month=1, day=1)})
+        self.assertFalse(form.is_valid())
 
         # cls.data_external = {"account": cls.account_12, 
         #          "money":100, 

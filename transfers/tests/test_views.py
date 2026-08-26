@@ -147,6 +147,7 @@ class TestHistoryView(TestCase):
 
         self.client.force_login(self.client_2)
         response = self.client.get(reverse("transfers:history"))
+        self.assertEqual(response.context["transfers"].count(), 3)
         self.assertNotContains(response,"transfer1")
         self.assertNotContains(response,"transfer2")
         self.assertNotContains(response,"transfer3")
@@ -175,7 +176,7 @@ class TestHistoryView(TestCase):
 
     def test_selected_account_returns_corresponding_transfers(self):
         self.client.force_login(self.client_1)
-        response = self.client.post(reverse("transfers:history"), data={"accounts":str(self.account_11.pk), "external":True, "internal":True})
+        response = self.client.post(reverse("transfers:history"), data={"accounts":str(self.account_11.pk), "external":True, "internal":True, "crediting":True, "debiting":True})
         self.assertTrue(response.context["form"].is_valid())
 
         self.assertContains(response,"transfer1")
@@ -188,7 +189,7 @@ class TestHistoryView(TestCase):
         self.assertNotContains(response,"transfer6")
         self.assertNotContains(response,"transfer8")
 
-        response = self.client.post(reverse("transfers:history"), data={"accounts":str(self.account_13.pk), "external":True, "internal":True})
+        response = self.client.post(reverse("transfers:history"), data={"accounts":str(self.account_13.pk), "external":True, "internal":True,"crediting":True, "debiting":True})
         self.assertTrue(response.context["form"].is_valid())
 
         self.assertContains(response,"transfer5")
@@ -203,7 +204,7 @@ class TestHistoryView(TestCase):
 
     def test_external_internal_check_boxes_returns_corresponding_transfers(self):
         self.client.force_login(self.client_1)
-        response = self.client.post(reverse("transfers:history"), data={"accounts":"all", "external":False, "internal":True})
+        response = self.client.post(reverse("transfers:history"), data={"accounts":"all", "external":False, "internal":True,"crediting":True, "debiting":True})
         self.assertTrue(response.context["form"].is_valid())
         self.assertContains(response,"transfer1")
         self.assertContains(response,"transfer2")
@@ -214,7 +215,7 @@ class TestHistoryView(TestCase):
         self.assertNotContains(response,"transfer7")
         self.assertNotContains(response,"transfer8")
 
-        response = self.client.post(reverse("transfers:history"), data={"accounts":"all", "external":True, "internal":False})
+        response = self.client.post(reverse("transfers:history"), data={"accounts":"all", "external":True, "internal":False,"crediting":True, "debiting":True})
         self.assertTrue(response.context["form"].is_valid())
         self.assertNotContains(response,"transfer1")
         self.assertNotContains(response,"transfer2")
@@ -224,15 +225,15 @@ class TestHistoryView(TestCase):
         self.assertContains(response,"transfer6")
         self.assertContains(response,"transfer7")
 
-    def test_none_checkbox_selected(self):
+    def test_none_of_external_internal_checkbox_selected(self):
         self.client.force_login(self.client_1)
-        response = self.client.post(reverse("transfers:history"), data={"accounts":"all", "external":False, "internal":False})
+        response = self.client.post(reverse("transfers:history"), data={"accounts":"all", "external":False, "internal":False,"crediting":True, "debiting":True})
         self.assertTrue(response.context["form"].is_valid())
         self.assertEqual(response.context["transfers"].count(), 0)
 
     def test_money_fields_limits_transfers(self):
         self.client.force_login(self.client_1)
-        response = self.client.post(reverse("transfers:history"), data={"accounts":"all", "external":True, "internal":True, "lower_range_money": 400, "higher_range_money":2000})
+        response = self.client.post(reverse("transfers:history"), data={"accounts":"all", "external":True, "internal":True, "lower_limit_money": 400, "higher_limit_money":2000, "crediting":True, "debiting":True})
         self.assertTrue(response.context["form"].is_valid())
         self.assertEqual(response.context["transfers"].count(), 4)
         self.assertContains(response,"transfer1")
@@ -244,7 +245,7 @@ class TestHistoryView(TestCase):
         self.assertNotContains(response,"transfer7")
         self.assertNotContains(response,"transfer8")
 
-        response = self.client.post(reverse("transfers:history"), data={"accounts":"all", "external":True, "internal":True, "lower_range_money": 50, "higher_range_money":300})
+        response = self.client.post(reverse("transfers:history"), data={"accounts":"all", "external":True, "internal":True, "lower_limit_money": 50, "higher_limit_money":300,"crediting":True, "debiting":True})
         self.assertTrue(response.context["form"].is_valid())
         self.assertEqual(response.context["transfers"].count(), 6)
         self.assertNotContains(response,"transfer1")
@@ -256,7 +257,7 @@ class TestHistoryView(TestCase):
         self.assertNotContains(response,"transfer7")
         self.assertNotContains(response,"transfer8")
 
-        response = self.client.post(reverse("transfers:history"), data={"accounts":"all", "external":True, "internal":True, "lower_range_money": 450})
+        response = self.client.post(reverse("transfers:history"), data={"accounts":"all", "external":True, "internal":True, "lower_limit_money": 450, "crediting":True, "debiting":True})
         self.assertTrue(response.context["form"].is_valid())
         self.assertEqual(response.context["transfers"].count(), 5)
         self.assertContains(response,"transfer1")
@@ -268,7 +269,7 @@ class TestHistoryView(TestCase):
         self.assertNotContains(response,"transfer7")
         self.assertContains(response,"transfer8")
 
-        response = self.client.post(reverse("transfers:history"), data={"accounts":"all", "external":True, "internal":True, "higher_range_money":250})
+        response = self.client.post(reverse("transfers:history"), data={"accounts":"all", "external":True, "internal":True, "higher_limit_money":250, "crediting":True, "debiting":True})
         self.assertTrue(response.context["form"].is_valid())
         self.assertEqual(response.context["transfers"].count(), 5)
         self.assertNotContains(response,"transfer1")
@@ -282,18 +283,43 @@ class TestHistoryView(TestCase):
 
     def test_failed_limiting_in_views(self):
         self.client.force_login(self.client_1)
-        response = self.client.post(reverse("transfers:history"), data={"accounts":"all", "external":True, "internal":True, "lower_range_money": 300, "higher_range_money":200})
+        response = self.client.post(reverse("transfers:history"), data={"accounts":"all", "external":True, "internal":True, "lower_limit_money": 300, "higher_limit_money":200, "crediting":True, "debiting":True})
         self.assertFalse(response.context["form"].is_valid())
         self.assertEqual(response.context["transfers"].count(), 0)
 
+    def test_crediting_debiting_check_boxes_returns_corresponding_transfers(self):
+        self.client.force_login(self.client_1)
+        response = self.client.post(reverse("transfers:history"), data={"accounts":"all", "external":True, "internal":True,"crediting":True, "debiting":False})
+        self.assertTrue(response.context["form"].is_valid())
+        self.assertEqual(response.context["transfers"].count(), 7)
+        self.assertContains(response,"500.00")
+        self.assertContains(response,"300.00")
+        self.assertContains(response,"123.00")
+        self.assertContains(response,"1200.00")
+        self.assertContains(response,"150.00")
+        self.assertNotContains(response,"333.00")
+        self.assertContains(response,"7.00")
+        self.assertContains(response,"2500.00")
+        self.assertNotContains(response,"-500.00")
+        self.assertNotContains(response,"-300.00")
+        self.assertNotContains(response,"-123.00")
+        self.assertNotContains(response,"-1200.00")
+        self.assertNotContains(response,"-150.00")
 
-        """
-        (cls.account_11,cls.account_12,500,"transfer1"),
-        (cls.account_11,cls.account_14,300,"transfer2"),
-        (cls.account_12,cls.account_14,123,"transfer3"),
-        (cls.account_12,cls.account_14,1200,"transfer4"),
-        (cls.account_12,cls.account_13,150,"transfer5",))
-        (cls.account_13,cls.account_21.number,cls.account_21.owner.full_name,333,"transfer6"),
-        (cls.account_22,cls.account_11.number,cls.account_11.owner.full_name,7,"transfer7",),
-        (cls.account_22,cls.account_12.number,cls.account_12.owner.full_name,2500,"transfer8"))
-        """
+        response = self.client.post(reverse("transfers:history"), data={"accounts":"all", "external":True, "internal":True,"crediting":False, "debiting":True})
+        self.assertTrue(response.context["form"].is_valid())
+        self.assertEqual(response.context["transfers"].count(), 6)
+        self.assertContains(response,"-500.00")
+        self.assertContains(response,"-300.00")
+        self.assertContains(response,"-123.00")
+        self.assertContains(response,"-1200.00")
+        self.assertContains(response,"-150.00")
+        self.assertContains(response,"-333.00")
+        self.assertNotContains(response,"2500.00")
+        self.assertNotContains(response,"7.00")
+
+    def test_none_of_debiting_crediting_checkbox_selected(self):
+        self.client.force_login(self.client_1)
+        response = self.client.post(reverse("transfers:history"), data={"accounts":"all", "external":True, "internal":True,"crediting":False, "debiting":False})
+        self.assertTrue(response.context["form"].is_valid())
+        self.assertEqual(response.context["transfers"].count(), 0)
