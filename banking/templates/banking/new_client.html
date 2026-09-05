@@ -28,7 +28,7 @@
   <form method="post" class="standard-form">
       {% csrf_token %}
       {% for field in form %}
-        <div class=" {% if field.errors %}form_field_error {% endif%}">
+        <div class="{% if field.errors %}standard-form_field_error {% endif%}">
           {{ field.label_tag}}
           {{ field }}
           {{ field.errors }}

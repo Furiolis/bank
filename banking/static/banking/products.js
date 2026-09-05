@@ -7,27 +7,27 @@ function updateButtons() {
     const selectedValue = selectElement.value;
     if (!selectedValue) {
         addsubmitBtn.disabled = true;
-        addsubmitBtn.textContent = "{% trans 'Choose account' %}";
+        addsubmitBtn.textContent = gettext("Choose account");
         delsubmitBtn.disabled = true;
-        delsubmitBtn.textContent = "{% trans 'Choose account' %}";
+        delsubmitBtn.textContent = gettext("Choose account");
         delcardBtn.disabled = true;
-        delcardBtn.textContent = "{% trans 'Choose account' %}";
+        delcardBtn.textContent = gettext("Choose account");
         } 
     else if (blockedOptions[selectedValue] === "True") {
         addsubmitBtn.disabled = true;
-        addsubmitBtn.textContent = "{% trans 'Card already added' %}";
+        addsubmitBtn.textContent = gettext("Card already added");
         delsubmitBtn.disabled = false;
-        delsubmitBtn.textContent = "{% trans 'Delete account' %}";
+        delsubmitBtn.textContent = gettext("Delete account");
         delcardBtn.disabled = false;
-        delcardBtn.textContent = "{% trans 'Delete card' %}";
+        delcardBtn.textContent = gettext("Delete card");
         } 
     else {
         addsubmitBtn.disabled = false;
-        addsubmitBtn.textContent = "{% trans 'Add card' %}";
+        addsubmitBtn.textContent = gettext("Add card");
         delsubmitBtn.disabled = false;
-        delsubmitBtn.textContent = "{% trans 'Delete account' %}";
+        delsubmitBtn.textContent = gettext("Delete account");
         delcardBtn.disabled = true;
-        delcardBtn.textContent = "{% trans 'No card' %}";
+        delcardBtn.textContent = gettext("No card");
         }            
 }
 selectElement.addEventListener('change', updateButtons);

@@ -1,0 +1,1768 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-05 18:29+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: banking/forms.py:19 banking/tests/test_forms.py:35
+msgid "First name is invalid, use letters, spaces, apostrophes, hyphen"
+msgstr ""
+
+#: banking/forms.py:20 banking/tests/test_forms.py:39
+msgid "First name must be shorter than 150 characters"
+msgstr ""
+
+#: banking/forms.py:22
+msgid "Last name is invalid, use letters, spaces, apostrophes, hyphen"
+msgstr ""
+
+#: banking/forms.py:23
+msgid "Last name must be shorter than 150 characters"
+msgstr ""
+
+#: banking/forms.py:25
+msgid "Incorrect email"
+msgstr ""
+
+#: banking/forms.py:27 banking/models.py:110 banking/validators.py:7
+msgid "PESEL must consist of 11 digits"
+msgstr ""
+
+#: banking/forms.py:28 banking/models.py:111 banking/validators.py:13
+msgid "Incorrect PESEL"
+msgstr ""
+
+#: banking/forms.py:30
+msgid "Age is required to be above 18"
+msgstr ""
+
+#: banking/forms.py:32
+msgid "Phone number is required to contains only 9 digits"
+msgstr ""
+
+#: banking/forms.py:57 banking/forms.py:58
+msgid "PESEL does not match birth date"
+msgstr ""
+
+#: banking/forms.py:77 banking/models.py:136
+#: banking/templates/banking/products.html:35
+msgid "Personal"
+msgstr ""
+
+#: banking/forms.py:78 banking/models.py:137
+msgid "Saving"
+msgstr ""
+
+#: banking/forms.py:89
+msgid "How much money you need"
+msgstr ""
+
+#: banking/forms.py:112
+#, python-brace-format
+msgid "Card already exists to {account.number}"
+msgstr ""
+
+#: banking/forms.py:114
+#, python-brace-format
+msgid "Account {account.number} has no card"
+msgstr ""
+
+#: banking/models.py:19 banking/models.py:70
+msgid "Email is required"
+msgstr ""
+
+#: banking/models.py:21
+msgid "Pesel is required"
+msgstr ""
+
+#: banking/models.py:23 banking/models.py:114
+msgid "Date of birth is required"
+msgstr ""
+
+#: banking/models.py:25
+msgid "First name is required"
+msgstr ""
+
+#: banking/models.py:27
+msgid "Last name is required"
+msgstr ""
+
+#: banking/models.py:29 banking/models.py:118
+msgid "Phone number is required"
+msgstr ""
+
+#: banking/models.py:72
+msgid "Username is  required"
+msgstr ""
+
+#: banking/models.py:74
+msgid "Pesel is  required"
+msgstr ""
+
+#: banking/models.py:95
+msgid "username"
+msgstr ""
+
+#: banking/models.py:99
+msgid "first name"
+msgstr ""
+
+#: banking/models.py:102
+msgid "last name"
+msgstr ""
+
+#: banking/models.py:105
+msgid "email address"
+msgstr ""
+
+#: banking/models.py:109
+msgid "PESEL is required"
+msgstr ""
+
+#: banking/models.py:112
+msgid "birth date"
+msgstr ""
+
+#: banking/models.py:115 banking/validators.py:24
+msgid "Required age above 18"
+msgstr ""
+
+#: banking/models.py:116
+msgid "phone number"
+msgstr ""
+
+#: banking/models.py:119
+msgid "Phone number is incorrect, can contains only 9 digits"
+msgstr ""
+
+#: banking/models.py:138 banking/templates/banking/products.html:36
+msgid "Credit"
+msgstr ""
+
+#: banking/models.py:170 banking/tests/test_models.py:146
+#: banking/tests/test_models.py:152
+msgid "Not enough funds"
+msgstr ""
+
+#: banking/models.py:172 banking/tests/test_models.py:176
+#: banking/tests/test_models.py:180
+msgid "Transfer amount must be positive"
+msgstr ""
+
+#: banking/models.py:174 banking/tests/test_models.py:185
+msgid "Not possible to transfer money to same account"
+msgstr ""
+
+#: banking/templates/banking/confirm_client_creation.html:6
+msgid "Your account is created successfully"
+msgstr ""
+
+#: banking/templates/banking/confirm_client_creation.html:7
+msgid "Your login:"
+msgstr ""
+
+#: banking/templates/banking/confirm_client_creation.html:8
+#: banking/templates/banking/login.html:18 templates/base.html:37
+msgid "Log in"
+msgstr ""
+
+#: banking/templates/banking/dashboard.html:14
+msgid "Welcome"
+msgstr ""
+
+#: banking/templates/banking/dashboard.html:15
+msgid "Last login"
+msgstr ""
+
+#: banking/templates/banking/dashboard.html:19
+#: banking/templates/banking/products.html:19
+msgid "Review"
+msgstr ""
+
+#: banking/templates/banking/dashboard.html:21
+#: banking/templates/banking/products.html:21
+msgid "Funds"
+msgstr ""
+
+#: banking/templates/banking/dashboard.html:25
+#: banking/templates/banking/products.html:25
+msgid "Savings"
+msgstr ""
+
+#: banking/templates/banking/dashboard.html:29
+#: banking/templates/banking/products.html:29
+msgid "Debts"
+msgstr ""
+
+#: banking/templates/banking/dashboard.html:35
+#: banking/templates/banking/products.html:50
+msgid "Personal accounts"
+msgstr ""
+
+#: banking/templates/banking/dashboard.html:37
+#: banking/templates/banking/dashboard.html:49
+#: banking/templates/banking/dashboard.html:60
+msgid "See more"
+msgstr ""
+
+#: banking/templates/banking/dashboard.html:41
+#: banking/templates/banking/dashboard.html:53
+#: banking/templates/banking/products.html:70
+msgid "No credits accounts"
+msgstr ""
+
+#: banking/templates/banking/dashboard.html:47
+#: banking/templates/banking/products.html:66
+msgid "Credit accounts"
+msgstr ""
+
+#: banking/templates/banking/dashboard.html:59
+#: banking/templates/banking/products.html:74
+msgid "Cards"
+msgstr ""
+
+#: banking/templates/banking/dashboard.html:65
+#: banking/templates/banking/products.html:79
+msgid "No cards"
+msgstr ""
+
+#: banking/templates/banking/front_page.html:15
+msgid ""
+"\n"
+"          Welcome to Fake Bank, the most prestigious institution that never "
+"really existed.\n"
+"        "
+msgstr ""
+
+#: banking/templates/banking/front_page.html:27
+msgid ""
+"\n"
+"          Security? <br>Our imaginary vaults are guarded by the finest "
+"digital minds. <br> Watching over your fictional fortune with legendary "
+"vigilance.\n"
+"        "
+msgstr ""
+
+#: banking/templates/banking/front_page.html:35
+msgid ""
+"\n"
+"          Trust? <br> Forget paperwork, all you need is faith in the magic "
+"of impeccable design.\n"
+"        "
+msgstr ""
+
+#: banking/templates/banking/front_page.html:45
+msgid ""
+"\n"
+"          Wealth? <br> We don’t promise millions, we promise the feeling of "
+"having those.\n"
+"        "
+msgstr ""
+
+#: banking/templates/banking/front_page.html:52
+msgid ""
+"\n"
+"        At Fake Bank, we don’t just protect your assets,<br>\n"
+"        we protect your aura of affluence. <br>\n"
+"        So log in, lean back, and let the illusion of success work for you. "
+"<br>\n"
+"        “I bank with Fake Bank.” <br>\n"
+"        Sounds good, doesn’t it? <br>\n"
+"      "
+msgstr ""
+
+#: banking/templates/banking/front_page.html:59
+msgid "Join us"
+msgstr ""
+
+#: banking/templates/banking/includes/account.html:4
+msgid "account"
+msgstr ""
+
+#: banking/templates/banking/login.html:19
+#: banking/templates/banking/new_client.html:40
+#: transfers/templates/transfers/transfers.html:20
+#: transfers/templates/transfers/transfers.html:30
+#: vvv/lib/python3.12/site-packages/django/forms/widgets.py:527
+msgid "Clear"
+msgstr ""
+
+#: banking/templates/banking/new_account.html:14
+#: banking/templates/banking/new_credit.html:14
+msgid "Confirm"
+msgstr ""
+
+#: banking/templates/banking/new_client.html:13
+#, python-format
+msgid ""
+"\n"
+"      <h1>!!! WARNING !!!</h1>\n"
+"      This is NOT real bank <br>\n"
+"      Do NOT give your real name, PESEL, <br>\n"
+"      or any other confidential data. <br>\n"
+"      However, you need to put some PESEL, <br> \n"
+"      and matching to birth date. <br>\n"
+"      Here is an example: <br>\n"
+"      <p class=\"pesel\"> PESEL: %(pesel)s</p>\n"
+"      <p class=\"birth_date\">Birth date: %(birth_date)s</p>\n"
+"      <br>\n"
+"      Although, it is recommended to provide real phone number, <br>\n"
+"      and email, ther are recuired to log in.\n"
+"    "
+msgstr ""
+
+#: banking/templates/banking/new_client.html:39 templates/base.html:38
+msgid "Register"
+msgstr ""
+
+#: banking/templates/banking/products.html:5 templates/base.html:53
+msgid "Products"
+msgstr ""
+
+#: banking/templates/banking/products.html:34
+msgid "Open new account"
+msgstr ""
+
+#: banking/templates/banking/products.html:39
+msgid "Products management"
+msgstr ""
+
+#: banking/templates/banking/products.html:43
+#: banking/templates/banking/products.html:44
+#: banking/templates/banking/products.html:46
+msgid "Choose account"
+msgstr ""
+
+#: banking/templates/banking/products.html:46
+msgid "Are you sure"
+msgstr ""
+
+#: banking/templates/banking/products.html:54
+msgid "No personal accounts"
+msgstr ""
+
+#: banking/templates/banking/products.html:58
+msgid "Saving accounts"
+msgstr ""
+
+#: banking/templates/banking/products.html:62
+msgid "No savings accounts"
+msgstr ""
+
+#: banking/views.py:59
+msgid "You are already logged in"
+msgstr ""
+
+#: banking/views.py:67
+msgid ""
+"Welcome {user.get_short_name()}, you have logged in succesfully. What We are "
+"gonna do today?"
+msgstr ""
+
+#: banking/views.py:70
+#, python-format
+msgid ""
+"Please enter a correct %(username)s and password. Note that both fields may "
+"be case-sensitive."
+msgstr ""
+
+#: banking/views.py:80
+msgid "You where log out succesfully"
+msgstr ""
+
+#: banking/views.py:85
+msgid "You already are client of Fake Bank, and you are logged in"
+msgstr ""
+
+#: banking/views.py:126
+msgid ""
+"{account.type_account.capitalize()} account {account.number}, with a card "
+"was created succesfully"
+msgstr ""
+
+#: banking/views.py:128
+msgid ""
+"{account.type_account.capitalize()} account {account.number} was created "
+"succesfully"
+msgstr ""
+
+#: banking/views.py:164
+msgid ", with a card,"
+msgstr ""
+
+#: banking/views.py:167
+#, python-brace-format
+msgid ""
+"Your {account_type} account with number {account_number}{card_part} has been "
+"deleted succesfully"
+msgstr ""
+
+#: banking/views.py:171
+#, python-brace-format
+msgid ""
+"Your new card {card.number} to account with number {account.number} was "
+"created succesfully"
+msgstr ""
+
+#: banking/views.py:177
+#, python-brace-format
+msgid ""
+"Your card number {card_number} to account {account_number} has been deleted "
+"succesfully"
+msgstr ""
+
+#: templates/base.html:40
+msgid "Settings"
+msgstr ""
+
+#: templates/base.html:41
+msgid "Log out"
+msgstr ""
+
+#: templates/base.html:52
+msgid "Dashboard"
+msgstr ""
+
+#: templates/base.html:54
+msgid "Transfer"
+msgstr ""
+
+#: templates/base.html:55
+msgid "History"
+msgstr ""
+
+#: templates/base.html:79
+msgid ""
+"\n"
+"          FAKE BANK is fictional institution created for demonstration and "
+"educational purposes only.\n"
+"        "
+msgstr ""
+
+#: templates/base.html:84
+msgid "Terms of Use"
+msgstr ""
+
+#: templates/base.html:85
+msgid "Privace Policy"
+msgstr ""
+
+#: templates/base.html:88
+msgid ""
+"\n"
+"          Contact <br>\n"
+"          Łukasz Flis <br>\n"
+"          <a href=\"mailto:flislukasz1989@gmail.com\">flislukasz1989@gmail."
+"com</a> <br>\n"
+"          + 48 727 924 239\n"
+"        "
+msgstr ""
+
+#: transfers/forms.py:15
+msgid "From"
+msgstr ""
+
+#: transfers/forms.py:16
+msgid "Amount"
+msgstr ""
+
+#: transfers/forms.py:17
+msgid "Recipient name"
+msgstr ""
+
+#: transfers/forms.py:18
+msgid "Recipient account number"
+msgstr ""
+
+#: transfers/forms.py:34
+msgid "Not enaught money to transfer"
+msgstr ""
+
+#: transfers/forms.py:36
+msgid "Money must be positive"
+msgstr ""
+
+#: transfers/forms.py:84 transfers/forms.py:104
+msgid "Both accounts are the same"
+msgstr ""
+
+#: transfers/forms.py:92
+msgid "Account with that number does not exist"
+msgstr ""
+
+#: transfers/models.py:9
+msgid "connected account number"
+msgstr ""
+
+#: transfers/models.py:10
+msgid "connected account name"
+msgstr ""
+
+#: transfers/models.py:11
+msgid "money"
+msgstr ""
+
+#: transfers/models.py:12
+msgid "date"
+msgstr ""
+
+#: transfers/models.py:13
+msgid "title"
+msgstr ""
+
+#: transfers/models.py:15
+msgid "internal transfer type"
+msgstr ""
+
+#: transfers/templates/transfers/transfers.html:10
+#: transfers/templates/transfers/transfers.html:16
+msgid "External transfer"
+msgstr ""
+
+#: transfers/templates/transfers/transfers.html:11
+#: transfers/templates/transfers/transfers.html:26
+msgid "Internal transfer"
+msgstr ""
+
+#: transfers/templates/transfers/transfers.html:19
+#: transfers/templates/transfers/transfers.html:29
+msgid "Send"
+msgstr ""
+
+#: transfers/views.py:19 transfers/views.py:23
+msgid "Transfer accomplished, money are send"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/contrib/messages/apps.py:16
+msgid "Messages"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/contrib/sitemaps/apps.py:8
+msgid "Site Maps"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/contrib/staticfiles/apps.py:9
+msgid "Static Files"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/contrib/syndication/apps.py:7
+msgid "Syndication"
+msgstr ""
+
+#. Translators: String used to replace omitted page numbers in elided page
+#. range generated by paginators, e.g. [1, 2, '…', 5, 6, 7, '…', 9, 10].
+#: vvv/lib/python3.12/site-packages/django/core/paginator.py:30
+msgid "…"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/core/paginator.py:32
+msgid "That page number is not an integer"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/core/paginator.py:33
+msgid "That page number is less than 1"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/core/paginator.py:34
+msgid "That page contains no results"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:22
+msgid "Enter a valid value."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:70
+msgid "Enter a valid domain name."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:153
+#: vvv/lib/python3.12/site-packages/django/forms/fields.py:775
+msgid "Enter a valid URL."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:200
+msgid "Enter a valid integer."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:211
+msgid "Enter a valid email address."
+msgstr ""
+
+#. Translators: "letters" means latin letters: a-z and A-Z.
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:289
+msgid ""
+"Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:297
+msgid ""
+"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or "
+"hyphens."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:309
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:318
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:332
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2220
+#, python-format
+msgid "Enter a valid %(protocol)s address."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:311
+msgid "IPv4"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:320
+#: vvv/lib/python3.12/site-packages/django/utils/ipv6.py:43
+msgid "IPv6"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:334
+msgid "IPv4 or IPv6"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:375
+msgid "Enter only digits separated by commas."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:381
+#, python-format
+msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:416
+#, python-format
+msgid "Ensure this value is less than or equal to %(limit_value)s."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:425
+#, python-format
+msgid "Ensure this value is greater than or equal to %(limit_value)s."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:434
+#, python-format
+msgid "Ensure this value is a multiple of step size %(limit_value)s."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:441
+#, python-format
+msgid ""
+"Ensure this value is a multiple of step size %(limit_value)s, starting from "
+"%(offset)s, e.g. %(offset)s, %(valid_value1)s, %(valid_value2)s, and so on."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:473
+#, python-format
+msgid ""
+"Ensure this value has at least %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at least %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:491
+#, python-format
+msgid ""
+"Ensure this value has at most %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at most %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:514
+#: vvv/lib/python3.12/site-packages/django/forms/fields.py:366
+#: vvv/lib/python3.12/site-packages/django/forms/fields.py:405
+msgid "Enter a number."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:516
+#, python-format
+msgid "Ensure that there are no more than %(max)s digit in total."
+msgid_plural "Ensure that there are no more than %(max)s digits in total."
+msgstr[0] ""
+msgstr[1] ""
+
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:521
+#, python-format
+msgid "Ensure that there are no more than %(max)s decimal place."
+msgid_plural "Ensure that there are no more than %(max)s decimal places."
+msgstr[0] ""
+msgstr[1] ""
+
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:526
+#, python-format
+msgid ""
+"Ensure that there are no more than %(max)s digit before the decimal point."
+msgid_plural ""
+"Ensure that there are no more than %(max)s digits before the decimal point."
+msgstr[0] ""
+msgstr[1] ""
+
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:597
+#, python-format
+msgid ""
+"File extension “%(extension)s” is not allowed. Allowed extensions are: "
+"%(allowed_extensions)s."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/core/validators.py:659
+msgid "Null characters are not allowed."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/base.py:1600
+#: vvv/lib/python3.12/site-packages/django/forms/models.py:908
+msgid "and"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/base.py:1602
+#, python-format
+msgid "%(model_name)s with this %(field_labels)s already exists."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/constraints.py:22
+#, python-format
+msgid "Constraint “%(name)s” is violated."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:134
+#, python-format
+msgid "Value %(value)r is not a valid choice."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:135
+msgid "This field cannot be null."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:136
+msgid "This field cannot be blank."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:137
+#, python-format
+msgid "%(model_name)s with this %(field_label)s already exists."
+msgstr ""
+
+#. Translators: The 'lookup_type' is one of 'date', 'year' or
+#. 'month'. Eg: "Title must be unique for pub_date year"
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:141
+#, python-format
+msgid ""
+"%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:180
+#, python-format
+msgid "Field of type: %(field_type)s"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1162
+#, python-format
+msgid "“%(value)s” value must be either True or False."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1163
+#, python-format
+msgid "“%(value)s” value must be either True, False, or None."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1165
+msgid "Boolean (Either True or False)"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1215
+#, python-format
+msgid "String (up to %(max_length)s)"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1217
+msgid "String (unlimited)"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1326
+msgid "Comma-separated integers"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1427
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid date format. It must be in YYYY-MM-DD "
+"format."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1431
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1566
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD) but it is an invalid "
+"date."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1435
+msgid "Date (without time)"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1562
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[."
+"uuuuuu]][TZ] format."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1570
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
+"[TZ]) but it is an invalid date/time."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1575
+msgid "Date (with time)"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1702
+#, python-format
+msgid "“%(value)s” value must be a decimal number."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1704
+msgid "Decimal number"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1864
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in [DD] [[HH:]MM:]ss[."
+"uuuuuu] format."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1868
+msgid "Duration"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1920
+msgid "Email address"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1945
+msgid "File path"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2023
+#, python-format
+msgid "“%(value)s” value must be a float."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2025
+msgid "Floating point number"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2065
+#, python-format
+msgid "“%(value)s” value must be an integer."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2067
+msgid "Integer"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2163
+msgid "Big (8 byte) integer"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2180
+msgid "Small integer"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2188
+msgid "IPv4 address"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2219
+msgid "IP address"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2310
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2311
+#, python-format
+msgid "“%(value)s” value must be either None, True or False."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2313
+msgid "Boolean (Either True, False or None)"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2364
+msgid "Positive big integer"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2379
+msgid "Positive integer"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2394
+msgid "Positive small integer"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2410
+#, python-format
+msgid "Slug (up to %(max_length)s)"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2446
+msgid "Text"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2526
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
+"format."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2530
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
+"invalid time."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2534
+msgid "Time"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2642
+msgid "URL"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2666
+msgid "Raw binary data"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2731
+#, python-format
+msgid "“%(value)s” is not a valid UUID."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2733
+msgid "Universally unique identifier"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/files.py:244
+msgid "File"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/files.py:420
+msgid "Image"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/json.py:24
+msgid "A JSON object"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/json.py:26
+msgid "Value must be valid JSON."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/related.py:978
+#, python-format
+msgid "%(model)s instance with %(field)s %(value)r is not a valid choice."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/related.py:981
+msgid "Foreign Key (type determined by related field)"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/related.py:1275
+msgid "One-to-one relationship"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/related.py:1332
+#, python-format
+msgid "%(from)s-%(to)s relationship"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/related.py:1334
+#, python-format
+msgid "%(from)s-%(to)s relationships"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/db/models/fields/related.py:1382
+msgid "Many-to-many relationship"
+msgstr ""
+
+#. Translators: If found as last label character, these punctuation
+#. characters will prevent the default label_suffix to be appended to the label
+#: vvv/lib/python3.12/site-packages/django/forms/boundfield.py:185
+msgid ":?.!"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/fields.py:95
+msgid "This field is required."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/fields.py:315
+msgid "Enter a whole number."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/fields.py:486
+#: vvv/lib/python3.12/site-packages/django/forms/fields.py:1267
+msgid "Enter a valid date."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/fields.py:509
+#: vvv/lib/python3.12/site-packages/django/forms/fields.py:1268
+msgid "Enter a valid time."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/fields.py:536
+msgid "Enter a valid date/time."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/fields.py:570
+msgid "Enter a valid duration."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/fields.py:571
+#, python-brace-format
+msgid "The number of days must be between {min_days} and {max_days}."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/fields.py:640
+msgid "No file was submitted. Check the encoding type on the form."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/fields.py:641
+msgid "No file was submitted."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/fields.py:642
+msgid "The submitted file is empty."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/fields.py:644
+#, python-format
+msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
+msgid_plural ""
+"Ensure this filename has at most %(max)d characters (it has %(length)d)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/fields.py:649
+msgid "Please either submit a file or check the clear checkbox, not both."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/fields.py:717
+msgid ""
+"Upload a valid image. The file you uploaded was either not an image or a "
+"corrupted image."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/fields.py:889
+#: vvv/lib/python3.12/site-packages/django/forms/fields.py:975
+#: vvv/lib/python3.12/site-packages/django/forms/models.py:1592
+#, python-format
+msgid "Select a valid choice. %(value)s is not one of the available choices."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/fields.py:977
+#: vvv/lib/python3.12/site-packages/django/forms/fields.py:1096
+#: vvv/lib/python3.12/site-packages/django/forms/models.py:1590
+msgid "Enter a list of values."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/fields.py:1097
+msgid "Enter a complete value."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/fields.py:1339
+msgid "Enter a valid UUID."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/fields.py:1369
+msgid "Enter a valid JSON."
+msgstr ""
+
+#. Translators: This is the default suffix added to form field labels
+#: vvv/lib/python3.12/site-packages/django/forms/forms.py:97
+msgid ":"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/forms.py:239
+#, python-format
+msgid "(Hidden field %(name)s) %(error)s"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/formsets.py:61
+#, python-format
+msgid ""
+"ManagementForm data is missing or has been tampered with. Missing fields: "
+"%(field_names)s. You may need to file a bug report if the issue persists."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/formsets.py:65
+#, python-format
+msgid "Please submit at most %(num)d form."
+msgid_plural "Please submit at most %(num)d forms."
+msgstr[0] ""
+msgstr[1] ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/formsets.py:70
+#, python-format
+msgid "Please submit at least %(num)d form."
+msgid_plural "Please submit at least %(num)d forms."
+msgstr[0] ""
+msgstr[1] ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/formsets.py:484
+#: vvv/lib/python3.12/site-packages/django/forms/formsets.py:491
+msgid "Order"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/formsets.py:499
+msgid "Delete"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/models.py:901
+#, python-format
+msgid "Please correct the duplicate data for %(field)s."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/models.py:906
+#, python-format
+msgid "Please correct the duplicate data for %(field)s, which must be unique."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/models.py:913
+#, python-format
+msgid ""
+"Please correct the duplicate data for %(field_name)s which must be unique "
+"for the %(lookup)s in %(date_field)s."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/models.py:922
+msgid "Please correct the duplicate values below."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/models.py:1359
+msgid "The inline value did not match the parent instance."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/models.py:1450
+msgid "Select a valid choice. That choice is not one of the available choices."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/models.py:1594
+#, python-format
+msgid "“%(pk)s” is not a valid value."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/utils.py:229
+#, python-format
+msgid ""
+"%(datetime)s couldn’t be interpreted in time zone %(current_timezone)s; it "
+"may be ambiguous or it may not exist."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/widgets.py:528
+msgid "Currently"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/widgets.py:529
+msgid "Change"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/widgets.py:866
+msgid "Unknown"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/widgets.py:867
+msgid "Yes"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/forms/widgets.py:868
+msgid "No"
+msgstr ""
+
+#. Translators: Please do not add spaces around commas.
+#: vvv/lib/python3.12/site-packages/django/template/defaultfilters.py:873
+msgid "yes,no,maybe"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/template/defaultfilters.py:903
+#: vvv/lib/python3.12/site-packages/django/template/defaultfilters.py:920
+#, python-format
+msgid "%(size)d byte"
+msgid_plural "%(size)d bytes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: vvv/lib/python3.12/site-packages/django/template/defaultfilters.py:922
+#, python-format
+msgid "%s KB"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/template/defaultfilters.py:924
+#, python-format
+msgid "%s MB"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/template/defaultfilters.py:926
+#, python-format
+msgid "%s GB"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/template/defaultfilters.py:928
+#, python-format
+msgid "%s TB"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/template/defaultfilters.py:930
+#, python-format
+msgid "%s PB"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dateformat.py:74
+msgid "p.m."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dateformat.py:75
+msgid "a.m."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dateformat.py:80
+msgid "PM"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dateformat.py:81
+msgid "AM"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dateformat.py:153
+msgid "midnight"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dateformat.py:155
+msgid "noon"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:7
+msgid "Monday"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:8
+msgid "Tuesday"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:9
+msgid "Wednesday"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:10
+msgid "Thursday"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:11
+msgid "Friday"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:12
+msgid "Saturday"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:13
+msgid "Sunday"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:16
+msgid "Mon"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:17
+msgid "Tue"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:18
+msgid "Wed"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:19
+msgid "Thu"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:20
+msgid "Fri"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:21
+msgid "Sat"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:22
+msgid "Sun"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:25
+msgid "January"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:26
+msgid "February"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:27
+msgid "March"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:28
+msgid "April"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:29
+msgid "May"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:30
+msgid "June"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:31
+msgid "July"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:32
+msgid "August"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:33
+msgid "September"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:34
+msgid "October"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:35
+msgid "November"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:36
+msgid "December"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:39
+msgid "jan"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:40
+msgid "feb"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:41
+msgid "mar"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:42
+msgid "apr"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:43
+msgid "may"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:44
+msgid "jun"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:45
+msgid "jul"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:46
+msgid "aug"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:47
+msgid "sep"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:48
+msgid "oct"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:49
+msgid "nov"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:50
+msgid "dec"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:53
+msgctxt "abbrev. month"
+msgid "Jan."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:54
+msgctxt "abbrev. month"
+msgid "Feb."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:55
+msgctxt "abbrev. month"
+msgid "March"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:56
+msgctxt "abbrev. month"
+msgid "April"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:57
+msgctxt "abbrev. month"
+msgid "May"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:58
+msgctxt "abbrev. month"
+msgid "June"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:59
+msgctxt "abbrev. month"
+msgid "July"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:60
+msgctxt "abbrev. month"
+msgid "Aug."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:61
+msgctxt "abbrev. month"
+msgid "Sept."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:62
+msgctxt "abbrev. month"
+msgid "Oct."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:63
+msgctxt "abbrev. month"
+msgid "Nov."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:64
+msgctxt "abbrev. month"
+msgid "Dec."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:67
+msgctxt "alt. month"
+msgid "January"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:68
+msgctxt "alt. month"
+msgid "February"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:69
+msgctxt "alt. month"
+msgid "March"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:70
+msgctxt "alt. month"
+msgid "April"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:71
+msgctxt "alt. month"
+msgid "May"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:72
+msgctxt "alt. month"
+msgid "June"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:73
+msgctxt "alt. month"
+msgid "July"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:74
+msgctxt "alt. month"
+msgid "August"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:75
+msgctxt "alt. month"
+msgid "September"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:76
+msgctxt "alt. month"
+msgid "October"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:77
+msgctxt "alt. month"
+msgid "November"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/dates.py:78
+msgctxt "alt. month"
+msgid "December"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/ipv6.py:20
+msgid "This is not a valid IPv6 address."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/text.py:76
+#, python-format
+msgctxt "String to return when truncating text"
+msgid "%(truncated_text)s…"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/text.py:287
+msgid "or"
+msgstr ""
+
+#. Translators: This string is used as a separator between list elements
+#: vvv/lib/python3.12/site-packages/django/utils/text.py:306
+#: vvv/lib/python3.12/site-packages/django/utils/timesince.py:135
+msgid ", "
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/timesince.py:8
+#, python-format
+msgid "%(num)d year"
+msgid_plural "%(num)d years"
+msgstr[0] ""
+msgstr[1] ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/timesince.py:9
+#, python-format
+msgid "%(num)d month"
+msgid_plural "%(num)d months"
+msgstr[0] ""
+msgstr[1] ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/timesince.py:10
+#, python-format
+msgid "%(num)d week"
+msgid_plural "%(num)d weeks"
+msgstr[0] ""
+msgstr[1] ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/timesince.py:11
+#, python-format
+msgid "%(num)d day"
+msgid_plural "%(num)d days"
+msgstr[0] ""
+msgstr[1] ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/timesince.py:12
+#, python-format
+msgid "%(num)d hour"
+msgid_plural "%(num)d hours"
+msgstr[0] ""
+msgstr[1] ""
+
+#: vvv/lib/python3.12/site-packages/django/utils/timesince.py:13
+#, python-format
+msgid "%(num)d minute"
+msgid_plural "%(num)d minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: vvv/lib/python3.12/site-packages/django/views/csrf.py:29
+msgid "Forbidden"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/csrf.py:30
+msgid "CSRF verification failed. Request aborted."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/csrf.py:34
+msgid ""
+"You are seeing this message because this HTTPS site requires a “Referer "
+"header” to be sent by your web browser, but none was sent. This header is "
+"required for security reasons, to ensure that your browser is not being "
+"hijacked by third parties."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/csrf.py:40
+msgid ""
+"If you have configured your browser to disable “Referer” headers, please re-"
+"enable them, at least for this site, or for HTTPS connections, or for “same-"
+"origin” requests."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/csrf.py:45
+msgid ""
+"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or "
+"including the “Referrer-Policy: no-referrer” header, please remove them. The "
+"CSRF protection requires the “Referer” header to do strict referer checking. "
+"If you’re concerned about privacy, use alternatives like <a "
+"rel=\"noreferrer\" …> for links to third-party sites."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/csrf.py:54
+msgid ""
+"You are seeing this message because this site requires a CSRF cookie when "
+"submitting forms. This cookie is required for security reasons, to ensure "
+"that your browser is not being hijacked by third parties."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/csrf.py:60
+msgid ""
+"If you have configured your browser to disable cookies, please re-enable "
+"them, at least for this site, or for “same-origin” requests."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/csrf.py:66
+msgid "More information is available with DEBUG=True."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/generic/dates.py:44
+msgid "No year specified"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/generic/dates.py:64
+#: vvv/lib/python3.12/site-packages/django/views/generic/dates.py:115
+#: vvv/lib/python3.12/site-packages/django/views/generic/dates.py:214
+msgid "Date out of range"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/generic/dates.py:94
+msgid "No month specified"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/generic/dates.py:147
+msgid "No day specified"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/generic/dates.py:194
+msgid "No week specified"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/generic/dates.py:353
+#: vvv/lib/python3.12/site-packages/django/views/generic/dates.py:384
+#, python-format
+msgid "No %(verbose_name_plural)s available"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/generic/dates.py:680
+#, python-format
+msgid ""
+"Future %(verbose_name_plural)s not available because %(class_name)s."
+"allow_future is False."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/generic/dates.py:720
+#, python-format
+msgid "Invalid date string “%(datestr)s” given format “%(format)s”"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/generic/detail.py:56
+#, python-format
+msgid "No %(verbose_name)s found matching the query"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/generic/list.py:70
+msgid "Page is not “last”, nor can it be converted to an int."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/generic/list.py:77
+#, python-format
+msgid "Invalid page (%(page_number)s): %(message)s"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/generic/list.py:173
+#, python-format
+msgid "Empty list and “%(class_name)s.allow_empty” is False."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/static.py:49
+msgid "Directory indexes are not allowed here."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/static.py:51
+#, python-format
+msgid "“%(path)s” does not exist"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/static.py:68
+#: vvv/lib/python3.12/site-packages/django/views/templates/directory_index.html:8
+#: vvv/lib/python3.12/site-packages/django/views/templates/directory_index.html:11
+#, python-format
+msgid "Index of %(directory)s"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:7
+#: vvv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:204
+msgid "The install worked successfully! Congratulations!"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:206
+#, python-format
+msgid ""
+"View <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
+"target=\"_blank\" rel=\"noopener\">release notes</a> for Django %(version)s"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:208
+#, python-format
+msgid ""
+"You are seeing this page because <a href=\"https://docs.djangoproject.com/en/"
+"%(version)s/ref/settings/#debug\" target=\"_blank\" "
+"rel=\"noopener\">DEBUG=True</a> is in your settings file and you have not "
+"configured any URLs."
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:217
+msgid "Django Documentation"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:218
+msgid "Topics, references, &amp; how-to’s"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:226
+msgid "Tutorial: A Polling App"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:227
+msgid "Get started with Django"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:235
+msgid "Django Community"
+msgstr ""
+
+#: vvv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:236
+msgid "Connect, get help, or contribute"
+msgstr ""
