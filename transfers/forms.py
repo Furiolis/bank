@@ -106,17 +106,16 @@ class ExternalTransferForm(TransferFormBase):
         return self.cleaned_data
 
 class HistoryManagementForm(forms.Form):
+    order_by = forms.ChoiceField(choices=[("-date", _("Newest first")),("date",_("Oldest first")),("money",_("Amount ascending")),("-money",_("Amount descending"))])
     accounts = forms.ChoiceField(required=False)
     internal = forms.BooleanField(initial=True, required=False)
     external = forms.BooleanField(initial=True, required=False)
-    lower_limit_money = forms.DecimalField(decimal_places=2, max_digits=15, required=False)
-    higher_limit_money = forms.DecimalField(decimal_places=2, max_digits=15, required=False)
-    lower_limit_date = forms.DateField(initial=datetime.today().date()-timedelta(days=90),widget=forms.DateInput(attrs={"type": "date"}), required=False)
-    higher_limit_date = forms.DateField(initial=datetime.today().date(),widget=forms.DateInput(attrs={"type": "date"}), required=False)
     crediting = forms.BooleanField(initial=True, required=False)
     debiting = forms.BooleanField(initial=True, required=False)
-    order_by = forms.ChoiceField(choices=[("-date", _("Newest firts")),("date",_("Oldest firts")),("money",_("Amount ascending")),("-money",_("Amount descending"))])
-
+    lower_limit_money = forms.DecimalField(decimal_places=2, max_digits=15, required=False, widget=forms.NumberInput(attrs={"placeholder": _("More than")}))
+    higher_limit_money = forms.DecimalField(decimal_places=2, max_digits=15, required=False, widget=forms.NumberInput(attrs={"placeholder": _("Less than")}))
+    lower_limit_date = forms.DateField(initial=datetime.today().date()-timedelta(days=90),widget=forms.DateInput(attrs={"type": "date"}), required=False)
+    higher_limit_date = forms.DateField(initial=datetime.today().date(),widget=forms.DateInput(attrs={"type": "date"}), required=False)
 
     def __init__(self, *args, owner, **kwargs):
         super().__init__(*args, **kwargs)
@@ -143,10 +142,14 @@ class HistoryManagementForm(forms.Form):
         if "lower_limit_money" not in self.errors and "higher_limit_money" not in self.errors:
             if cleaned_data["lower_limit_money"] and cleaned_data["higher_limit_money"]:
                 if cleaned_data["lower_limit_money"] > cleaned_data["higher_limit_money"]:
+                    self.add_error("lower_limit_money", _("Lower limit must be lower than Higher limit"))
+                    self.add_error("higher_limit_money", _("Lower limit must be lower than Higher limit"))
                     raise ValidationError(_("Lower limit must be lower than Higher limit"))
         if "lower_limit_date" not in self.errors and "higher_limit_date" not in self.errors:
             if cleaned_data["lower_limit_date"] and cleaned_data["higher_limit_date"]:
                 if cleaned_data["lower_limit_date"] > cleaned_data["higher_limit_date"]:
+                    self.add_error("lower_limit_date", _("Earlier date must be earlier than later"))
+                    self.add_error("higher_limit_date", _("Earlier date must be earlier than later"))
                     raise ValidationError(_("Earlier date must be earlier than later"))
         return cleaned_data
 
