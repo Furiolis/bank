@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="{% static "form.css" %}">
 <link rel="stylesheet" href="{% static "client_review.css" %}">
 {{ blocked_options|json_script:"blocked-options" }}
-<script src="{% static "banking/products.js" %}"></script>
+<script src="{% url 'javascript-catalog' %}"></script>
 {% endblock styles %}
 
 {% block content %}
@@ -81,5 +81,5 @@
       </div>
     </div>
 </div>
-
+<script src="{% static "banking/products.js" %}"></script>
 {% endblock content %}  

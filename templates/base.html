@@ -3,7 +3,7 @@
 {% load i18n %}
 
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,8 +51,8 @@
       {% else %}
         <a href="{% url "banking:dashboard" %}">{% trans "Dashboard" %}</a>
         <a href="{% url "banking:products" %}">{% trans "Products" %}</a>
-        {% comment %} <a href="{% url "transfers:transfers" %}">{% trans "Transfers" %}</a> {% endcomment %}
-        {% comment %} <a href="{% url "transfers:history" %}">{% trans "History" %}</a> {% endcomment %}
+        <a href="{% url "transfers:transfer" %}">{% trans "Transfer" %}</a>
+        <a href="{% url "transfers:history" %}">{% trans "History" %}</a>
       {% endif %}
     </nav>
   </div>

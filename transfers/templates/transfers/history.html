@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static "transfers/transfer.css" %}">
+<link rel="stylesheet" href="{% static "form.css" %}">
+<link rel="stylesheet" href="{% static "transfers/history.css" %}">
+{% endblock styles %}
+
+{% block content %}
+<div class="white-container">
+  <h2>{% trans "Filters" %}</h2>
+  <form method="post" action="" class="standard-form">
+    {% csrf_token %}
+    <div class="filters">
+      <div>{{ form.order_by.label_tag }}{{ form.order_by }}{{ form.order_by.errors }}</div>
+      <div>{{ form.accounts.label_tag }}{{ form.accounts }}{{ form.accounts.errors }}</div>
+      <div>{{ form.internal.label_tag }}{{ form.internal }}{{ form.internal.errors }}</div>
+      <div>{{ form.external.label_tag }}{{ form.external }}{{ form.external.errors }}</div>
+      <div>{{ form.crediting.label_tag }}{{ form.crediting }}{{ form.crediting.errors }}</div>
+      <div>{{ form.debiting.label_tag }}{{ form.debiting }}{{ form.debiting.errors }}</div>
+      <h3>{% trans "Amount" %}</h3>
+      <div class="{% if form.lower_limit_money.errors %}standard-form_field_error {% endif %}">{{ form.lower_limit_money }}{{ form.lower_limit_money.errors }}</div>
+      <div class="{% if form.higher_limit_money.errors %}standard-form_field_error {% endif %}">{{ form.higher_limit_money }}{{ form.higher_limit_money.errors }}</div>
+
+      <h3>{% trans "Date" %}</h3>
+      <div class="{% if form.lower_limit_date.errors %}standard-form_field_error {% endif %}">{{ form.lower_limit_date }}{{ form.lower_limit_date.errors }}</div>
+      <div class="{% if form.higher_limit_date.errors %}standard-form_field_error {% endif %}">{{ form.higher_limit_date }}{{ form.higher_limit_date.errors }}</div>
+    </div>
+    <button type="submit">{% trans "Refresh" %}</button>
+  </form>
+</div>
+<div class="white-container">
+  {%for transfer in transfers %}
+    {% include "transfers/include/transfer.html" %}
+  {% empty %}
+    <p> {% trans "No transfer to print" %}</p>
+  {% endfor %}  
+</div>
+
+{% endblock content %}
