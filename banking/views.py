@@ -162,7 +162,6 @@ def products(request):
                 card_part = ""
                 if hasattr(account, "card"):
                     card_part = _(", with a card,")
-                # TODO What to do with the money
                 account.delete()
                 messages.success(request, _(f"Your {account_type} account with number {account_number}{card_part} has been deleted succesfully"))
             elif action == "add_card":

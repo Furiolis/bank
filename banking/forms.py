@@ -2,9 +2,12 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from django.db import models
+from django.core.validators import MinValueValidator
 
 from .models import Client, Account
 from .validators import validate_pesel_match_birth_date, validate_pesel, validate_date_birth_above_18_today
+
+from decimal import Decimal
 
 class NewClientForm(UserCreationForm):
     class Meta:
@@ -86,7 +89,7 @@ class NewAccountForm(forms.Form):
         return account
     
 class NewCreditForm(forms.Form):
-    money = forms.DecimalField(label=_("How much money you need"), decimal_places=2, max_digits=15)
+    money = forms.DecimalField(label=_("How much money you need"), decimal_places=2, max_digits=15, validators=[MinValueValidator(Decimal("0.01"))])
     add_card = forms.BooleanField(required=False)
 
     def save(self, owner:Client):
@@ -108,10 +111,13 @@ class AccountManagerForm(forms.Form):
     def clean(self):
         cleaned_data = super().clean()
         account = cleaned_data.get("accounts")
-        if self.action == "add_card" and hasattr(account, "card"):
-            self.add_error("accounts", _(f"Card already exists to {account.number}"))
-        elif self.action == "delete_card" and not hasattr(account, "card"):
-            self.add_error("accounts", _(f"Account {account.number} has no card"))
+        if "accounts" not in self.errors:
+            if self.action == "add_card" and hasattr(account, "card"):
+                self.add_error("accounts", _(f"Card already exists to {account.number}"))
+            elif self.action == "delete_card" and not hasattr(account, "card"):
+                self.add_error("accounts", _(f"Account {account.number} has no card"))
+            elif self.action == "delete_account" and account.money != 0:
+                self.add_error("accounts", _("Not possible to delete account with non-zero balance"))
         return cleaned_data
 
     def get_blocked_options(self):

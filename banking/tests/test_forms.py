@@ -219,3 +219,12 @@ class TestAccountManagerForm(TestCase):
     def test_get_blocked_options_provide_correct_list(self):
         form = AccountManagerForm(owner=self.client_1)
         self.assertEqual(form.get_blocked_options(), {str(self.account_11.id):"True",str(self.account_12.id):"True",str(self.account_13.id):"False"})
+
+    def test_invalid_form_non_zero_balance(self):
+        form = AccountManagerForm(owner=self.client_1, data={"accounts":self.account_11.id}, action="delete_account")
+        self.assertFalse(form.is_valid())
+
+        self.account_13.money = -1567
+        self.account_13.save()
+        form = AccountManagerForm(owner=self.client_1, data={"accounts":self.account_13.id}, action="delete_account")
+        self.assertFalse(form.is_valid())

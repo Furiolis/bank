@@ -226,13 +226,19 @@ class TestManagingAccountCardsView(TestCase):
 
     def test_deleting_account_without_card(self):
         self.client.force_login(self.client_1)
+        account = self.account_13
+        account.money = 0
+        account.save()
         self.client.post(reverse("banking:products"), data={"accounts":self.account_13.id,"action":"delete_account"})
         self.assertEqual(Account.objects.count(), 2)
         self.assertEqual(Card.objects.count(), 2)
 
     def test_deleting_account_with_card(self):
         self.client.force_login(self.client_1)
-        self.client.post(reverse("banking:products"), data={"accounts":self.account_11.id,"action":"delete_account"})
+        account = self.account_11
+        account.money = 0
+        account.save()
+        response = self.client.post(reverse("banking:products"), data={"accounts":self.account_11.id,"action":"delete_account"})
         self.assertEqual(Account.objects.count(), 2)
         self.assertEqual(Card.objects.count(), 1)
 
@@ -249,3 +255,17 @@ class TestManagingAccountCardsView(TestCase):
         self.assertFalse(form.is_valid())
         self.assertFormError(form, "accounts", f"Account {self.account_13.number} has no card")
         self.assertEqual(Card.objects.count(), 2)
+
+    def test_failed_deleting_account_with_non_zero_balance(self):
+        self.client.force_login(self.client_1)
+        response = self.client.post(reverse("banking:products"), data={"accounts":self.account_13.id,"action":"delete_account"})
+        self.assertFalse(response.context["form"].is_valid())
+        self.assertEqual(Account.objects.count(),3)
+
+        account = self.account_11
+        account.money = -111
+        account.save()
+        response = self.client.post(reverse("banking:products"), data={"accounts":self.account_11.id,"action":"delete_account"})
+        self.assertFalse(response.context["form"].is_valid())
+        self.assertEqual(Account.objects.count(),3)
+
