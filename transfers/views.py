@@ -19,14 +19,22 @@ def transfer(request):
         form_type = request.POST.get("form_type")
         if form_type == "internal":
             if internal_form.is_valid():
-                internal_form.save()
-                messages.success(request, _("Transfer accomplished, money are send"))
-                return redirect("banking:dashboard")
+                try:
+                    internal_form.save()
+                except ValueError as error:
+                    internal_form.add_error(None, str(error))
+                else:
+                    messages.success(request, _("Transfer accomplished, money are send"))
+                    return redirect("banking:dashboard")
         elif form_type == "external":
             if external_form.is_valid():
-                external_form.save()
-                messages.success(request, _("Transfer accomplished, money are send"))
-                return redirect("banking:dashboard")
+                try:
+                    external_form.save()
+                except ValueError as error:
+                    external_form.add_error(None, str(error))
+                else:
+                    messages.success(request, _("Transfer accomplished, money are send"))
+                    return redirect("banking:dashboard")
     else:
         internal_form = InternalTransferForm(owner=owner)
         external_form = ExternalTransferForm(owner=owner)
@@ -61,17 +69,17 @@ def history(request):
             elif not form.cleaned_data["crediting"] and not form.cleaned_data["debiting"]:
                 filtered_transfers = filtered_transfers.none()
 
-            if form.cleaned_data["lower_limit_money"] is not None and not form.cleaned_data["higher_limit_money"]:
+            if form.cleaned_data["lower_limit_money"] is not None and form.cleaned_data["higher_limit_money"] is None:
                 filtered_transfers = filtered_transfers.filter(Q(money__gte=form.cleaned_data["lower_limit_money"]) | Q(money__lte=-form.cleaned_data["lower_limit_money"]))
-            elif form.cleaned_data["higher_limit_money"] is not None and not form.cleaned_data["lower_limit_money"]:
+            elif form.cleaned_data["higher_limit_money"] is not None and form.cleaned_data["lower_limit_money"] is None:
                 filtered_transfers = filtered_transfers.filter(Q(money__lte=form.cleaned_data["higher_limit_money"]) & Q(money__gte=-form.cleaned_data["higher_limit_money"]))
             elif form.cleaned_data["higher_limit_money"] is not None and form.cleaned_data["lower_limit_money"] is not None:
                 filtered_transfers = filtered_transfers.filter((Q(money__gte=-form.cleaned_data["higher_limit_money"]) & Q(money__lte=-form.cleaned_data["lower_limit_money"])) | (Q(money__lte=form.cleaned_data["higher_limit_money"]) & Q(money__gte=form.cleaned_data["lower_limit_money"])))
 
             if form.cleaned_data["higher_limit_date"] is not None:
-                filtered_transfers = filtered_transfers.filter(date__gte=form.cleaned_data["higher_limit_date"])
+                filtered_transfers = filtered_transfers.filter(date__lte=form.cleaned_data["higher_limit_date"])
             if form.cleaned_data["lower_limit_date"] is not None:
-                filtered_transfers = filtered_transfers.filter(date__lte=form.cleaned_data["lower_limit_date"])
+                filtered_transfers = filtered_transfers.filter(date__gte=form.cleaned_data["lower_limit_date"])
 
             filtered_transfers = filtered_transfers.order_by(form.cleaned_data["order_by"])
         else: filtered_transfers = filtered_transfers.none()
