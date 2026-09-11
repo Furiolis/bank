@@ -37,7 +37,7 @@
         <a href="{% url "banking:login" %}">{% trans "Log in" %}</a>
         <a href="{% url "banking:new_client" %}">{% trans "Register" %}</a>
       {% else %}
-        <a href="#">{% trans "Settings" %}</a>
+        {% comment %} <a href="#">{% trans "Settings" %}</a> {% endcomment %}
         <a href="{% url "banking:logout" %}">{% trans "Log out" %}</a>
       {% endif %}
     </nav>
@@ -71,7 +71,7 @@
   <div class = "content" >
     {% block content %}{% endblock content %}
   </div>
-
+  
   <div class="footer-side-left"></div>
   <footer>
     <div class="footer-container">

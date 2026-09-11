@@ -7,7 +7,7 @@ body{
     font-family:sans-serif;
     background-color: #e6effc;
     display: grid;
-    grid-template-rows: 50px auto auto minmax(71vh, auto) auto;
+    grid-template-rows: 50px auto auto minmax(71.7vh, auto) auto;
     grid-template-columns: 100%;
     grid-template-areas: "nav_top"
                         "nav_main"
@@ -109,6 +109,7 @@ img.flag {
 
 .content {
     grid-area: content;
+    margin-bottom: 10px;
 }
 
 .messages{
