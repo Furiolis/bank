@@ -1,0 +1,10 @@
+.vscode
+docs/
+vvv/
+.venv/
+.git/
+.env
+**/__pycache__/
+*.pyc
+.pytest_cache/
+db.sqlite3

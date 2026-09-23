@@ -10,3 +10,4 @@ pytest-django==4.12.0
 python-dotenv==1.2.3
 sqlparse==0.5.3
 Unidecode==1.4.0
+psycopg[binary]==3.3.6
